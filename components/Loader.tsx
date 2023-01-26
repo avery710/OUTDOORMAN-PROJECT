@@ -1,11 +1,11 @@
 import { FC } from 'react'
 
-interface Prop {
+interface LoaderProp {
     show: boolean;
 }
 
 // loading spinner
-const Loader: FC<Prop> = ({ show }) => {
+const Loader: FC<LoaderProp> = ({ show }) => {
     return show ? (
         <div className='lds-roller'>
             <div></div>

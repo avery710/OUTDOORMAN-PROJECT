@@ -1,0 +1,41 @@
+.nav {
+    height: 60px;
+    padding: 10px;
+    background: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: relative;
+    z-index: 50;
+}
+
+.nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding-inline-start: 0;
+}
+
+.nav ul li a,
+.nav ul li img,
+.nav ul li input {
+    margin: 5px 15px;
+}
+
+.nav ul li img {
+    cursor: pointer;
+}
+
+.nav input {
+    height: 30px;
+    border-radius: 15px;
+    border: none;
+    padding: 10px;
+}
+
+.nav input:focus {
+    outline: none;
+}
