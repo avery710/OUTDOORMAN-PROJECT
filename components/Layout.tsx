@@ -10,9 +10,7 @@ const Layout = ({children}: LayoutProps) => {
         <>
             <Navbar />
             <div className={styles.container}>
-                <main className={styles.main}>
-                    {children}
-                </main>
+                {children}
             </div>
         </>
         
