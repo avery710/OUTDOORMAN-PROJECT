@@ -3,7 +3,10 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, FeatureGroup, LayersCon
 import { EditControl } from "react-leaflet-draw"
 import { LatLngExpression } from "leaflet"
 import L from "leaflet"
+import { Feature, Point, Geometry } from 'geojson'
 import { highMountainsData, middleMountainsData, lowMountainsData } from '../lib/mountData'
+import { db } from '../lib/firebase'
+import { doc, setDoc } from "firebase/firestore"; 
 
 
 export default function MapForPlan() {
@@ -22,6 +25,29 @@ export default function MapForPlan() {
 }
 
 function LayersControlGroups(){
+    function adjustMarker(latlng: L.LatLng, iconURL: string){
+        return L.marker(latlng, 
+            { icon: L.icon({
+                iconUrl: iconURL,
+                iconSize: [27, 27],
+                popupAnchor: [0, -15]})
+            }
+        )
+    }
+
+    function addPopup(feature: Feature<Geometry, any>, layer: L.Layer){
+        const properties = feature.properties
+        layer.bindPopup(`
+            <h3>${properties.名稱}</h3>
+            <p>海拔：${properties.海拔}</p>
+            <p>位置：${properties.位置}</p>
+            <p>山脈：${properties.山脈}</p>
+            <p>園區：${properties.園區}</p>
+            <p>基石：${properties.基石}</p>
+            <p>TWD67 TM2：${properties['TWD67 TM2']}</p>
+        `)
+    }
+
     return (
         <LayersControl position='bottomright'>
 
@@ -63,87 +89,24 @@ function LayersControlGroups(){
             <LayersControl.Overlay name='高山'>
                 <GeoJSON 
                     data={highMountainsData} 
-
-                    pointToLayer={(feature, latlng) => {
-                        return L.marker(latlng, 
-                            { icon: L.icon({
-                                iconUrl: './peak.png',
-                                iconSize: [27, 27],
-                                popupAnchor: [0, -15]})
-                            }
-                        )
-                    }}
-
-                    onEachFeature={(feature, layer) => {
-                        const properties = feature.properties
-                        layer.bindPopup(`
-                            <h3>${properties.名稱}</h3>
-                            <p>海拔：${properties.海拔}</p>
-                            <p>位置：${properties.位置}</p>
-                            <p>山脈：${properties.山脈}</p>
-                            <p>園區：${properties.園區}</p>
-                            <p>基石：${properties.基石}</p>
-                            <p>TWD67 TM2：${properties['TWD67 TM2']}</p>
-                        `)
-                    }}
+                    pointToLayer={(feature, latlng) => adjustMarker(latlng, './peak.png')}
+                    onEachFeature={(feature, layer) => addPopup(feature, layer)}
                 />
             </LayersControl.Overlay>
 
             <LayersControl.Overlay name='中級山'>
                 <GeoJSON 
                     data={middleMountainsData} 
-
-                    pointToLayer={(feature, latlng) => {
-                        return L.marker(latlng, 
-                            { icon: L.icon({
-                                iconUrl: './mountain.png',
-                                iconSize: [27, 27],
-                                popupAnchor: [0, -15]})
-                            }
-                        )
-                    }}
-
-                    onEachFeature={(feature, layer) => {
-                        const properties = feature.properties
-                        layer.bindPopup(`
-                            <h3>${properties.名稱}</h3>
-                            <p>海拔：${properties.海拔}</p>
-                            <p>位置：${properties.位置}</p>
-                            <p>山脈：${properties.山脈}</p>
-                            <p>園區：${properties.園區}</p>
-                            <p>基石：${properties.基石}</p>
-                            <p>TWD67 TM2：${properties['TWD67 TM2']}</p>
-                        `)
-                    }}
+                    pointToLayer={(feature, latlng) => adjustMarker(latlng, './mountain.png')}
+                    onEachFeature={(feature, layer) => addPopup(feature, layer)}
                 />
             </LayersControl.Overlay>
 
             <LayersControl.Overlay name='郊山'>
                 <GeoJSON 
                     data={lowMountainsData} 
-
-                    pointToLayer={(feature, latlng) => {
-                        return L.marker(latlng, 
-                            { icon: L.icon({
-                                iconUrl: './lowMountain.png',
-                                iconSize: [27, 27],
-                                popupAnchor: [0, -15]})
-                            }
-                        )
-                    }}
-
-                    onEachFeature={(feature, layer) => {
-                        const properties = feature.properties
-                        layer.bindPopup(`
-                            <h3>${properties.名稱}</h3>
-                            <p>海拔：${properties.海拔}</p>
-                            <p>位置：${properties.位置}</p>
-                            <p>山脈：${properties.山脈}</p>
-                            <p>園區：${properties.園區}</p>
-                            <p>基石：${properties.基石}</p>
-                            <p>TWD67 TM2：${properties['TWD67 TM2']}</p>
-                        `)
-                    }}
+                    pointToLayer={(feature, latlng) => adjustMarker(latlng, './lowMountain.png')}
+                    onEachFeature={(feature, layer) => addPopup(feature, layer)}
                 />
             </LayersControl.Overlay>
 
@@ -173,26 +136,46 @@ function LocationMarker(){
 }
 
 function DrawingToolBar(){
-    const [mapLayers, setMapLayers] = useState([])
-    const map = useMap()
+    const FeatureGroupRef = useRef<L.FeatureGroup<any>>(new L.FeatureGroup())
 
-    map.on('draw:edited', function (e) {
-        console.log(e)
-    });
+    async function handleDraw(e: L.DrawEvents.Created){
+        const layer = e.layer
+        FeatureGroupRef.current.addLayer(layer)
+        console.log(FeatureGroupRef.current)
 
-    map.on('draw:created', function (e) {
-        console.log(e)
-    });
+        const docData = {
+            GeoJSONdata : JSON.stringify(FeatureGroupRef.current.toGeoJSON())
+        }
+        
+        try {
+            await setDoc(doc(db, "VectorLayers", "test"), docData)
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
 
-    map.on('draw:deleted', function (e) {
-        console.log(e)
-    });
+    async function handleUpdate(){
+        const docData = {
+            GeoJSONdata : JSON.stringify(FeatureGroupRef.current.toGeoJSON())
+        }
+        
+        try {
+            await setDoc(doc(db, "VectorLayers", "test"), docData)
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
 
     return (
-        <FeatureGroup>
+        <FeatureGroup ref={FeatureGroupRef}>
             <EditControl 
                 position = 'topright' 
-                draw={{ rectangle: false, circle: false }}
+                onCreated={e => handleDraw(e)}
+                onEdited={e => handleUpdate()}
+                onDeleted={e => handleUpdate()}
+                draw={{ rectangle: false, circle: false, circlemarker: false }}
             />
         </FeatureGroup>
     )
