@@ -1,15 +1,20 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, FC } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap, FeatureGroup, LayersControl, GeoJSON } from 'react-leaflet'
 import { EditControl } from "react-leaflet-draw"
 import { LatLngExpression } from "leaflet"
 import L from "leaflet"
-import { Feature, Point, Geometry } from 'geojson'
-import { highMountainsData, middleMountainsData, lowMountainsData } from '../lib/mountData'
+import { Feature, Geometry } from 'geojson'
 import { db } from '../lib/firebase'
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDoc } from "firebase/firestore"
 
 
-export default function MapForPlan() {
+interface pageProps {
+    highMountains: GeoJSON.Feature
+    middleMountains: GeoJSON.Feature
+    lowMountains: GeoJSON.Feature
+}
+
+export default function MapForPlan (datas: pageProps){
     return (
         <MapContainer 
             center={[23.47, 120.96]} 
@@ -17,19 +22,20 @@ export default function MapForPlan() {
             scrollWheelZoom={true} 
             style={{ height: "100%", width: "100%" }}
         >
-            <LayersControlGroups />
+            <LayersControlGroups {...datas} />
             <DrawingToolBar />
             <LocationMarker />
         </MapContainer>
     )
 }
 
-function LayersControlGroups(){
+function LayersControlGroups(datas: pageProps){
+
     function adjustMarker(latlng: L.LatLng, iconURL: string){
         return L.marker(latlng, 
             { icon: L.icon({
                 iconUrl: iconURL,
-                iconSize: [27, 27],
+                iconSize: [20, 20],
                 popupAnchor: [0, -15]})
             }
         )
@@ -86,25 +92,25 @@ function LayersControlGroups(){
                 />
             </LayersControl.BaseLayer>
 
-            <LayersControl.Overlay name='高山'>
+            <LayersControl.Overlay checked name='高山｜高於3000m'>
                 <GeoJSON 
-                    data={highMountainsData} 
+                    data={datas.highMountains} 
                     pointToLayer={(feature, latlng) => adjustMarker(latlng, './peak.png')}
                     onEachFeature={(feature, layer) => addPopup(feature, layer)}
                 />
             </LayersControl.Overlay>
 
-            <LayersControl.Overlay name='中級山'>
+            <LayersControl.Overlay name='中級山｜1500-3000m'>
                 <GeoJSON 
-                    data={middleMountainsData} 
+                    data={datas.middleMountains} 
                     pointToLayer={(feature, latlng) => adjustMarker(latlng, './mountain.png')}
                     onEachFeature={(feature, layer) => addPopup(feature, layer)}
                 />
             </LayersControl.Overlay>
 
-            <LayersControl.Overlay name='郊山'>
+            <LayersControl.Overlay name='郊山｜低於1500m'>
                 <GeoJSON 
-                    data={lowMountainsData} 
+                    data={datas.lowMountains} 
                     pointToLayer={(feature, latlng) => adjustMarker(latlng, './lowMountain.png')}
                     onEachFeature={(feature, layer) => addPopup(feature, layer)}
                 />
@@ -150,8 +156,8 @@ function DrawingToolBar(){
         try {
             await setDoc(doc(db, "VectorLayers", "test"), docData)
         }
-        catch(e){
-            console.log(e)
+        catch(error){
+            console.log(error)
         }
     }
 
@@ -173,9 +179,9 @@ function DrawingToolBar(){
             <EditControl 
                 position = 'topright' 
                 onCreated={e => handleDraw(e)}
-                onEdited={e => handleUpdate()}
-                onDeleted={e => handleUpdate()}
-                draw={{ rectangle: false, circle: false, circlemarker: false }}
+                onEdited={() => handleUpdate()}
+                onDeleted={() => handleUpdate()}
+                draw={{ rectangle: false, circle: false }}
             />
         </FeatureGroup>
     )

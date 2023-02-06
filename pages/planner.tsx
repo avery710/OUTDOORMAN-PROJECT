@@ -1,28 +1,59 @@
-import React from 'react'
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import PlannerStyle from '../styles/Planner.module.css'
-import Head from "next/head"
+import EnterNamePrompt from '../components/EnterNamePrompt'
+import { db } from '../lib/firebase'
+import { doc, getDoc } from "firebase/firestore"
+import { GetStaticProps } from "next"
 
-type Props = {}
+interface pageProps {
+    highMountains: GeoJSON.Feature | null
+    middleMountains: GeoJSON.Feature | null
+    lowMountains: GeoJSON.Feature | null
+}
 
-export default function Planner({}: Props) {
+export const getStaticProps: GetStaticProps = async () => {
+    let datas: pageProps = {
+        highMountains : null,
+        middleMountains : null,
+        lowMountains : null,
+    }
+    
+    try {
+        const docRef = doc(db, "GeojsonData", "高山")
+        const docSnap = await getDoc(docRef)
+
+        if (docSnap.exists()) {
+            datas.highMountains = JSON.parse(docSnap.data().data)
+            console.log("success!")
+        }
+    }
+    catch (error){
+        console.log(error)
+    }
+
+    return {
+        props: {
+            datas
+        },
+    }
+}
+
+export default function Planner ({datas}: any){
+    const [ haveName, setHaveName ] = useState<boolean>(false)
+
     const MapForPlan = dynamic(
         () => import('../components/MapForPlan'), 
-        { 
-            ssr: false 
-        }
+        { ssr: false }
     )
       
-    return (
+    return haveName ? (
         <div className={PlannerStyle.planner}>
-            {/* <Head>
-                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-                integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossOrigin=""/>
-
-                <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" />
-                <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
-            </Head> */}
-            <MapForPlan />
+            <MapForPlan {...datas}/>
+        </div>
+    ) : (
+        <div>
+            <EnterNamePrompt setHaveName={setHaveName}/>
         </div>
     )
 }
