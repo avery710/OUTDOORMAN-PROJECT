@@ -20,11 +20,11 @@ export const getStaticProps: GetStaticProps = async () => {
     }
     
     try {
-        const docRef = doc(db, "GeojsonData", "高山")
+        const docRef = doc(db, "mountains", "高山")
         const docSnap = await getDoc(docRef)
 
         if (docSnap.exists()) {
-            datas.highMountains = JSON.parse(docSnap.data().data)
+            datas.highMountains = JSON.parse(docSnap.data().GeojsonData)
             console.log("success!")
         }
     }
