@@ -1,9 +1,26 @@
 import styled from 'styled-components'
-
+import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { provider } from '../lib/firebase'
 
 export function SignInForm({ setSignInForm }: any){
     function handleClick(){
         setSignInForm(false)
+    }
+
+    async function handleSignIn(){
+        try {
+            const auth = getAuth()
+            const result = await signInWithPopup(auth, provider)
+
+            const credential = GoogleAuthProvider.credentialFromResult(result)
+            const token = credential?.accessToken
+            // The signed-in user info.
+            const user = result.user
+            console.log(user)
+        }
+        catch(error){
+            console.log(error)
+        }
     }
 
     return (
@@ -12,7 +29,7 @@ export function SignInForm({ setSignInForm }: any){
                 Welcome Back!
             </h1>
         
-            <Button>
+            <Button onClick={handleSignIn}>
                 Sign in with Google
             </Button>
 
@@ -28,13 +45,18 @@ export function SignUpForm({ setSignInForm }: any){
         setSignInForm(true)
     }
 
+    async function handleSignUp(){
+        const auth = getAuth()
+        signInWithRedirect(auth, provider)
+    }
+
     return (
         <>
             <h1 style={{ marginTop: "80px" ,marginBottom: "80px" }}>
                 Join Outdoorman Project!
             </h1>
 
-            <Button>
+            <Button onClick={handleSignUp}>
                 Sign up with Google
             </Button>
 
