@@ -1,3 +1,4 @@
+import { point } from "leaflet";
 import { EditorConfig, LexicalNode, NodeKey, SerializedTextNode, Spread, TextNode } from "lexical";
 
 export type SerializedDateTimeNode = Spread<
@@ -44,6 +45,7 @@ export class GeoPointNode extends TextNode {
     createDOM(config: EditorConfig): HTMLElement {
         const element = super.createDOM(config);
         element.style.backgroundColor = this.__color;
+        element.style.cursor = "pointer";
         return element;
     }
 
