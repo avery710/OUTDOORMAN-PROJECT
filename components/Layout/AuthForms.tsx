@@ -8,20 +8,10 @@ export function SignInForm({ setSignInForm }: any){
         setSignInForm(false)
     }
 
-    async function handleSignIn(){
-        try {
-            const auth = getAuth()
-            const result = await signInWithPopup(auth, provider)
+    const { signInWithGoogle } = useAuth()
 
-            const credential = GoogleAuthProvider.credentialFromResult(result)
-            const token = credential?.accessToken
-            // The signed-in user info.
-            const user = result.user
-            console.log(user)
-        }
-        catch(error){
-            console.log(error)
-        }
+    function handleSignIn(){
+        signInWithGoogle()
     }
 
     return (
@@ -46,7 +36,7 @@ export function SignUpForm({ setSignInForm }: any){
         setSignInForm(true)
     }
 
-    const { signInWithGoogle, signOutGoogle } = useAuth()
+    const { signInWithGoogle } = useAuth()
 
     function handleSignUp(){
         signInWithGoogle()
