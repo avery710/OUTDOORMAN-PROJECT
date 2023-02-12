@@ -19,7 +19,7 @@ export default function GeoPointPlugin({geoPointData, setGeoPointData}: any) {
             if (description){
                 editor.update(() => {
                     const newNode = new GeoPointNode(description)
-                    const nodes = [newNode, new TextNode(" ")]
+                    const nodes = [new TextNode(" "), newNode, new TextNode(" ")]
                     $insertNodes(nodes)
                     console.log("add node!")
                 })
