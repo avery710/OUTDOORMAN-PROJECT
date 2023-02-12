@@ -34,12 +34,12 @@ export default function GeoPointForm({setGeoPointData, setOverlayDisplay}: any) 
         <form onSubmit={e => handleSubmit(e)}>
             <label>
                 Latitude:
-                <input type="number" step="0.000001" ref={latRef} onChange={e => handleChange(e)}/>
+                <input type="number" step="0.000000001" ref={latRef} onChange={e => handleChange(e)}/>
             </label>
             <br/>
             <label>
                 Longtitude:
-                <input type="number" step="0.000001" ref={lngRef} onChange={e => handleChange(e)}/>
+                <input type="number" step="0.000000001" ref={lngRef} onChange={e => handleChange(e)}/>
             </label>
             <br/>
             <label>
