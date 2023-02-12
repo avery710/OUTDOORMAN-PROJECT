@@ -26,10 +26,12 @@ import {
     $createQuoteNode,
     $isHeadingNode
 } from "@lexical/rich-text";
+import OverlayPrompt from '../../Layout/OverlayPrompt'
+import GeoPointForm from "./GeoPointPlugin/GeoPointForm";
 
 const LowPriority = 1;
 
-const ToolbarPlugin = () => {
+const ToolbarPlugin = ({geoPointData, setGeoPointData}) => {
     const [editor] = useLexicalComposerContext()
     const [isBold, setIsBold] = useState(false)
     const [isItalic, setIsItalic] = useState(false)
@@ -37,7 +39,8 @@ const ToolbarPlugin = () => {
     const [canUndo, setCanUndo] = useState(false)
     const [canRedo, setCanRedo] = useState(false)
     const [isLink, setIsLink] = useState(false)
-    const [selectedElementKey, setSelectedElementKey] = useState(null);
+    const [geoPoint, setGeoPoint] = useState(false)
+    const [overylayDisplay, setOverlayDisplay] = useState("none")
 
     const formatQuote = () => {
         editor.update(() => {
@@ -198,18 +201,22 @@ const ToolbarPlugin = () => {
             <button
                 onClick={() => {  }}
                 className={"toolbar-item spaced"}
-                aria-label="Format Underline"
+                // aria-label="Format Underline"
             >
                 <i className="format image" />
             </button>
 
             <button
-                onClick={() => {  }}
-                className={"toolbar-item spaced"}
-                aria-label="Format Underline"
+                onClick={() => { setOverlayDisplay("flex"); setGeoPoint(true) }}
+                className={"toolbar-item spaced "}
             >
                 <i className="format geo" />
             </button>
+            { overylayDisplay === "flex" && 
+                <OverlayPrompt overylayDisplay={overylayDisplay} setOverlayDisplay={setOverlayDisplay}>
+                    <GeoPointForm setGeoPointData={setGeoPointData} setOverlayDisplay={setOverlayDisplay}/>
+                </OverlayPrompt>
+            }
             
         </div>
     )

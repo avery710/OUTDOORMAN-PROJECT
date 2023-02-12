@@ -11,9 +11,9 @@ import TreeViewPlugin from './plugins/TreeViewPlugin'
 import ToolbarPlugin from './plugins/ToolbarPlugin'
 // import ToolbarPlugin from './plugins/Duplicate'
 import { LinkNode } from "@lexical/link";
-import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-
-
+import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin"
+import GeoPointPlugin from "../Editor/plugins/GeoPointPlugin/GeoPointPlugin"
+import { GeoPointNode } from './nodes/GeoPointNode'
 
 // function onChange(editorState: any) {
 //     editorState.read(() => {
@@ -37,7 +37,7 @@ function Placeholder(){
     )
 }
 
-export default function Editor() {
+export default function Editor(geoPointControl: any) {
     const initialConfig = {
         namespace: 'MyEditor',
         theme: myTheme,
@@ -45,14 +45,15 @@ export default function Editor() {
         nodes: [
             HeadingNode, 
             QuoteNode,
-            LinkNode
+            LinkNode,
+            GeoPointNode,
         ]
     }
     
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <div className='editor-container'>
-                <ToolbarPlugin />
+                <ToolbarPlugin {...geoPointControl}/>
                 <div className='editor-inner'>
                     <RichTextPlugin
                         // when contentEditable = true -> users can edit on web page
@@ -64,7 +65,8 @@ export default function Editor() {
                     <HistoryPlugin />
                     <AutoFocusPlugin />
                     <LinkPlugin />
-                    {/* <TreeViewPlugin /> */}
+                    <TreeViewPlugin />
+                    <GeoPointPlugin {...geoPointControl}/>
                 </div>
             </div> 
         </LexicalComposer>
