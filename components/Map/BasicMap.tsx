@@ -150,10 +150,12 @@ function DrawingToolBar(){
 
             if (docSnap.exists()){
                 const geoJsonData = docSnap.data().GeojsonData
-                const layers = L.geoJSON(JSON.parse(geoJsonData)).addTo(myMap)
+                if (geoJsonData){
+                    const layers = L.geoJSON(JSON.parse(geoJsonData)).addTo(myMap)
 
-                const bounds = layers.getBounds()
-                myMap.fitBounds(bounds)
+                    const bounds = layers.getBounds()
+                    myMap.fitBounds(bounds)
+                }
             } 
             else {
                 // doc.data() will be undefined in this case
