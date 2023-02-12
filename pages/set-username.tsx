@@ -1,7 +1,7 @@
 import { db } from '../lib/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"
 import React, { useEffect, useRef, useState } from "react"
-import { useAuth } from '../lib/context'
+import { useAuth } from '../hooks/context'
 import { useRouter } from 'next/router';
 
 export default function AddUsername() {

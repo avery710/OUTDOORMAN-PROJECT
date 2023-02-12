@@ -1,7 +1,7 @@
-import { useAuth } from 'lib/context'
+import { useAuth } from 'hooks/context'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router';
-import Layout from '../components/Layout'
+import Layout from '../components/Layout/Layout'
 
 export default function Home() {
     const { authUser, loading } = useAuth()
