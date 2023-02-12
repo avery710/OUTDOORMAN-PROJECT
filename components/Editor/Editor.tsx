@@ -3,39 +3,18 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin"
-import { HeadingNode, QuoteNode } from "@lexical/rich-text"
 import myTheme from "./themes/myThemes"
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary"
 import AutoFocusPlugin from './plugins/AutoFocusPlugin'
 import TreeViewPlugin from './plugins/TreeViewPlugin'
 import ToolbarPlugin from './plugins/ToolbarPlugin'
-// import ToolbarPlugin from './plugins/Duplicate'
-import { LinkNode } from "@lexical/link";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin"
 import GeoPointPlugin from "../Editor/plugins/GeoPointPlugin/GeoPointPlugin"
+import ImagesPlugin from './plugins/ImagePlugin/ImagePlugin'
 import { GeoPointNode } from './nodes/GeoPointNode'
-
-// function onChange(editorState: any) {
-//     editorState.read(() => {
-//         // Read the contents of the EditorState here.
-//         const root = $getRoot();
-//         const selection = $getSelection();
-    
-//         console.log(root, selection);
-//     })
-// }
-
-function onError(error: any) {
-    console.error(error)
-}
-
-function Placeholder(){
-    return (
-        <div className='editor-placeholder'>
-            Enter some text...
-        </div>
-    )
-}
+import { HeadingNode, QuoteNode } from "@lexical/rich-text"
+import { LinkNode } from "@lexical/link"
+import { ImageNode } from './nodes/ImageNode'
 
 export default function Editor(geoPointControl: any) {
     const initialConfig = {
@@ -47,6 +26,7 @@ export default function Editor(geoPointControl: any) {
             QuoteNode,
             LinkNode,
             GeoPointNode,
+            ImageNode,
         ]
     }
     
@@ -67,8 +47,31 @@ export default function Editor(geoPointControl: any) {
                     <LinkPlugin />
                     <TreeViewPlugin />
                     <GeoPointPlugin {...geoPointControl}/>
+                    <ImagesPlugin />
                 </div>
             </div> 
         </LexicalComposer>
+    )
+}
+
+// function onChange(editorState: any) {
+//     editorState.read(() => {
+//         // Read the contents of the EditorState here.
+//         const root = $getRoot();
+//         const selection = $getSelection();
+    
+//         console.log(root, selection);
+//     })
+// }
+
+function onError(error: any) {
+    console.error(error)
+}
+
+function Placeholder(){
+    return (
+        <div className='editor-placeholder'>
+            Enter some text...
+        </div>
     )
 }

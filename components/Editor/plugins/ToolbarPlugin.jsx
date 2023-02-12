@@ -1,23 +1,23 @@
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  CAN_REDO_COMMAND,
-  CAN_UNDO_COMMAND,
-  REDO_COMMAND,
-  UNDO_COMMAND,
-  SELECTION_CHANGE_COMMAND,
-  FORMAT_TEXT_COMMAND,
-  FORMAT_ELEMENT_COMMAND,
-  $getSelection,
-  $isRangeSelection,
-  $createParagraphNode,
-  $getNodeByKey
+    CAN_REDO_COMMAND,
+    CAN_UNDO_COMMAND,
+    REDO_COMMAND,
+    UNDO_COMMAND,
+    SELECTION_CHANGE_COMMAND,
+    FORMAT_TEXT_COMMAND,
+    FORMAT_ELEMENT_COMMAND,
+    $getSelection,
+    $isRangeSelection,
+    $createParagraphNode,
+    $getNodeByKey
 } from "lexical";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import {
-  $isParentElementRTL,
-  $wrapNodes,
-  $isAtNodeEnd
+    $isParentElementRTL,
+    $wrapNodes,
+    $isAtNodeEnd
 } from "@lexical/selection";
 import { $getNearestNodeOfType, mergeRegister } from "@lexical/utils";
 import { createPortal } from "react-dom";
@@ -27,7 +27,8 @@ import {
     $isHeadingNode
 } from "@lexical/rich-text";
 import OverlayPrompt from '../../Layout/OverlayPrompt'
-import GeoPointForm from "./GeoPointPlugin/GeoPointForm";
+import GeoPointForm from "./GeoPointPlugin/GeoPointForm"
+import ImageForm from "./ImagePlugin/ImageForm";
 
 const LowPriority = 1;
 
@@ -39,8 +40,9 @@ const ToolbarPlugin = ({geoPointData, setGeoPointData}) => {
     const [canUndo, setCanUndo] = useState(false)
     const [canRedo, setCanRedo] = useState(false)
     const [isLink, setIsLink] = useState(false)
-    const [geoPoint, setGeoPoint] = useState(false)
-    const [overylayDisplay, setOverlayDisplay] = useState("none")
+    const [isGeoPoint, setIsGeoPoint] = useState(false)
+    const [geoOverlay, setGeoOverlay] = useState("none")
+    const [ImageOverlay, setImageOverlay] = useState("none")
 
     const formatQuote = () => {
         editor.update(() => {
@@ -99,14 +101,14 @@ const ToolbarPlugin = ({geoPointData, setGeoPointData}) => {
                 })
             }),
 
-            editor.registerCommand(
-                SELECTION_CHANGE_COMMAND,
-                (_payload, newEditor) => {
-                  updateToolbar();
-                  return false;
-                },
-                LowPriority
-            ),
+            // editor.registerCommand(
+            //     SELECTION_CHANGE_COMMAND,
+            //     (_payload, newEditor) => {
+            //       updateToolbar();
+            //       return false;
+            //     },
+            //     LowPriority
+            // ),
 
             editor.registerCommand(
                 CAN_UNDO_COMMAND,
@@ -199,22 +201,26 @@ const ToolbarPlugin = ({geoPointData, setGeoPointData}) => {
             <div className='divider'></div>
 
             <button
-                onClick={() => {  }}
+                onClick={() => setImageOverlay("flex") }
                 className={"toolbar-item spaced"}
-                // aria-label="Format Underline"
             >
                 <i className="format image" />
             </button>
+            { ImageOverlay === "flex" && 
+                <OverlayPrompt overylayDisplay={ImageOverlay} setOverlayDisplay={setImageOverlay}>
+                    <ImageForm setOverlayDisplay={setImageOverlay} />
+                </OverlayPrompt>
+            }
 
             <button
-                onClick={() => { setOverlayDisplay("flex"); setGeoPoint(true) }}
+                onClick={() => { setGeoOverlay("flex"); setIsGeoPoint(true) }}
                 className={"toolbar-item spaced "}
             >
                 <i className="format geo" />
             </button>
-            { overylayDisplay === "flex" && 
-                <OverlayPrompt overylayDisplay={overylayDisplay} setOverlayDisplay={setOverlayDisplay}>
-                    <GeoPointForm setGeoPointData={setGeoPointData} setOverlayDisplay={setOverlayDisplay}/>
+            { geoOverlay === "flex" &&
+                <OverlayPrompt overylayDisplay={geoOverlay} setOverlayDisplay={setGeoOverlay}>
+                    <GeoPointForm setGeoPointData={setGeoPointData} setOverlayDisplay={setGeoOverlay}/>
                 </OverlayPrompt>
             }
             
