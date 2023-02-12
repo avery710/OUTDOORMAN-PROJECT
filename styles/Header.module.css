@@ -1,0 +1,9 @@
+.headerContainer {
+    width: 80%;
+    padding-top: 60px;
+}
+
+.title {
+    font-size: 40px;
+    font-weight: 500;
+}
