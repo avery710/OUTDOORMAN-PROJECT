@@ -1,6 +1,4 @@
 import styled from 'styled-components'
-import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
-import { provider } from '../../lib/firebase'
 import { useAuth } from 'hooks/context'
 
 export function SignInForm({ setSignInForm }: any){
