@@ -84,17 +84,19 @@ export default function Navbar() {
                     }
             </nav>
 
-            <Toolbar display={toolbarDisplay} />
-
-            <OverlayPrompt 
-                overlayDisplay={overlayDisplay} 
-                setOverlayDisplay={setOverlayDisplay}
-            >
-                { signInForm ? 
-                    <SignInForm setSignInForm={setSignInForm}/>
-                    : <SignUpForm setSignInForm={setSignInForm}/> 
-                }
-            </OverlayPrompt>
+            { authUser ? 
+                <Toolbar display={toolbarDisplay} />
+                :
+                <OverlayPrompt 
+                    overlayDisplay={overlayDisplay} 
+                    setOverlayDisplay={setOverlayDisplay}
+                >
+                    { signInForm ? 
+                        <SignInForm setSignInForm={setSignInForm}/>
+                        : <SignUpForm setSignInForm={setSignInForm}/> 
+                    }
+                </OverlayPrompt>
+            }
         </>
     )
 }
