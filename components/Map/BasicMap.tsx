@@ -6,19 +6,42 @@ import L from "leaflet"
 import { Feature, Point, Geometry } from 'geojson'
 import { db } from '../../lib/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import { geoPointType } from 'types'
 
 
-export default function MapForPlan() {
+export default function BasicMap({ geoPointData }: any){
     return (
         <MapContainer 
-            center={[23.47, 120.96]} 
+            center={[23.46999192, 120.9572655]} 
             zoom={13} 
             scrollWheelZoom={true} 
             style={{ height: "100%", width: "100%" }}
         >
             <LayersControlGroups />
             <DrawingToolBar />
+            <AddGeoPoint geoPointData={geoPointData}/>
         </MapContainer>
+    )
+}
+
+function AddGeoPoint({ geoPointData }: any){
+    const map = useMap()
+
+    useEffect(() => {
+        if (geoPointData && geoPointData.lat && geoPointData.lng){
+            const latlng: LatLngExpression = [geoPointData.lat, geoPointData.lng]
+
+            let description = ""
+            if (geoPointData.descript){
+                description = geoPointData.descript
+            }
+
+            L.marker(latlng).addTo(map).bindPopup(description)
+        }
+    }, [geoPointData])
+
+    return (
+        <></>
     )
 }
 

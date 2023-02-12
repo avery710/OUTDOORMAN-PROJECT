@@ -1,11 +1,17 @@
-import React from 'react'
+import { useState } from 'react'
 import styles from '../styles/newStory.module.css'
 import dynamic from 'next/dynamic'
 import Editor from '../components/Editor/Editor'
+import { geoPointType } from 'types'
 
-type Props = {}
 
-export default function NewStory({}: Props) {
+export default function NewStory() {
+    const [geoPointData, setGeoPointData] = useState<geoPointType | null>(null)
+    const geoPointControl = {
+        geoPointData: geoPointData, 
+        setGeoPointData: setGeoPointData,
+    }
+
     const BasicMap = dynamic(
         () => import('../components/Map/BasicMap'), 
         { 
@@ -16,10 +22,10 @@ export default function NewStory({}: Props) {
     return (
         <div className={styles.container}>
             <div className={styles.map}>
-                <BasicMap />
+                <BasicMap geoPointData={geoPointData}/>
             </div>
             <div className={styles.editor} id="editor">
-                <Editor />
+                <Editor {...geoPointControl}/>
             </div>
         </div>
     )
