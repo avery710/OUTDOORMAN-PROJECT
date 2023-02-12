@@ -20,12 +20,25 @@ export const getStaticProps: GetStaticProps = async () => {
     }
     
     try {
-        const docRef = doc(db, "mountains", "高山")
-        const docSnap = await getDoc(docRef)
+        const docRef1 = doc(db, "mountains", "高山")
+        const docSnap1 = await getDoc(docRef1)
 
-        if (docSnap.exists()) {
-            datas.highMountains = JSON.parse(docSnap.data().GeojsonData)
-            console.log("success!")
+        if (docSnap1.exists()) {
+            datas.highMountains = JSON.parse(docSnap1.data().GeojsonData)
+        }
+
+        const docRef2 = doc(db, "mountains", "中級山")
+        const docSnap2 = await getDoc(docRef2)
+
+        if (docSnap2.exists()) {
+            datas.middleMountains = JSON.parse(docSnap2.data().GeojsonData)
+        }
+
+        const docRef3 = doc(db, "mountains", "郊山")
+        const docSnap3 = await getDoc(docRef3)
+
+        if (docSnap3.exists()) {
+            datas.lowMountains = JSON.parse(docSnap3.data().GeojsonData)
         }
     }
     catch (error){
