@@ -17,7 +17,7 @@ interface pageProps {
 export default function MapForPlan (datas: pageProps){
     return (
         <MapContainer 
-            center={[23.47, 120.96]} 
+            center={[23.46999192, 120.9572655]} 
             zoom={13} 
             scrollWheelZoom={true} 
             style={{ height: "100%", width: "100%" }}
@@ -71,28 +71,28 @@ function LayersControlGroups(datas: pageProps){
                 />
             </LayersControl.BaseLayer>
 
-            <LayersControl.BaseLayer name='2020-正射影像圖'>
+            <LayersControl.BaseLayer name='2020 正射影像圖'>
                 <TileLayer
                     attribution='&copy; <a href="https://maps.nlsc.gov.tw">內政部國土測繪中心</a>'
                     url='https://wmts.nlsc.gov.tw/wmts/PHOTO2020/default/GoogleMapsCompatible/{z}/{y}/{x}.jpeg'
                 />
             </LayersControl.BaseLayer>
 
-            <LayersControl.BaseLayer name='2003-臺灣經建3版地形圖'>
+            <LayersControl.BaseLayer name='2003 臺灣經建3版地形圖'>
                 <TileLayer
                     attribution='&copy; <a href="https://gissrv4.sinica.edu.tw/gis/twhgis/">中央研究院臺灣百年歷史地圖</a>'
                     url='https://gis.sinica.edu.tw/tileserver/file-exists.php?img=TM50K_2003-png-{z}-{x}-{y}'
                 />
             </LayersControl.BaseLayer>
 
-            <LayersControl.BaseLayer name='1921-日治臺灣堡圖'>
+            <LayersControl.BaseLayer name='1921 日治臺灣堡圖'>
                 <TileLayer
                     attribution='&copy; <a href="https://gissrv4.sinica.edu.tw/gis/twhgis/">中央研究院臺灣百年歷史地圖</a>'
                     url='https://gis.sinica.edu.tw/tileserver/file-exists.php?img=JM20K_1921-jpg-{z}-{x}-{y}'
                 />
             </LayersControl.BaseLayer>
 
-            <LayersControl.Overlay checked name='高山｜高於3000m'>
+            <LayersControl.Overlay checked name='高山 高於3000m'>
                 <GeoJSON 
                     data={datas.highMountains} 
                     pointToLayer={(feature, latlng) => adjustMarker(latlng, './peak.png')}
@@ -100,7 +100,7 @@ function LayersControlGroups(datas: pageProps){
                 />
             </LayersControl.Overlay>
 
-            <LayersControl.Overlay name='中級山｜1500-3000m'>
+            <LayersControl.Overlay name='中級山 1500-3000m'>
                 <GeoJSON 
                     data={datas.middleMountains} 
                     pointToLayer={(feature, latlng) => adjustMarker(latlng, './mountain.png')}
@@ -108,7 +108,7 @@ function LayersControlGroups(datas: pageProps){
                 />
             </LayersControl.Overlay>
 
-            <LayersControl.Overlay name='郊山｜低於1500m'>
+            <LayersControl.Overlay name='郊山 低於1500m'>
                 <GeoJSON 
                     data={datas.lowMountains} 
                     pointToLayer={(feature, latlng) => adjustMarker(latlng, './lowMountain.png')}
