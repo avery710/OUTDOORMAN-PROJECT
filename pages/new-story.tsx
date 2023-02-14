@@ -3,6 +3,7 @@ import styles from '../styles/newStory.module.css'
 import dynamic from 'next/dynamic'
 import Editor from '../components/Editor/Editor'
 import { geoPointType } from 'types'
+import TiptapEditor from 'components/TiptapEditor/TiptapEditor'
 
 
 export default function NewStory() {
@@ -22,10 +23,11 @@ export default function NewStory() {
     return (
         <div className={styles.container}>
             <div className={styles.map}>
-                <BasicMap geoPointData={geoPointData}/>
+                {/* <BasicMap geoPointData={geoPointData}/> */}
             </div>
             <div className={styles.editor} id="editor">
-                <Editor {...geoPointControl}/>
+                {/* <Editor {...geoPointControl}/> */}
+                <TiptapEditor />
             </div>
         </div>
     )

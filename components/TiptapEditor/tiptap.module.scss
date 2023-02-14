@@ -1,0 +1,62 @@
+.bubbleMenu {
+    display: flex;
+    background-color: black;
+    padding: 8px;
+    border-radius: 10px;
+    height: 36px;
+
+    button {
+        border: none;
+        background: none;
+        color: white;
+        font-size: 13px;
+        font-weight: 500;
+        opacity: 0.6;
+
+        &:hover,
+        &.isActive {
+            opacity: 1;
+        }
+    }
+}
+
+.floatingMenu {
+    display: flex;
+    margin-top: 16px;
+
+    button {
+        border: 1px solid black;
+        border-radius: 18px;
+        background-color: white;
+        height: 36px;
+        width: 36px;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 5px;
+        margin-right: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all .1s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(0.92);
+        }
+
+        i {
+            background-size: contain;
+            display: inline-block;
+            height: 80%;
+            width: 80%;
+        }
+    }
+}
+
+.quote {
+    background-image: url(/images/icons/chat-square-quote.svg);
+}
+
+.image {
+    background-image: url(/images/icons/image.svg);
+}
