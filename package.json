@@ -11,6 +11,15 @@
   "dependencies": {
     "@lexical/react": "^0.7.6",
     "@next/font": "13.1.5",
+    "@tiptap/extension-blockquote": "^2.0.0-beta.217",
+    "@tiptap/extension-heading": "^2.0.0-beta.217",
+    "@tiptap/extension-image": "^2.0.0-beta.217",
+    "@tiptap/extension-link": "^2.0.0-beta.217",
+    "@tiptap/extension-placeholder": "^2.0.0-beta.217",
+    "@tiptap/extension-underline": "^2.0.0-beta.217",
+    "@tiptap/pm": "^2.0.0-beta.217",
+    "@tiptap/react": "^2.0.0-beta.217",
+    "@tiptap/starter-kit": "^2.0.0-beta.217",
     "@types/geojson": "^7946.0.10",
     "@types/leaflet": "^1.9.0",
     "@types/leaflet-draw": "^1.0.6",
@@ -30,6 +39,7 @@
     "react-firebase-hooks": "^5.1.1",
     "react-leaflet": "^4.2.0",
     "react-leaflet-draw": "^0.20.4",
+    "sass": "^1.58.0",
     "styled-components": "^5.3.6",
     "typescript": "4.9.4"
   },
