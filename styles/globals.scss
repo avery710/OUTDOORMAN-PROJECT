@@ -44,6 +44,28 @@ i.geo {
         color: #68cef8;
         cursor: pointer;
         text-decoration: underline;
+        position: relative;
+
+        &:hover {
+            &::before {
+                content: attr(href);
+                position: absolute;
+                background-color: #2A2A2A;
+                color: white;
+                text-decoration: none;
+                font-size: 13px;
+                top: 35px;
+                left: 0;
+                width: fit-content;
+                height: 25px;
+                padding: 3px 10px;
+                border-radius: 3px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+        }
     }
 }
 
