@@ -1,8 +1,8 @@
 .bubbleMenu {
     display: flex;
-    background-color: black;
+    background-color: #2A2A2A;
     padding: 8px;
-    border-radius: 10px;
+    border-radius: 3px;
     height: 36px;
 
     button {
@@ -59,4 +59,13 @@
 
 .image {
     background-image: url(/images/icons/image.svg);
+}
+
+.bookmark {
+    background-image: url(/images/icons/bookmark-plus.svg);
+    // background-image: url(/images/icons/journal-bookmark-fill.svg);
+}
+
+.youtube {
+    background-image: url(/images/icons/youtube.svg);
 }

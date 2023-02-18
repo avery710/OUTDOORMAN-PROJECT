@@ -6,7 +6,10 @@ export interface userType {
 }
 
 export interface geoPointType {
-    lat: number | null,
-    lng: number | null,
-    descript: string | null,
+    lat: number,
+    lng: number,
+    descript: string,
+    uuid: string,
 }
+
+export interface geoPointArray extends Array<geoPointType>{}
