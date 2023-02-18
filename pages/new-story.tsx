@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import styles from '../styles/newStory.module.css'
 import dynamic from 'next/dynamic'
-import Editor from '../components/Editor/Editor'
 import { geoPointArray } from 'types'
 import TiptapEditor from 'components/TiptapEditor/TiptapEditor'
 import L, { LatLngExpression } from "leaflet"
