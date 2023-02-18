@@ -8,9 +8,6 @@ import { clickHandler } from './clickHandler';
 import L from "leaflet"
 import { Dispatch, SetStateAction } from 'react';
 import { geoPointArray } from 'types';
-import { InputHandler } from './InputHandler';
-import { keyDownHandler } from './keyDownHandler';
-import { EditorState } from '@tiptap/pm/state'
 
 /* -------------------set the type of this mark------------------- */
 export interface GeoLinkOptions {
