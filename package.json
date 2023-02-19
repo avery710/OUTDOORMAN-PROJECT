@@ -30,6 +30,7 @@
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.5",
     "firebase": "^9.16.0",
+    "gpxparser": "^3.0.8",
     "leaflet": "^1.9.3",
     "leaflet-draw": "^1.0.4",
     "lexical": "^0.7.6",

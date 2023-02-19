@@ -13,3 +13,12 @@ export interface geoPointType {
 }
 
 export interface geoPointArray extends Array<geoPointType>{}
+
+export interface wayPointType {
+    lat: number,
+    lng: number,
+    elevation: number,
+    descript: string,
+}
+
+export interface wayPointArray extends Array<wayPointType>{}

@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, Dispatch, SetStateAction } from 'react'
-import { MapContainer, TileLayer, Marker, Popup, useMap, FeatureGroup, LayersControl, GeoJSON } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMap, FeatureGroup, LayersControl, GeoJSON, Polyline } from 'react-leaflet'
 import { EditControl } from "react-leaflet-draw"
 import { LatLngExpression } from "leaflet"
 import L from "leaflet"
@@ -7,9 +7,11 @@ import { Feature, Point, Geometry } from 'geojson'
 import { db } from '../../lib/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import { geoPointType } from 'types'
+import { wayPointType } from 'types'
+import { stringify } from 'querystring'
 
 
-export default function MapForWrite({ location, geoPoints }: any){
+export default function MapForWrite({ location, geoPoints, gpxtracks, gpxWaypoints }: any){
     // const initLatlng: LatLngExpression = [23.46999192, 120.9572655]
     // const [currView, setCurrView] = useState<LatLngExpression>(initLatlng)
 
@@ -25,42 +27,61 @@ export default function MapForWrite({ location, geoPoints }: any){
             style={{ height: "100%", width: "100%" }}
         >
             <LayersControlGroups />
-            {/* <DrawingToolBar /> */}
             <GeoPointsLayer geoPoints={geoPoints}/>
+            <GpxLayer gpxtracks={gpxtracks} gpxWaypoints={gpxWaypoints}/>
             {/* <SetViewCenter setCurrView={setCurrView} currView={currView}/> */}
+            {/* <DrawingToolBar /> */}
             <FlyToLocation location={location}/>
         </MapContainer>
     )
 }
 
 
-// function SetViewCenter({ setCurrView, currView }: any){
-//     const map = useMap()
-
-//     useEffect(() => {
-//         map.on("moveend", () => {
-//             setCurrView(map.getCenter())
-//         })
-//     }, [])
-//     return (null)
-// }
-
-
-
-function FlyToLocation({location}: any){
+// read only gpx layer (control by gpx upload)
+function GpxLayer({ gpxtracks, gpxWaypoints }: any){
     const map = useMap()
-    
+
     useEffect(() => {
-        if (location){
-            // map.setView(currView)
-            map.flyTo(location, map.getZoom())
+        if (gpxtracks && gpxWaypoints){
+            const polyline = L.polyline(gpxtracks, {smoothFactor: 5.0 , weight: 4, color: "#FFF176"})
+
+            const markers = gpxWaypoints.map((waypoint: wayPointType) => {
+                const latlng: LatLngExpression = [waypoint.lat, waypoint.lng]
+                const innerHtml = `
+                    <h3>${waypoint.descript}</h3>
+                    <p>位置：${waypoint.lat}, ${waypoint.lng}</p>
+                    <p>高度：${waypoint.elevation}</p>
+                `
+
+                const div = document.createElement("div");
+                div.innerHTML = innerHtml
+
+                const button = document.createElement("button")
+                button.innerHTML = "add to text-editor"
+
+                button.onclick = function() {
+                    console.log("click hehe")
+                }
+
+                div.appendChild(button)
+
+                return L.marker(latlng).bindPopup(div)
+            })
+
+            // add polyline and marks to the same layer group
+            markers.push(polyline)
+            const layer = L.layerGroup(markers)
+            layer.addTo(map)
+
+            map.fitBounds(polyline.getBounds())
         }
-    }, [location])
+    }, [gpxtracks, gpxWaypoints])
 
     return (null)
 }
 
 
+// geo points layer (control by text-editor)
 function GeoPointsLayer({ geoPoints }: any){
     const [layerGroup, setLayerGroup] = useState<L.LayerGroup<any> | null>(null)
     const map = useMap()
@@ -92,6 +113,32 @@ function GeoPointsLayer({ geoPoints }: any){
 }
 
 
+function FlyToLocation({location}: any){
+    const map = useMap()
+    
+    useEffect(() => {
+        if (location){
+            // map.setView(currView)
+            map.flyTo(location, map.getZoom())
+        }
+    }, [location])
+
+    return (null)
+}
+
+
+// function SetViewCenter({ setCurrView, currView }: any){
+//     const map = useMap()
+
+//     useEffect(() => {
+//         map.on("moveend", () => {
+//             setCurrView(map.getCenter())
+//         })
+//     }, [])
+//     return (null)
+// }
+
+
 function LayersControlGroups(){
     function adjustMarker(latlng: L.LatLng, iconURL: string){
         return L.marker(latlng, 
@@ -117,7 +164,7 @@ function LayersControlGroups(){
     }
 
     return (
-        <LayersControl position='bottomleft'>
+        <LayersControl position='bottomright'>
 
             <LayersControl.BaseLayer checked name='開放街圖 OpenStreetMap'>
                 <TileLayer

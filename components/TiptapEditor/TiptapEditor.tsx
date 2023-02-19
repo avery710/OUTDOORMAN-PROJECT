@@ -86,6 +86,7 @@ const TiptapEditor = ({geoPoints, setGeoPoints, setLocation}: any) => {
                                     uuid: mark.attrs.uuid,
                                     descript: child.textContent,
                                 })
+                                console.log(child)
                             }
                         })
                     })

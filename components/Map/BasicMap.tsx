@@ -18,7 +18,7 @@ export default function BasicMap({ geoPointData }: any){
             style={{ height: "100%", width: "100%" }}
         >
             <LayersControlGroups />
-            <DrawingToolBar />
+            {/* <DrawingToolBar /> */}
             <AddGeoPoint geoPointData={geoPointData}/>
         </MapContainer>
     )
@@ -37,12 +37,11 @@ function AddGeoPoint({ geoPointData }: any){
             }
 
             L.marker(latlng).addTo(map).bindPopup(description)
+            console.log(map)
         }
     }, [geoPointData])
 
-    return (
-        <></>
-    )
+    return (null)
 }
 
 function LayersControlGroups(){
@@ -135,76 +134,76 @@ function LayersControlGroups(){
     )
 }
 
-function DrawingToolBar(){
-    const FeatureGroupRef = useRef<L.FeatureGroup<any>>(new L.FeatureGroup())
-    const myMap = useMap()
+// function DrawingToolBar(){
+//     const FeatureGroupRef = useRef<L.FeatureGroup<any>>(new L.FeatureGroup())
+//     const myMap = useMap()
 
-    useEffect(() => {
-        if (!myMap){
-            return
-        }
+//     useEffect(() => {
+//         if (!myMap){
+//             return
+//         }
 
-        async function getGeoJSON() {
-            const docRef = doc(db, "VectorLayers", "test");
-            const docSnap = await getDoc(docRef);
+//         async function getGeoJSON() {
+//             const docRef = doc(db, "VectorLayers", "test");
+//             const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()){
-                const geoJsonData = docSnap.data().GeojsonData
-                if (geoJsonData){
-                    const layers = L.geoJSON(JSON.parse(geoJsonData)).addTo(myMap)
+//             if (docSnap.exists()){
+//                 const geoJsonData = docSnap.data().GeojsonData
+//                 if (geoJsonData){
+//                     const layers = L.geoJSON(JSON.parse(geoJsonData)).addTo(myMap)
 
-                    const bounds = layers.getBounds()
-                    myMap.fitBounds(bounds)
-                }
-            } 
-            else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
-            }
-        }
+//                     const bounds = layers.getBounds()
+//                     myMap.fitBounds(bounds)
+//                 }
+//             } 
+//             else {
+//                 // doc.data() will be undefined in this case
+//                 console.log("No such document!");
+//             }
+//         }
 
-        getGeoJSON()
-    }, [myMap])
+//         getGeoJSON()
+//     }, [myMap])
 
-    async function handleDraw(e: L.DrawEvents.Created){
-        const layer = e.layer
-        FeatureGroupRef.current.addLayer(layer)
-        console.log(FeatureGroupRef.current)
+//     async function handleDraw(e: L.DrawEvents.Created){
+//         const layer = e.layer
+//         FeatureGroupRef.current.addLayer(layer)
+//         console.log(FeatureGroupRef.current)
 
-        const docData = {
-            GeoJSONdata : JSON.stringify(FeatureGroupRef.current.toGeoJSON())
-        }
+//         const docData = {
+//             GeoJSONdata : JSON.stringify(FeatureGroupRef.current.toGeoJSON())
+//         }
         
-        try {
-            await setDoc(doc(db, "VectorLayers", "test"), docData)
-        }
-        catch(error){
-            console.log(error)
-        }
-    }
+//         try {
+//             await setDoc(doc(db, "VectorLayers", "test"), docData)
+//         }
+//         catch(error){
+//             console.log(error)
+//         }
+//     }
 
-    async function handleUpdate(){
-        const docData = {
-            GeoJSONdata : JSON.stringify(FeatureGroupRef.current.toGeoJSON())
-        }
+//     async function handleUpdate(){
+//         const docData = {
+//             GeoJSONdata : JSON.stringify(FeatureGroupRef.current.toGeoJSON())
+//         }
         
-        try {
-            await setDoc(doc(db, "VectorLayers", "test"), docData)
-        }
-        catch(error){
-            console.log(error)
-        }
-    }
+//         try {
+//             await setDoc(doc(db, "VectorLayers", "test"), docData)
+//         }
+//         catch(error){
+//             console.log(error)
+//         }
+//     }
 
-    return (
-        <FeatureGroup ref={FeatureGroupRef}>
-            <EditControl 
-                position = 'topleft' 
-                onCreated={e => handleDraw(e)}
-                onEdited={() => handleUpdate()}
-                onDeleted={() => handleUpdate()}
-                draw={{ rectangle: false, circle: false }}
-            />
-        </FeatureGroup>
-    )
-}
+//     return (
+//         <FeatureGroup ref={FeatureGroupRef}>
+//             <EditControl 
+//                 position = 'topleft' 
+//                 onCreated={e => handleDraw(e)}
+//                 onEdited={() => handleUpdate()}
+//                 onDeleted={() => handleUpdate()}
+//                 draw={{ rectangle: false, circle: false, marker: false }}
+//             />
+//         </FeatureGroup>
+//     )
+// }
