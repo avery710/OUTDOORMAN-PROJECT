@@ -15,6 +15,41 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
     const { authUser } = useAuth()
 
 
+    // useEffect(() => {
+
+    // }, [])
+
+    // function onEachFeature(feature: Feature<Geometry, any>, layer: L.Layer) {
+    //     // does this feature have a property named popupContent?
+    //     if (feature.properties && feature.properties.descript) {
+    //         const innerHtml = `
+    //             <h3>${feature.properties.descript}</h3>
+    //             <p>位置：${feature.properties.location}</p>
+    //             <p>高度：${feature.properties.elevation}</p>
+    //         `
+    //         const div = document.createElement("div");
+    //         div.innerHTML = innerHtml
+
+    //         const button = document.createElement("button")
+    //         button.innerHTML = "add to text-editor"
+
+    //         button.onclick = function(){
+    //             const mark = EDITOR?.schema.marks.GeoLink.create({ lat: feature.properties.lat, lng: feature.properties.lng })
+    //             const from = EDITOR?.state.selection.from
+    //             const transaction = EDITOR?.state.tr.insertText(feature.properties.descript)
+    //             transaction.addMark(from, from + feature.properties.descript.length, mark)
+    //             EDITOR?.view.dispatch(transaction)
+                
+    //         }
+
+    //         div.appendChild(button)
+
+    //         layer.bindPopup(innerHtml)
+    //     }
+    // }
+
+
+
     useEffect(() => {
         if (gpxtracks && gpxWaypoints){
 
@@ -67,7 +102,8 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
                     "type": "Feature",
                     "properties": {
                         "descript": waypoint.descript,
-                        "location": `${waypoint.lat}, ${waypoint.lng}`,
+                        "lat": waypoint.lat,
+                        "lng": waypoint.lng,
                         "elevation": waypoint.elevation,
                     },
                     "geometry": {
