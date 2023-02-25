@@ -38,9 +38,9 @@ export default function Toolbar({ display }: Props) {
                 <li>
                     <Link href="/me/plans">Plans</Link>
                 </li>
-                <li>
+                {/* <li>
                     <Link href="/me/saved">Saved</Link>
-                </li>
+                </li> */}
                 <li>
                     <button onClick={handleLogOut}>Sign out</button>
                 </li>
