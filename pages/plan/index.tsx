@@ -1,7 +1,4 @@
-import { useState } from 'react'
 import dynamic from 'next/dynamic'
-import PlannerStyle from '../../styles/Planner.module.css'
-import EnterNamePrompt from '../../components/Layout/EnterNamePrompt'
 import { db } from '../../lib/firebase'
 import { doc, getDoc } from "firebase/firestore"
 import { GetStaticProps } from "next"
@@ -49,20 +46,15 @@ export const getStaticProps: GetStaticProps = async () => {
 }
 
 export default function Planner ({datas}: any){
-    const [ haveName, setHaveName ] = useState<boolean>(false)
 
     const MapForPlan = dynamic(
         () => import('../../components/Map/MapForPlan'), 
         { ssr: false }
     )
       
-    return haveName ? (
-        <div className={PlannerStyle.planner}>
+    return (
+        <div style={{width: "100vw", height: "100vh"}}>
             <MapForPlan {...datas}/>
-        </div>
-    ) : (
-        <div>
-            <EnterNamePrompt setHaveName={setHaveName}/>
         </div>
     )
 }
