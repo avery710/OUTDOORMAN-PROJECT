@@ -111,72 +111,77 @@ export default function NewStoryEdit(){
             const editorContent = fetchData.editorContent
             EDITOR.commands.setContent(editorContent)
 
+
+            // fetch gpx layer geojson data
+            const fetchGpx = fetchData.gpxLayer
+            let gpxLayers = null
+            let gpxBounds = null
+            if (fetchGpx){
+                gpxLayers = L.geoJSON(JSON.parse(fetchGpx), {
+                    onEachFeature: (feature: Feature<Geometry, any>, layer: L.Layer) => {
+    
+                        if (feature.properties && feature.properties.descript) {
+                            const innerHtml = `
+                                <h3>${feature.properties.descript}</h3>
+                                <p>位置：${feature.properties.lat}, ${feature.properties.lng}</p>
+                                <p>高度：${feature.properties.elevation}</p>
+                            `
+                            const div = document.createElement("div")
+                            div.innerHTML = innerHtml
+        
+                            const button = document.createElement("button")
+                            button.innerHTML = "add to text-editor"
+        
+                            button.onclick = function(){
+                                const mark = EDITOR.schema.marks.GeoLink.create({ lat: feature.properties.lat, lng: feature.properties.lng })
+                                const from = EDITOR.state.selection.from
+                                const transaction = EDITOR.state.tr.insertText(feature.properties.descript)
+                                transaction.addMark(from, from + feature.properties.descript.length, mark)
+                                EDITOR.view.dispatch(transaction)
+                            }
+        
+                            div.appendChild(button)
+        
+                            layer.bindPopup(div)
+                        }
+                    }
+                })
+                gpxLayerRef.current.addLayer(gpxLayers)
+                gpxBounds = gpxLayers.getBounds()
+            }
+        
+            
+            // fetch drawing layer geojson data
+            const fetchDraw = fetchData.drawLayer
+            let drawLayers: any = null
+            let drawBounds = null
+            if (fetchDraw){
+                console.log("draw add")
+                drawLayers = L.geoJSON(JSON.parse(fetchDraw))
+                drawBounds = drawLayers.getBounds()
+            }
+
+
+            // gpx bound > draw bound
+            if (gpxBounds && gpxBounds.isValid()){
+                MAP.fitBounds(gpxBounds)
+            }
+            else if (drawBounds && drawBounds.isValid()){
+                MAP.fitBounds(drawBounds)
+            }
+            else {
+                MAP.locate().on("locationfound", e => {
+                    L.marker(e.latlng).bindPopup("Current Location").addTo(MAP)
+                    MAP.flyTo(e.latlng, MAP.getZoom())
+                })
+            }
+
+
             setTimeout(() => {
 
-                // fetch gpx layer geojson data
-                const fetchGpx = fetchData.gpxLayer
-                let gpxLayers = null
-                let gpxBounds = null
-                if (fetchGpx){
-                    gpxLayers = L.geoJSON(JSON.parse(fetchGpx), {
-                        onEachFeature: (feature: Feature<Geometry, any>, layer: L.Layer) => {
-        
-                            if (feature.properties && feature.properties.descript) {
-                                const innerHtml = `
-                                    <h3>${feature.properties.descript}</h3>
-                                    <p>位置：${feature.properties.lat}, ${feature.properties.lng}</p>
-                                    <p>高度：${feature.properties.elevation}</p>
-                                `
-                                const div = document.createElement("div")
-                                div.innerHTML = innerHtml
-            
-                                const button = document.createElement("button")
-                                button.innerHTML = "add to text-editor"
-            
-                                button.onclick = function(){
-                                    const mark = EDITOR.schema.marks.GeoLink.create({ lat: feature.properties.lat, lng: feature.properties.lng })
-                                    const from = EDITOR.state.selection.from
-                                    const transaction = EDITOR.state.tr.insertText(feature.properties.descript)
-                                    transaction.addMark(from, from + feature.properties.descript.length, mark)
-                                    EDITOR.view.dispatch(transaction)
-                                }
-            
-                                div.appendChild(button)
-            
-                                layer.bindPopup(div)
-                            }
-                        }
-                    })
-                    gpxLayerRef.current.addLayer(gpxLayers)
-                    gpxBounds = gpxLayers.getBounds()
-                }
-            
-                // fetch drawing layer geojson data
-                const fetchDraw = fetchData.drawLayer
-                let drawLayers = null
-                let drawBounds = null
-                if (fetchDraw){
-                    console.log("draw add")
-                    drawLayers = L.geoJSON(JSON.parse(fetchDraw))
-                    drawLayerRef.current.addLayer(drawLayers)
-                    drawBounds = drawLayers.getBounds()
-                }
+                drawLayerRef.current.addLayer(drawLayers)
 
-                // gpx bound > draw bound
-                if (gpxBounds && gpxBounds.isValid()){
-                    MAP.fitBounds(gpxBounds)
-                }
-                else if (drawBounds && drawBounds.isValid()){
-                    MAP.fitBounds(drawBounds)
-                }
-                else {
-                    MAP.locate().on("locationfound", e => {
-                        L.marker(e.latlng).bindPopup("Current Location").addTo(MAP)
-                        MAP.flyTo(e.latlng, MAP.getZoom())
-                    })
-                }
-
-            }, 500)
+            }, 100)
         }
         
     }, [EDITOR, MAP])
