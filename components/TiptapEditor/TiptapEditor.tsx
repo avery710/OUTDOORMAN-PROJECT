@@ -1,72 +1,83 @@
 import {
-    BubbleMenu,
     EditorContent,
-    FloatingMenu,
     useEditor,
 } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Document from '@tiptap/extension-document'
+// import Document from '@tiptap/extension-document'
 import Link from '@tiptap/extension-link'
 import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
-// import Blockquote from '@tiptap/extension-blockquote'
-// import Dropcursor from '@tiptap/extension-dropcursor'
+// import { GeoNode }from './extensions/GeoNode'
 import Image from '@tiptap/extension-image'
+// import BulletList from '@tiptap/extension-bullet-list'
+// import ListItem from '@tiptap/extension-list-item'
 import styles from './tiptap.module.scss'
 import { useEffect, useState } from 'react'
-import OverlayPrompt from 'components/Layout/OverlayPrompt'
+import OverlayPrompt from 'components/Prompt/OverlayPrompt'
 import ImagePrompt from './ImagePrompt'
 import { GeoLink } from './extensions/GeoLink'
 import GeoPointForm from './GeoPointForm'
 import { geoPointArray, geoPointType } from 'types'
+import { useRouter } from 'next/router'
+import { useAuth } from 'hooks/context'
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from 'lib/firebase'
+import Floatingmenu from './FloatingMenu'
+import Bubblemenu from './BubbleMenu'
 
 
-const CustomDocument = Document.extend({
-    content: 'heading block*',
-})
+const TiptapEditor = ({
+    geoPoints, 
+    setGeoPoints, 
+    setLocation, 
+    setEDITOR, 
+    isSavingRef}: any) => {
 
-const TiptapEditor = ({geoPoints, setGeoPoints, setLocation}: any) => {
+    const [ Marks, setMarks ] = useState<geoPointArray | null>(null)
+    const [ ImageOverlay, setImageOverlay ] = useState<string>("none")
+    const [ GeoOverlay, setGeoOverlay ] = useState<string>("none")
+
+    const router = useRouter()
+    const { storyId } = router.query
+    const { authUser } = useAuth()
+
+
+    // editor configure
     const editor = useEditor({
         extensions: [
-            CustomDocument,
-            StarterKit.configure({
-                document: false,
-            }),
-            Placeholder.configure({
-                placeholder: ({node}) => {
-                    if (node.type.name === "heading"){
-                        return "Title"
-                    }
-
-                    return ''
-                },
-            }),
+            StarterKit,
+            Underline,
+            Image,
             Link.configure({
                 validate: href => /^https?:\/\//.test(href),
                 autolink: false,
             }),
-            Underline,
-            Image,
             GeoLink.configure({
                 setLocation: setLocation,
             }),
-            // Blockquote,
-            // Dropcursor,
-        ],
-        content: `
-        <h1>
-            Title
-        </h1>
-        <p>
-            Tell your story!
-        </p>
-      `,
+            Placeholder.configure({
+                placeholder: ({ node }) => {
+                    if (node.type.name === 'heading'){
+                        return 'Title'
+                    }
+              
+                    return 'Tell your story...'
+                },
+            })
+        ]
     })
 
-    const [Marks, setMarks] = useState<geoPointArray | null>(null)
-    const [ImageOverlay, setImageOverlay] = useState<string>("none")
-    const [GeoOverlay, setGeoOverlay] = useState<string>("none")
+    
+    // get editor instance
+    useEffect(() => {
+        if (editor){
+            console.log("editor -> ", editor)
+            setEDITOR(editor)
+        }
+    }, [editor])
 
+
+    // loop through the doc to get current geolink marks
     useEffect(() => {
         if (editor){
             editor.on('transaction', ({ editor, transaction }) => {
@@ -74,12 +85,11 @@ const TiptapEditor = ({geoPoints, setGeoPoints, setLocation}: any) => {
                 const selection = state.selection
                 const { doc } = state
 
-                // loop through the doc to check whether geolink mark has been deleted
                 const temp: geoPointArray = []
                 doc.forEach(node => {
                     node.forEach(child => {
                         child.marks.forEach(mark => {
-                            if (mark.type.name === "GeoLink"){
+                            if (mark.type.name === "GeoLink" && mark.attrs.uuid){
                                 temp.push({
                                     lat: mark.attrs.lat,
                                     lng: mark.attrs.lng,
@@ -96,6 +106,8 @@ const TiptapEditor = ({geoPoints, setGeoPoints, setLocation}: any) => {
         }
     }, [editor])
 
+
+    // compare marks with geoPoints -> then update 
     useEffect(() => {
         if (Marks && geoPoints){
             if (Marks.length != geoPoints.length){
@@ -122,103 +134,42 @@ const TiptapEditor = ({geoPoints, setGeoPoints, setLocation}: any) => {
             }
         }
     }, [geoPoints, Marks])
+    
 
-    const setlink = () => {
-        if (editor){
-            const previousUrl = editor.getAttributes('link').href
-            const url = window.prompt('URL', previousUrl)
+    // save content to db
+    useEffect(() => {
+        
+        async function updateDB(content: any){
+            isSavingRef.current.textContent = "isSaving"
 
-            // cancelled
-            if (url === null) {
-                return
+            if (authUser && authUser.uid && storyId){
+                const docRef = doc(db, "users", authUser.uid, "stories-edit", storyId as string)
+                await updateDoc(docRef, {
+                    "editorContent" : content
+                })
             }
 
-            // empty
-            if (url === '') {
-                editor.chain().focus().unsetLink().run()
-                return
-            }
-
-            // update link
-            editor.chain().focus().setLink({ href: url }).run()
+            setTimeout(() => {
+                isSavingRef.current.textContent = "Saved"
+            }, 800)
         }
-    }
+        
+        if (editor){
+            // save content to db
+            editor.on('update', ({ editor }) => {
+                const content = editor.getJSON()
+                updateDB(content)
+            })
+        }
+
+    }, [editor])
 
 
     return (
         <>
-            {editor && 
-                <BubbleMenu className={styles.bubbleMenu} tippyOptions={{ duration: 100 }} editor={editor}>
-                    <button
-                        onClick={() => editor.chain().focus().toggleBold().run()}
-                        className={editor.isActive('bold') ? styles.isActive : ''}
-                    >
-                        Bold
-                    </button>
-                    <button
-                        onClick={() => editor.chain().focus().toggleItalic().run()}
-                        className={editor.isActive('italic') ? styles.isActive : ''}
-                    >
-                        Italic
-                    </button>
-                    <button
-                        onClick={() => editor.chain().focus().toggleUnderline().run()}
-                        className={editor.isActive('underline') ? styles.isActive : ''}
-                    >
-                        Underline
-                    </button>
-                    <button
-                        onClick={() => { editor.isActive('link') ? 
-                                editor.chain().focus().extendMarkRange('link').unsetLink().run() : setlink()
-                            }}
-                        className={editor.isActive('link') ? styles.isActive : ''}
-                    >
-                        Link
-                    </button>
-                    <button
-                        onClick={() => editor.isActive('GeoLink') ? 
-                            editor.chain().focus().extendMarkRange('GeoLink').unsetGeoLink().run()
-                            :
-                            setGeoOverlay("flex")
-                        }
-                        className={editor.isActive('GeoLink') ? styles.isActive : ''}
-                    >
-                        GeoLink
-                    </button>
-                </BubbleMenu>
-            }
+            { editor && <Bubblemenu editor={editor} setGeoOverlay={setGeoOverlay} /> }
 
-            {editor && 
-                <FloatingMenu className={styles.floatingMenu} tippyOptions={{ duration: 100 }} editor={editor}>
-                    <button
-                        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                        className={editor.isActive('heading', { level: 1 }) ? styles.isActive : ''}
-                    >
-                        H1
-                    </button>
-                    <button
-                        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                        className={editor.isActive('heading', { level: 2 }) ? styles.isActive : ''}
-                    >
-                        H2
-                    </button>
-                    <button
-                        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                        className={editor.isActive('blockquote') ? styles.isActive : ''}
-                    >
-                        <i className={styles.quote}/>
-                    </button>
-                    <button>
-                        <i className={styles.bookmark}/>
-                    </button>
-                    <button onClick={() => setImageOverlay("flex")}>
-                        <i className={styles.image}/>
-                    </button>
-                    <button>
-                        <i className={styles.youtube}/>
-                    </button>
-                </FloatingMenu>
-            }
+            { editor && <Floatingmenu editor={editor} setImageOverlay={setImageOverlay}/> }
 
             { GeoOverlay === "flex" &&
                 <OverlayPrompt overylayDisplay={GeoOverlay} setOverlayDisplay={setGeoOverlay}>
@@ -233,7 +184,6 @@ const TiptapEditor = ({geoPoints, setGeoPoints, setLocation}: any) => {
             }
 
             <EditorContent editor={editor} />
-
         </>
     )
 }

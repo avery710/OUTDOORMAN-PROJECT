@@ -31,9 +31,7 @@ export default function Home() {
                 )
                 : (   
                     // login but missing username -> redirect to /set-username page
-                    <div>
-                        loading...
-                    </div>
+                    <div>loading...</div>
                 )
         : ( 
             // logged out

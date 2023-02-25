@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import { geoPointType } from 'types'
-// import { uuid } from 'uuidv4'
 import { v4 as uuidv4 } from 'uuid';
 
 export default function GeoPointForm({geoPoints, setGeoPoints, setOverlayDisplay, editor}: any) {

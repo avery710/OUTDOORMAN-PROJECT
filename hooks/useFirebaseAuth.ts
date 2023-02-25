@@ -3,13 +3,8 @@ import { getAuth, onAuthStateChanged, signInWithRedirect, GoogleAuthProvider, si
 import { provider } from '../lib/firebase'
 import { db } from '../lib/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"
+import { userType } from 'types'
 
-interface userType {
-    uid: string,
-    photoUrl: string | null,
-    email: string | null,
-    username: string | null,
-}
 
 export default function useFirebaseAuth(){
     const [ authUser, setAuthUser ] = useState<userType | null>(null)
@@ -32,11 +27,21 @@ export default function useFirebaseAuth(){
             username = docSnap.data().username
         }
 
+        // get uniqName from email
+        const email = user.email
+        let uniqname = ""
+        if (email){
+            const subEmail = email.substring(0, email.indexOf("@"))
+            const char = "@"
+            uniqname = char.concat(subEmail)
+        }
+        
         const formattedUser: userType = {
             uid: user.uid,
             photoUrl: user.photoURL,
             email: user.email,
             username: username, // get username from db
+            uniqname: uniqname,
         }
 
         console.log(formattedUser)

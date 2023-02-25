@@ -1,130 +1,84 @@
-import { useRef, useEffect, useState, Dispatch, SetStateAction } from 'react'
-import { MapContainer, TileLayer, Marker, Popup, useMap, FeatureGroup, LayersControl, GeoJSON, Polyline } from 'react-leaflet'
+import { useRef, useEffect, useState, Dispatch, SetStateAction, useMemo } from 'react'
+import { MapContainer, TileLayer, Marker, Popup, useMap, FeatureGroup, LayersControl, GeoJSON, Polyline, LayerGroup } from 'react-leaflet'
 import { EditControl } from "react-leaflet-draw"
 import { LatLngExpression } from "leaflet"
 import L from "leaflet"
 import { Feature, Point, Geometry } from 'geojson'
 import { db } from '../../lib/firebase'
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
-import { geoPointType } from 'types'
-import { wayPointType } from 'types'
-import { stringify } from 'querystring'
+import { geoPointType, wayPointType, insertContentType } from 'types'
+import BaseLayer from './BaseLayer'
+import DrawingToolBar from './DrawingToolbar'
+import GpxLayer from './GpxLayer'
 
 
-export default function MapForWrite({ location, geoPoints, gpxtracks, gpxWaypoints }: any){
-    // const initLatlng: LatLngExpression = [23.46999192, 120.9572655]
-    // const [currView, setCurrView] = useState<LatLngExpression>(initLatlng)
+export default function MapForWrite({ 
+    geoJsonData,
+    isSavingRef,
+    location, 
+    geoPoints, 
+    gpxtracks, 
+    gpxWaypoints, 
+    EDITOR }: any){
 
-    // useEffect(() => {
-    //     console.log("currView", currView)
-    // }, [currView])
+    const [map, setMap] = useState<L.Map | null>(null)
+    const layerGroupRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
+
+    useEffect(() => {
+        console.log("map -> ", map)
+    }, [map])
+
+    // const mapForWrite = useMemo(() => {
+    //     return (
+    //         <MapContainer 
+    //             center={[23.46999192, 120.9572655]} 
+    //             zoom={13} 
+    //             scrollWheelZoom={true} 
+    //             style={{ height: "100%", width: "100%" }}
+    //             ref={setMap}
+    //         >
+    //             <BaseLayer />
+    //             <DrawingToolBar geoJsonData={geoJsonData} isSavingRef={isSavingRef}/>
+    //             <LayerGroup ref={layerGroupRef}/>
+    //         </MapContainer>
+    //     )
+    // }, [geoJsonData, isSavingRef])
+
+
+    const mapForWrite = useMemo(() => {
+        return (
+            <MapContainer 
+                center={[23.46999192, 120.9572655]} 
+                zoom={13} 
+                scrollWheelZoom={true} 
+                style={{ height: "100%", width: "100%" }}
+                ref={setMap}
+            >
+                <BaseLayer />
+                <LayerGroup ref={layerGroupRef}/>
+            </MapContainer>
+        )
+    }, [])
+
 
     return (
-        <MapContainer 
-            center={[23.46999192, 120.9572655]} 
-            zoom={13} 
-            scrollWheelZoom={true} 
-            style={{ height: "100%", width: "100%" }}
-        >
-            <LayersControlGroups />
-            <GeoPointsLayer geoPoints={geoPoints}/>
-            <GpxLayer gpxtracks={gpxtracks} gpxWaypoints={gpxWaypoints}/>
-            {/* <SetViewCenter setCurrView={setCurrView} currView={currView}/> */}
-            {/* <DrawingToolBar /> */}
-            <FlyToLocation location={location}/>
-        </MapContainer>
+        <>
+            {/* {map ? 
+                <GpxLayer 
+                    gpxtracks={gpxtracks} 
+                    gpxWaypoints={gpxWaypoints}
+                    EDITOR={EDITOR}
+                    layerGroupRef={layerGroupRef}
+                    map={map}
+                />
+                : 
+                null
+            } */}
+            {mapForWrite}
+        </>
     )
 }
 
-
-// read only gpx layer (control by gpx upload)
-function GpxLayer({ gpxtracks, gpxWaypoints }: any){
-    const map = useMap()
-
-    useEffect(() => {
-        if (gpxtracks && gpxWaypoints){
-            const polyline = L.polyline(gpxtracks, {smoothFactor: 5.0 , weight: 4, color: "#FFF176"})
-
-            const markers = gpxWaypoints.map((waypoint: wayPointType) => {
-                const latlng: LatLngExpression = [waypoint.lat, waypoint.lng]
-                const innerHtml = `
-                    <h3>${waypoint.descript}</h3>
-                    <p>位置：${waypoint.lat}, ${waypoint.lng}</p>
-                    <p>高度：${waypoint.elevation}</p>
-                `
-
-                const div = document.createElement("div");
-                div.innerHTML = innerHtml
-
-                const button = document.createElement("button")
-                button.innerHTML = "add to text-editor"
-
-                button.onclick = function() {
-                    console.log("click hehe")
-                }
-
-                div.appendChild(button)
-
-                return L.marker(latlng).bindPopup(div)
-            })
-
-            // add polyline and marks to the same layer group
-            markers.push(polyline)
-            const layer = L.layerGroup(markers)
-            layer.addTo(map)
-
-            map.fitBounds(polyline.getBounds())
-        }
-    }, [gpxtracks, gpxWaypoints])
-
-    return (null)
-}
-
-
-// geo points layer (control by text-editor)
-function GeoPointsLayer({ geoPoints }: any){
-    const [layerGroup, setLayerGroup] = useState<L.LayerGroup<any> | null>(null)
-    const map = useMap()
-
-    useEffect(() => {
-        if (geoPoints){
-            const layers = geoPoints.map((geoPoint: geoPointType) => {
-                const latlng: LatLngExpression = [geoPoint.lat, geoPoint.lng]
-                const descrip = geoPoint.descript
-
-                return L.marker(latlng).bindPopup(descrip)
-            })
-
-            const currentLayers = L.layerGroup(layers)
-            currentLayers.addTo(map)
-            setLayerGroup(currentLayers)
-        }
-    }, [geoPoints])
-
-    useEffect(() => {
-        if (layerGroup){
-            // save to db in Geojson format
-            console.log(layerGroup)
-            console.log(geoPoints)
-        }
-    }, [layerGroup])
-
-    return (null)
-}
-
-
-function FlyToLocation({location}: any){
-    const map = useMap()
-    
-    useEffect(() => {
-        if (location){
-            // map.setView(currView)
-            map.flyTo(location, map.getZoom())
-        }
-    }, [location])
-
-    return (null)
-}
 
 
 // function SetViewCenter({ setCurrView, currView }: any){
@@ -136,169 +90,4 @@ function FlyToLocation({location}: any){
 //         })
 //     }, [])
 //     return (null)
-// }
-
-
-function LayersControlGroups(){
-    function adjustMarker(latlng: L.LatLng, iconURL: string){
-        return L.marker(latlng, 
-            { icon: L.icon({
-                iconUrl: iconURL,
-                iconSize: [27, 27],
-                popupAnchor: [0, -15]})
-            }
-        )
-    }
-
-    function addPopup(feature: Feature<Geometry, any>, layer: L.Layer){
-        const properties = feature.properties
-        layer.bindPopup(`
-            <h3>${properties.名稱}</h3>
-            <p>海拔：${properties.海拔}</p>
-            <p>位置：${properties.位置}</p>
-            <p>山脈：${properties.山脈}</p>
-            <p>園區：${properties.園區}</p>
-            <p>基石：${properties.基石}</p>
-            <p>TWD67 TM2：${properties['TWD67 TM2']}</p>
-        `)
-    }
-
-    return (
-        <LayersControl position='bottomright'>
-
-            <LayersControl.BaseLayer checked name='開放街圖 OpenStreetMap'>
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
-                />
-            </LayersControl.BaseLayer>
-
-            <LayersControl.BaseLayer name='魯地圖 Taiwan Topo'>
-                <TileLayer
-                    attribution='&copy; <a href="https://rudy.basecamp.tw/taiwan_topo.html">Rudy Taiwan TOPO</a> | &copy; <a href="https://twmap.happyman.idv.tw/map/">地圖產生器</a>'
-                    url='https://tile.happyman.idv.tw/mp/wmts/rudy/gm_grid/{z}/{x}/{y}.png'
-                />
-            </LayersControl.BaseLayer>
-
-            <LayersControl.BaseLayer name='2020-正射影像圖'>
-                <TileLayer
-                    attribution='&copy; <a href="https://maps.nlsc.gov.tw">內政部國土測繪中心</a>'
-                    url='https://wmts.nlsc.gov.tw/wmts/PHOTO2020/default/GoogleMapsCompatible/{z}/{y}/{x}.jpeg'
-                />
-            </LayersControl.BaseLayer>
-
-            <LayersControl.BaseLayer name='2003-臺灣經建3版地形圖'>
-                <TileLayer
-                    attribution='&copy; <a href="https://gissrv4.sinica.edu.tw/gis/twhgis/">中央研究院臺灣百年歷史地圖</a>'
-                    url='https://gis.sinica.edu.tw/tileserver/file-exists.php?img=TM50K_2003-png-{z}-{x}-{y}'
-                />
-            </LayersControl.BaseLayer>
-
-            <LayersControl.BaseLayer name='1921-日治臺灣堡圖'>
-                <TileLayer
-                    attribution='&copy; <a href="https://gissrv4.sinica.edu.tw/gis/twhgis/">中央研究院臺灣百年歷史地圖</a>'
-                    url='https://gis.sinica.edu.tw/tileserver/file-exists.php?img=JM20K_1921-jpg-{z}-{x}-{y}'
-                />
-            </LayersControl.BaseLayer>
-
-            {/* <LayersControl.Overlay name='高山'>
-                <GeoJSON 
-                    data={highMountainsData} 
-                    pointToLayer={(feature, latlng) => adjustMarker(latlng, './peak.png')}
-                    onEachFeature={(feature, layer) => addPopup(feature, layer)}
-                />
-            </LayersControl.Overlay>
-
-            <LayersControl.Overlay name='中級山'>
-                <GeoJSON 
-                    data={middleMountainsData} 
-                    pointToLayer={(feature, latlng) => adjustMarker(latlng, './mountain.png')}
-                    onEachFeature={(feature, layer) => addPopup(feature, layer)}
-                />
-            </LayersControl.Overlay>
-
-            <LayersControl.Overlay name='郊山'>
-                <GeoJSON 
-                    data={lowMountainsData} 
-                    pointToLayer={(feature, latlng) => adjustMarker(latlng, './lowMountain.png')}
-                    onEachFeature={(feature, layer) => addPopup(feature, layer)}
-                />
-            </LayersControl.Overlay> */}
-
-        </LayersControl>
-    )
-}
-
-// function DrawingToolBar(){
-//     const FeatureGroupRef = useRef<L.FeatureGroup<any>>(new L.FeatureGroup())
-//     const myMap = useMap()
-
-//     useEffect(() => {
-//         if (!myMap){
-//             return
-//         }
-
-//         async function getGeoJSON() {
-//             const docRef = doc(db, "VectorLayers", "test");
-//             const docSnap = await getDoc(docRef);
-
-//             if (docSnap.exists()){
-//                 const geoJsonData = docSnap.data().GeojsonData
-//                 if (geoJsonData){
-//                     const layers = L.geoJSON(JSON.parse(geoJsonData)).addTo(myMap)
-
-//                     const bounds = layers.getBounds()
-//                     myMap.fitBounds(bounds)
-//                 }
-//             } 
-//             else {
-//                 // doc.data() will be undefined in this case
-//                 console.log("No such document!");
-//             }
-//         }
-
-//         getGeoJSON()
-//     }, [myMap])
-
-//     async function handleDraw(e: L.DrawEvents.Created){
-//         const layer = e.layer
-//         FeatureGroupRef.current.addLayer(layer)
-//         console.log(FeatureGroupRef.current)
-
-//         const docData = {
-//             GeoJSONdata : JSON.stringify(FeatureGroupRef.current.toGeoJSON())
-//         }
-        
-//         try {
-//             await setDoc(doc(db, "VectorLayers", "test"), docData)
-//         }
-//         catch(error){
-//             console.log(error)
-//         }
-//     }
-
-//     async function handleUpdate(){
-//         const docData = {
-//             GeoJSONdata : JSON.stringify(FeatureGroupRef.current.toGeoJSON())
-//         }
-        
-//         try {
-//             await setDoc(doc(db, "VectorLayers", "test"), docData)
-//         }
-//         catch(error){
-//             console.log(error)
-//         }
-//     }
-
-//     return (
-//         <FeatureGroup ref={FeatureGroupRef}>
-//             <EditControl 
-//                 position = 'topleft' 
-//                 onCreated={e => handleDraw(e)}
-//                 onEdited={() => handleUpdate()}
-//                 onDeleted={() => handleUpdate()}
-//                 draw={{ rectangle: false, circle: false }}
-//             />
-//         </FeatureGroup>
-//     )
 // }

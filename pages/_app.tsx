@@ -3,19 +3,44 @@ import type { AppProps } from 'next/app'
 import Layout from 'components/Layout/Layout'
 import { AuthUserProvider } from 'hooks/context'
 import { useRouter } from 'next/router'
+import { useAuth } from 'hooks/context'
+import { useEffect } from 'react'
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter()
 
     return (
         <AuthUserProvider>
-            {router.pathname === "/set-username" || router.pathname === "/" ? 
+            {router.pathname === "/" || router.pathname === "/set-username" ? 
                 <Component {...pageProps} />
-                : 
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout> 
+                :
+                <LoginOrNot Component={Component} pageProps={pageProps} />
             }
         </AuthUserProvider>
     )
+}
+
+function LoginOrNot({ Component, pageProps }: any){
+    const { authUser, loading } = useAuth()
+    const router = useRouter()
+
+    useEffect(() => {
+        // after loading + no user
+        if (!loading && !authUser){
+            router.push('/')
+        }
+    }, [authUser, loading])
+
+    return loading ?
+        (
+            <div>loading...</div>
+        )
+        : authUser ?
+            (
+                <Component {...pageProps} />
+            )
+            :
+            (
+                <div>loading...</div>
+            )
 }

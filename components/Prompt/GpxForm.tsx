@@ -2,7 +2,8 @@ import { useRef, useState } from "react"
 import gpxParser from "gpxparser"
 import { wayPointArray } from "types"
 
-export default function GpxForm({setOverlayDisplay, setGpxTracks, setGpxWaypoints}: any) {
+export default function GpxForm({setOverlayDisplay, setGpxTracks, setGpxWaypoints, setGpxTrackGeoJson}: any) {
+    
     const gpxRef = useRef<HTMLInputElement | null>(null)
     const [gpx, setGpx] = useState<string>("")
 
@@ -13,11 +14,13 @@ export default function GpxForm({setOverlayDisplay, setGpxTracks, setGpxWaypoint
             const gpxData = new gpxParser()
             gpxData.parse(gpx)
             const tracks = gpxData.tracks[0].points.map(pos => [pos.lat, pos.lon])
+            const trackGeoJson = gpxData.tracks[0].points.map(pos => [pos.lon, pos.lat])
             const waypoints: wayPointArray = gpxData.waypoints.map(waypoint => (
                 {lat: waypoint.lat, lng: waypoint.lon, elevation: waypoint.ele, descript: waypoint.name}
             ))
             setGpxWaypoints(waypoints)
             setGpxTracks(tracks)
+            setGpxTrackGeoJson(trackGeoJson)
         }
         
         setOverlayDisplay("none")

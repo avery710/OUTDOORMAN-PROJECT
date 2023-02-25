@@ -4,7 +4,7 @@ import {
     markPasteRule,
     mergeAttributes,
 } from '@tiptap/core'
-import { clickHandler } from './clickHandler';
+import { clickHandler } from './GeoClickHandler';
 import L from "leaflet"
 import { Dispatch, SetStateAction } from 'react';
 import { geoPointArray } from 'types';
