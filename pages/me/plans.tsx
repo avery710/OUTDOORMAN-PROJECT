@@ -60,6 +60,7 @@ export default function MyPlans(){
                                         date={content.date} 
                                         setDeleteId={setDeleteId}
                                         setOverlayDisplay={setDeleteDisplay}
+                                        path="plan"
                                         key={content.uuid}
                                     />
                                 }))
@@ -78,6 +79,7 @@ export default function MyPlans(){
                     deleteId={deleteId} 
                     list={list}
                     setList={setList}
+                    path="plan"
                 />
             </OverlayPrompt>
         </>

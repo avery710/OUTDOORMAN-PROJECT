@@ -61,7 +61,7 @@ export default function NavbarForEdit({ title, isSavingRef, children }: any){
             <nav className={navStyles.nav} style={{paddingLeft: "40px", paddingRight: "40px"}}>
                 <ul className={navStyles.leftSection}>
                     <li>
-                        <Link href="/">Logo</Link>
+                        <Link href="/">Outdoorman Project</Link>
                     </li>
                     <li>
                         <input type="text" ref={titleRef} onChange={e => handleTitleChange(e)} className={navStyles.titleInput}/>

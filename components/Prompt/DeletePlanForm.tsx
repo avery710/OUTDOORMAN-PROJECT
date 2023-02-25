@@ -3,7 +3,7 @@ import { db } from '../../lib/firebase'
 import { doc, deleteDoc } from "firebase/firestore"
 import { useAuth } from "hooks/context"
 
-export default function DeletePlanForm({ setOverlayDisplay, deleteId, list, setList }: any){
+export default function DeletePlanForm({ setOverlayDisplay, deleteId, list, setList, path }: any){
     const { authUser } = useAuth()
 
     function handleCancel(){
@@ -11,13 +11,21 @@ export default function DeletePlanForm({ setOverlayDisplay, deleteId, list, setL
     }
 
     async function handleDelete(){
-        setList(list.filter((plan: cardDataType) => plan.uuid != deleteId))
+        setList(list.filter((draft: cardDataType) => draft.uuid != deleteId))
         setOverlayDisplay("none")
 
         if (authUser && authUser.uid){
+
             // delete in db
-            await deleteDoc(doc(db, "users", authUser.uid, "plans", deleteId))
-            console.log("delete")
+            if (path === "plan"){
+                await deleteDoc(doc(db, "users", authUser.uid, "plans", deleteId))
+                console.log("delete")
+            }
+            else if (path === "new-story"){
+                await deleteDoc(doc(db, "users", authUser.uid, "stories-edit", deleteId))
+                console.log("delete")
+            }
+            
         }
     }
 

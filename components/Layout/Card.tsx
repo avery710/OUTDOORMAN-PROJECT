@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import styled from 'styled-components'
 
-export default function Card({title, uuid, date, setDeleteId, setOverlayDisplay}: any){
+export default function Card({title, uuid, date, setDeleteId, setOverlayDisplay, path}: any){
     function handleDelete(){
         setOverlayDisplay("flex")
         setDeleteId(uuid)
@@ -10,7 +10,7 @@ export default function Card({title, uuid, date, setDeleteId, setOverlayDisplay}
     return (
         <CardContainer>
             <TitleWrapper>
-                <Link href={`/plan/${uuid}`}>
+                <Link href={`/${path}/${uuid}`}>
                     {title}
                 </Link>
             </TitleWrapper>
