@@ -29,13 +29,31 @@
     cursor: pointer;
 }
 
-.nav input {
+/* .nav input {
     height: 30px;
     border-radius: 15px;
     border: none;
     padding: 10px;
-}
+} */
 
 .nav input:focus {
     outline: none;
+}
+
+.titleInput {
+    background-color: black;
+    color: white;
+    padding-left: 10px;
+    border: none;
+    opacity: 1;
+}
+
+.titleInput:hover {
+    opacity: 0.8;
+    border-bottom: 1px solid white;
+}
+
+.titleInput:focus {
+    opacity: 1;
+    border-bottom: 1px solid white;
 }
