@@ -126,9 +126,6 @@ export default function Navbar() {
                             <>
                                 <ul className={navStyles.rightSection}>
                                     <li>
-                                        <Link href={'/read'}>Read</Link>
-                                    </li>
-                                    <li>
                                         <Link href={'/new-story/'}>Write</Link>
                                     </li>
                                     <li>
