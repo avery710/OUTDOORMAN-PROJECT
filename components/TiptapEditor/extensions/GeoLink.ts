@@ -79,7 +79,7 @@ export const GeoLink = Mark.create<GeoLinkOptions>({
                     }
             
                     return {
-                        "lat": attributes.lat
+                        "data-lat": attributes.lat
                     }
                 }
             },
@@ -93,7 +93,7 @@ export const GeoLink = Mark.create<GeoLinkOptions>({
                     }
             
                     return {
-                        "lng": attributes.lng
+                        "data-lng": attributes.lng
                     }
                 }
             },

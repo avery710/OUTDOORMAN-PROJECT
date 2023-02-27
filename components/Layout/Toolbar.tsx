@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function Toolbar({ display }: Props) {
-    const { signOutGoogle } = useAuth()
+    const { signOutGoogle, authUser } = useAuth()
     const router = useRouter()
 
     async function handleLogOut(){
@@ -30,7 +30,7 @@ export default function Toolbar({ display }: Props) {
         >
             <ul>
                 <li>
-                    <Link href="/[username]/" as='/avery/'>Profile</Link>
+                    <Link href={`/${authUser?.uniqname}/`}>Profile</Link>
                 </li>
                 <li>
                     <Link href="/me/stories">Stories</Link>
@@ -38,9 +38,6 @@ export default function Toolbar({ display }: Props) {
                 <li>
                     <Link href="/me/plans">Plans</Link>
                 </li>
-                {/* <li>
-                    <Link href="/me/saved">Saved</Link>
-                </li> */}
                 <li>
                     <button onClick={handleLogOut}>Sign out</button>
                 </li>

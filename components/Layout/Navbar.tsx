@@ -68,6 +68,7 @@ export default function Navbar() {
                 const planDoc = await addDoc(collection(userDoc, "stories-edit"), {
                     drawLayer: "",
                     gpxLayer: "",
+                    geoPointLayer: "",
                     editorContent: null,
                     title: "untitled",
                     date: "",
@@ -125,14 +126,18 @@ export default function Navbar() {
                             <>
                                 <ul className={navStyles.rightSection}>
                                     <li>
-                                        <button onClick={handleSignIn}>Sign In</button>
+                                        <Link href={'/read'}>Read</Link>
+                                    </li>
+                                    <li>
+                                        <Link href={'/new-story/'}>Write</Link>
+                                    </li>
+                                    <li>
+                                        <Link href={'/plan/'}>Plan</Link>
                                     </li>
                                     <li>
                                         <button onClick={handleSignUp}>Get Started</button>
                                     </li>
-                                </ul>
-
-                                
+                                </ul> 
                             </>
                         )
                     }

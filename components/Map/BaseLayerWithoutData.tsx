@@ -1,55 +1,13 @@
-import { doc, getDoc } from "firebase/firestore"
 import { Feature, Geometry } from 'geojson'
 import L from "leaflet"
-import { db } from "lib/firebase"
-import { useEffect, useState } from "react"
 import { TileLayer, LayersControl, GeoJSON } from 'react-leaflet'
 import { mountDatas } from "types"
 
-export default function BaseLayer(){
-    
-    const [mountData, setMountData] = useState<mountDatas | null>(null)
+interface Props {
+    mountains: mountDatas
+}
 
-    useEffect(() => {
-        async function fetchMountains() {
-            let datas: mountDatas = {
-                highMountains : null,
-                middleMountains : null,
-                lowMountains : null,
-            }
-            
-            try {
-                const docRef1 = doc(db, "mountains", "高山")
-                const docSnap1 = await getDoc(docRef1)
-        
-                if (docSnap1.exists()) {
-                    datas.highMountains = JSON.parse(docSnap1.data().GeojsonData)
-                }
-        
-                const docRef2 = doc(db, "mountains", "中級山")
-                const docSnap2 = await getDoc(docRef2)
-        
-                if (docSnap2.exists()) {
-                    datas.middleMountains = JSON.parse(docSnap2.data().GeojsonData)
-                }
-        
-                const docRef3 = doc(db, "mountains", "郊山")
-                const docSnap3 = await getDoc(docRef3)
-        
-                if (docSnap3.exists()) {
-                    datas.lowMountains = JSON.parse(docSnap3.data().GeojsonData)
-                }
-            }
-            catch (error){
-                console.log(error)
-            }
-
-            setMountData(datas)
-        }
-
-        fetchMountains()
-    }, [])
-
+export default function BaseLayerWithoutData({ mountains }: Props){
 
     function adjustMarker(latlng: L.LatLng, iconURL: string){
         return L.marker(latlng, 
@@ -114,30 +72,30 @@ export default function BaseLayer(){
                 />
             </LayersControl.BaseLayer>
 
-            { (mountData && mountData.highMountains) &&
+            { (mountains && mountains.highMountains) &&
                 <LayersControl.Overlay checked name='高山 高於3000m'>
                     <GeoJSON 
-                        data={mountData.highMountains} 
+                        data={mountains.highMountains} 
                         pointToLayer={(feature, latlng) => adjustMarker(latlng, '/peak.png')}
                         onEachFeature={(feature, layer) => addPopup(feature, layer)}
                     />
                 </LayersControl.Overlay>
             }
             
-            { (mountData && mountData.middleMountains) && 
+            { (mountains && mountains.middleMountains) && 
                 <LayersControl.Overlay name='中級山 1500-3000m'>
                     <GeoJSON 
-                        data={mountData.middleMountains} 
+                        data={mountains.middleMountains} 
                         pointToLayer={(feature, latlng) => adjustMarker(latlng, '/mountain.png')}
                         onEachFeature={(feature, layer) => addPopup(feature, layer)}
                     />
                 </LayersControl.Overlay>
             }
             
-            { (mountData && mountData.lowMountains) && 
+            { (mountains && mountains.lowMountains) && 
                 <LayersControl.Overlay name='郊山 低於1500m'>
                     <GeoJSON 
-                        data={mountData.lowMountains} 
+                        data={mountains.lowMountains} 
                         pointToLayer={(feature, latlng) => adjustMarker(latlng, '/lowMountain.png')}
                         onEachFeature={(feature, layer) => addPopup(feature, layer)}
                     />

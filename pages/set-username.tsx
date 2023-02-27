@@ -15,7 +15,7 @@ export default function AddUsername() {
         e.preventDefault()
 
         // save all user info to db and redirect to index page
-        if (authUser && authUser.uid){
+        if (authUser && authUser.uid && authUser.uniqname){
             
             try {
                 await setDoc(doc(db, "users", authUser.uid), {
@@ -23,6 +23,10 @@ export default function AddUsername() {
                     email: authUser.email,
                     username: inputRef.current?.value,
                     uniqname: authUser.uniqname
+                })
+
+                await setDoc(doc(db, "uniqname", authUser.uniqname), {
+                    userId: authUser.uid
                 })
 
                 router.reload()

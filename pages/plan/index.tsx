@@ -3,10 +3,26 @@ import { db } from '../../lib/firebase'
 import { doc, getDoc } from "firebase/firestore"
 import { GetStaticProps } from "next"
 import { mountDatas } from 'types'
+import NavbarForEdit from 'components/Layout/NavbarForEdit'
+import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/router'
 
 
 export const getStaticProps: GetStaticProps = async () => {
-    let datas: mountDatas = {
+
+    // fetch storyData
+    let storyData = {}
+
+    const playgroundDoc = doc(db, "playground", "plan")
+    const docSnap = await getDoc(playgroundDoc)
+
+    if (docSnap.exists()) {
+        storyData = docSnap.data()
+    }
+
+
+    // fetch mountain data
+    let mountains: mountDatas = {
         highMountains : null,
         middleMountains : null,
         lowMountains : null,
@@ -17,21 +33,21 @@ export const getStaticProps: GetStaticProps = async () => {
         const docSnap1 = await getDoc(docRef1)
 
         if (docSnap1.exists()) {
-            datas.highMountains = JSON.parse(docSnap1.data().GeojsonData)
+            mountains.highMountains = JSON.parse(docSnap1.data().GeojsonData)
         }
 
         const docRef2 = doc(db, "mountains", "中級山")
         const docSnap2 = await getDoc(docRef2)
 
         if (docSnap2.exists()) {
-            datas.middleMountains = JSON.parse(docSnap2.data().GeojsonData)
+            mountains.middleMountains = JSON.parse(docSnap2.data().GeojsonData)
         }
 
         const docRef3 = doc(db, "mountains", "郊山")
         const docSnap3 = await getDoc(docRef3)
 
         if (docSnap3.exists()) {
-            datas.lowMountains = JSON.parse(docSnap3.data().GeojsonData)
+            mountains.lowMountains = JSON.parse(docSnap3.data().GeojsonData)
         }
     }
     catch (error){
@@ -40,21 +56,33 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
         props: {
-            datas
+            storyData,
+            mountains
         },
     }
 }
 
-export default function Planner ({datas}: any){
+export default function PlaygroundPlanPage({ storyData, mountains }: any){
+
+    const isSavingRef = useRef<HTMLLIElement>(null)
+
 
     const MapForPlan = dynamic(
-        () => import('../../components/Map/MapForPlan'), 
+        () => import('../../components/Map/Playground/MapForPlan'), 
         { ssr: false }
     )
+
       
     return (
-        <div style={{width: "100vw", height: "100vh"}}>
-            <MapForPlan {...datas}/>
-        </div>
+        <>
+            <NavbarForEdit title={storyData.title} isSavingRef={isSavingRef} />
+            <div style={{ height: "calc(100vh - 60px)", width: "100vw" }}>
+                <MapForPlan 
+                    geoJsonData={storyData.geoJsonData} 
+                    mountains={mountains}
+                    isSavingRef={isSavingRef}
+                />
+            </div>
+        </>
     )
 }

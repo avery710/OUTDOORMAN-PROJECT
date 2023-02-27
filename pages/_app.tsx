@@ -11,10 +11,14 @@ export default function App({ Component, pageProps }: AppProps) {
 
     return (
         <AuthUserProvider>
-            {router.pathname === "/" || router.pathname === "/set-username" ? 
-                <Component {...pageProps} />
-                :
+            {   router.pathname === "/me/plans" || 
+                router.pathname === "/me/stories" ||  
+                router.pathname === "/new-story/[storyId]" ||
+                router.pathname === "/plan/[planId]"
+                ? 
                 <LoginOrNot Component={Component} pageProps={pageProps} />
+                :
+                <Component {...pageProps} />
             }
         </AuthUserProvider>
     )

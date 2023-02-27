@@ -31,9 +31,10 @@ export default function DeletePlanForm({ setOverlayDisplay, deleteId, list, setL
 
     return (
         <div>
-            <h2>Delete Plan</h2>
+            <h2>Delete {path}</h2>
             <div>
-                Deletion is not reversible, and the plan will be completely deleted. Do you really want to delete?
+                Deletion is not reversible, and the {path} will be completely deleted. 
+                Do you really want to delete the {path}?
             </div>
             <div>
                 <button onClick={handleCancel}>Cancel</button>

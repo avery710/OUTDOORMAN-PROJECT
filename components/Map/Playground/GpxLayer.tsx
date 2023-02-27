@@ -10,11 +10,6 @@ import { geoPointArray, wayPointType } from 'types'
 // read only gpx layer (control by gpx upload)
 export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRef, map, isSavingRef, gpxtrackGeoJson }: any){
 
-    const router = useRouter()
-    const { storyId } = router.query
-    const { authUser } = useAuth()
-
-
     useEffect(() => {
         if (gpxtracks && gpxWaypoints){
 
@@ -98,17 +93,15 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
             "features": geoJsonData
         }
 
-        if (authUser && authUser.uid && storyId){
-            try {
-                const docRef = doc(db, "users", authUser.uid, "stories-edit", storyId as string)
-                await updateDoc(docRef, {
-                    "gpxLayer" : JSON.stringify(geoLayer)
-                })
-                console.log("gpx added!")
-            }
-            catch(error){
-                console.log(error)
-            }
+        try {
+            const docRef = doc(db, "playground", "write")
+            await updateDoc(docRef, {
+                "gpxLayer" : JSON.stringify(geoLayer)
+            })
+            console.log("gpx added!")
+        }
+        catch(error){
+            console.log(error)
         }
 
         setTimeout(() => {

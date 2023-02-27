@@ -1,3 +1,5 @@
+import { JSONContent } from "@tiptap/react"
+
 export interface userType {
     uid: string | null,
     photoUrl: string | null,
@@ -44,3 +46,27 @@ export interface cardDataType {
 }
 
 export interface cardDataArray extends Array<cardDataType>{}
+
+export interface storyDataType {
+    drawLayer: string,
+    editorContent: JSONContent,
+    geoPointLayer: string,
+    gpxLayer: string,
+    title: string,
+    uniqname: string,
+    url: string,
+    date: string,
+    ms: number,
+    userId: string,
+}
+
+export interface storyCardType {
+    title: string,
+    date: string,
+    uuid: string,
+    ms: number,
+    editorContent: JSONContent,
+    userId: string,
+}
+
+export interface storyCardArray extends Array<storyCardType>{}

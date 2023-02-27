@@ -82,7 +82,7 @@ i.geo {
 
         &:hover {
             &::before {
-                content: attr(lat) ", " attr(lng);
+                content: attr(data-lat) ", " attr(data-lng);
                 position: absolute;
                 background-color: #2A2A2A;
                 color: white;
@@ -102,32 +102,32 @@ i.geo {
         }
     }
 
-    .geonode {
-        text-decoration: underline;
-        cursor: pointer;
-        position: relative;
+    // .geonode {
+    //     text-decoration: underline;
+    //     cursor: pointer;
+    //     position: relative;
 
-        &:hover {
-            &::before {
-                content: attr(lat) ", " attr(lng);
-                position: absolute;
-                background-color: #2A2A2A;
-                color: white;
-                font-size: 13px;
-                top: 35px;
-                left: 0;
-                width: fit-content;
-                height: 25px;
-                padding: 3px 10px;
-                border-radius: 3px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-                white-space: nowrap;
-            }
-        }
-    }
+    //     &:hover {
+    //         &::before {
+    //             content: attr(lat) ", " attr(lng);
+    //             position: absolute;
+    //             background-color: #2A2A2A;
+    //             color: white;
+    //             font-size: 13px;
+    //             top: 35px;
+    //             left: 0;
+    //             width: fit-content;
+    //             height: 25px;
+    //             padding: 3px 10px;
+    //             border-radius: 3px;
+    //             display: flex;
+    //             justify-content: center;
+    //             align-items: center;
+    //             z-index: 1000;
+    //             white-space: nowrap;
+    //         }
+    //     }
+    // }
 }
 
 .ProseMirror .is-empty::before {

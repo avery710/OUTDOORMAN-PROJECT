@@ -6,7 +6,7 @@ import { db } from '../../lib/firebase'
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { useAuth } from 'hooks/context'
 
-export default function NewStoryEdit(){
+export default function NewPlan(){
     const [ isValid, setIsValid ] = useState<boolean>(false)
     const router = useRouter()
     const { planId } = router.query

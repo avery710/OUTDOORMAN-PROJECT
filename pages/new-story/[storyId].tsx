@@ -19,6 +19,8 @@ import GeoPointsLayer from 'components/Map/GeoPointsLayer'
 import FlyToLocation from 'components/Map/FlyToLocation'
 import * as L from "leaflet"
 import { Feature, Geometry } from 'geojson'
+import PublishButton from 'components/Layout/PublishButton'
+import PublishForm from 'components/Prompt/PublishForm'
 
 
 export default function NewStoryEdit(){
@@ -38,6 +40,8 @@ export default function NewStoryEdit(){
     const [ gpxWaypoints, setGpxWaypoints ] = useState<wayPointArray | null>(null)
     const [ gpxtrackGeoJson, setGpxTrackGeoJson ] = useState<Array<LatLngExpression> | null>(null)
 
+    const [ publishOverlay, setPublishOverlay ] = useState<string>("none")
+
     const [ MAP, setMAP ] = useState<L.Map | null>(null)
     const [ EDITOR, setEDITOR ] = useState<Editor | null>(null)
 
@@ -49,7 +53,7 @@ export default function NewStoryEdit(){
 
 
     const DrawingToolbar = dynamic(
-        () => import('../../components/Map/DrawingForWrite'), 
+        () => import('../../components/Map/DrawToolForWrite'), 
         { ssr: false }
     )
 
@@ -106,6 +110,8 @@ export default function NewStoryEdit(){
         if (EDITOR && fetchData && MAP){
 
             console.log("add add")
+
+            console.log("MAP -> ", MAP)
 
             // fetch editor content
             const editorContent = fetchData.editorContent
@@ -178,9 +184,9 @@ export default function NewStoryEdit(){
 
 
             setTimeout(() => {
-
-                drawLayerRef.current.addLayer(drawLayers)
-
+                if (drawLayers){
+                    drawLayerRef.current.addLayer(drawLayers)
+                }
             }, 100)
         }
         
@@ -217,12 +223,12 @@ export default function NewStoryEdit(){
     return isValid ? (
         <>
             <NavbarForEdit title={title} isSavingRef={isSavingRef}>
-                <button>Published</button>
+                <PublishButton setPublishOverlay={setPublishOverlay}/>
             </NavbarForEdit>
 
             <div className={styles.container}>
                 <div className={styles.map}>
-                    {  MAP ? 
+                    {  MAP && 
                             <>
                                 <GpxLayer 
                                     gpxtracks={gpxtracks} 
@@ -243,8 +249,6 @@ export default function NewStoryEdit(){
                                     map={MAP}
                                 />
                             </>
-                            :
-                            null
                     }
                     { Map }
                 </div>
@@ -269,6 +273,12 @@ export default function NewStoryEdit(){
                         setGpxTracks={setGpxTracks} 
                         setGpxWaypoints={setGpxWaypoints}
                         setGpxTrackGeoJson={setGpxTrackGeoJson}
+                    />
+                </OverlayPrompt>
+
+                <OverlayPrompt overlayDisplay={publishOverlay} setOverlayDisplay={setPublishOverlay}>
+                    <PublishForm
+                        setPublishOverlay={setPublishOverlay}
                     />
                 </OverlayPrompt>
             </div>

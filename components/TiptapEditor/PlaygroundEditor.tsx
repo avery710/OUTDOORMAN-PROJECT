@@ -1,7 +1,4 @@
-import {
-    EditorContent,
-    useEditor,
-} from '@tiptap/react'
+import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Underline from '@tiptap/extension-underline'
@@ -32,10 +29,6 @@ const TiptapEditor = ({
     const [ Marks, setMarks ] = useState<geoPointArray | null>(null)
     const [ ImageOverlay, setImageOverlay ] = useState<string>("none")
     const [ GeoOverlay, setGeoOverlay ] = useState<string>("none")
-
-    const router = useRouter()
-    const { storyId } = router.query
-    const { authUser } = useAuth()
 
 
     // editor configure
@@ -159,12 +152,10 @@ const TiptapEditor = ({
         async function updateDB(content: any){
             isSavingRef.current.textContent = "isSaving"
 
-            if (authUser && authUser.uid && storyId){
-                const docRef = doc(db, "users", authUser.uid, "stories-edit", storyId as string)
-                await updateDoc(docRef, {
-                    "editorContent" : content
-                })
-            }
+            const docRef = doc(db, "playground", "write")
+            await updateDoc(docRef, {
+                "editorContent" : content
+            })
 
             setTimeout(() => {
                 isSavingRef.current.textContent = "Saved"

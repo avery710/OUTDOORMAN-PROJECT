@@ -11,11 +11,6 @@ import { geoPointType } from "types"
 // geo points layer (control by text-editor)
 export default function GeoPointsLayer({ geoPoints, layerGroupRef }: any){
 
-    const router = useRouter()
-    const { storyId } = router.query
-    const { authUser } = useAuth()
-    
-
     useEffect(() => {
         if (geoPoints){
 
@@ -61,16 +56,14 @@ export default function GeoPointsLayer({ geoPoints, layerGroupRef }: any){
             "features": geoJsonData
         }
 
-        if (authUser && authUser.uid && storyId){
-            try {
-                const docRef = doc(db, "users", authUser.uid, "stories-edit", storyId as string)
-                await updateDoc(docRef, {
-                    "geoPointLayer" : JSON.stringify(geoLayer)
-                })
-            }
-            catch(error){
-                console.log(error)
-            }
+        try {
+            const docRef = doc(db, "playground", "write")
+            await updateDoc(docRef, {
+                "geoPointLayer" : JSON.stringify(geoLayer)
+            })
+        }
+        catch(error){
+            console.log(error)
         }
 
     }

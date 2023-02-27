@@ -4,7 +4,7 @@ export default function Document() {
     return (
         <Html>
         <Head>
-            <meta name="keywords" content="mountain, trails, outdoor, blog"/>
+            <meta name="keywords" content="mountain, trails, outdoor, blog, 登山, 台灣登山, 戶外, 山岳"/>
 
             <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
             integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossOrigin=""/>
