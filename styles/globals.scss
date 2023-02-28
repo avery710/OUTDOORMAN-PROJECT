@@ -23,7 +23,7 @@ i.geo {
 
 .ProseMirror {
     height: 100%;
-    padding: 10px 50px;
+    padding: 30px 60px;
 
     &:focus {
         outline: none;
@@ -43,91 +43,71 @@ i.geo {
         height: auto;
     
         &.ProseMirror-selectednode {
-          outline: 3px solid #68CEF8;
+            outline: 3px solid #404040;
         }
     }
 
     a {
-        color: #68cef8;
         cursor: pointer;
         text-decoration: underline;
         position: relative;
 
         &:hover {
+            transition: all .1s ease-in-out;
+
             &::before {
                 content: attr(href);
                 position: absolute;
-                background-color: #2A2A2A;
+                background-color: #404040;
                 color: white;
                 text-decoration: none;
                 font-size: 13px;
-                top: 35px;
-                left: 0;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
                 width: fit-content;
-                height: 25px;
+                height: 24px;
                 padding: 3px 10px;
                 border-radius: 3px;
                 display: flex;
-                justify-content: center;
                 align-items: center;
                 z-index: 1000;
+                margin-top: 5px;
             }
         }
     }
 
     .geolink {
-        background-color: #00FF00;
         cursor: pointer;
         position: relative;
+        text-decoration: underline;
+        background-color: white;
 
         &:hover {
-            &::before {
+            background-color: #80ff80;
+            transition: all .1s ease-in-out;
+
+            &::after {
                 content: attr(data-lat) ", " attr(data-lng);
                 position: absolute;
-                background-color: #2A2A2A;
+                background-color: #404040;
                 color: white;
                 font-size: 13px;
-                top: 35px;
-                left: 0;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
                 width: fit-content;
-                height: 25px;
+                height: 24px;
                 padding: 3px 10px;
                 border-radius: 3px;
                 display: flex;
-                justify-content: center;
                 align-items: center;
                 z-index: 1000;
                 white-space: nowrap;
+                margin-top: 5px;
             }
         }
     }
-
-    // .geonode {
-    //     text-decoration: underline;
-    //     cursor: pointer;
-    //     position: relative;
-
-    //     &:hover {
-    //         &::before {
-    //             content: attr(lat) ", " attr(lng);
-    //             position: absolute;
-    //             background-color: #2A2A2A;
-    //             color: white;
-    //             font-size: 13px;
-    //             top: 35px;
-    //             left: 0;
-    //             width: fit-content;
-    //             height: 25px;
-    //             padding: 3px 10px;
-    //             border-radius: 3px;
-    //             display: flex;
-    //             justify-content: center;
-    //             align-items: center;
-    //             z-index: 1000;
-    //             white-space: nowrap;
-    //         }
-    //     }
-    // }
 }
 
 .ProseMirror .is-empty::before {

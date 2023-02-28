@@ -33,10 +33,13 @@ declare module '@tiptap/core' {
     }
 }
 
+export const inputRegex = /(?:^|\s)((?:==)((?:[^~=]+))(?:==))$/
+export const pasteRegex = /(?:^|\s)((?:==)((?:[^~=]+))(?:==))/g
+
 export const GeoLink = Mark.create<GeoLinkOptions>({
     name: 'GeoLink',
 
-    priority: 1000,
+    // priority: 1000,
 
     keepOnSplit: false,
 
@@ -72,7 +75,6 @@ export const GeoLink = Mark.create<GeoLinkOptions>({
             
             lat: {
                 default: null,
-                // parseHTML: element => element.getAttribute('lat'),
                 renderHTML: (attributes) => {
                     if (!attributes.lat) {
                         return {}
@@ -86,7 +88,6 @@ export const GeoLink = Mark.create<GeoLinkOptions>({
 
             lng: {
                 default: null,
-                // parseHTML: element => element.getAttribute('lng'),
                 renderHTML: (attributes) => {
                     if (!attributes.lng) {
                         return {}
@@ -107,13 +108,13 @@ export const GeoLink = Mark.create<GeoLinkOptions>({
     parseHTML() {
         return [
             {
-              tag: "span"
-            }
-        ];
+                tag: "mark"
+            },
+        ]
     },
 
     renderHTML({ HTMLAttributes }) {
-        return ["span", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
+        return ["mark", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
     },
 
     addCommands(){
@@ -125,6 +126,24 @@ export const GeoLink = Mark.create<GeoLinkOptions>({
                 return commands.unsetMark(this.name, { extendEmptyMarkRange: true })
             },
         }   
+    },
+
+    addInputRules() {
+        return [
+            markInputRule({
+                find: inputRegex,
+                type: this.type,
+            }),
+        ]
+    },
+
+    addPasteRules() {
+        return [
+            markPasteRule({
+                find: pasteRegex,
+                type: this.type,
+            }),
+        ]
     },
 
     addProseMirrorPlugins() {

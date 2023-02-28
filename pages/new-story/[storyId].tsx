@@ -24,6 +24,7 @@ import PublishForm from 'components/Prompt/PublishForm'
 
 
 export default function NewStoryEdit(){
+    
     const [ isValid, setIsValid ] = useState<boolean>(false)
     const router = useRouter()
     const { storyId } = router.query

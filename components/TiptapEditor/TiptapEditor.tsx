@@ -1,5 +1,7 @@
 import {
+    // BubbleMenu,
     EditorContent,
+    isTextSelection,
     useEditor,
 } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -8,10 +10,9 @@ import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
 import Image from '@tiptap/extension-image'
 import { GeoLink } from './extensions/GeoLink'
-import styles from './tiptap.module.scss'
 import { useEffect, useState } from 'react'
 import OverlayPrompt from 'components/Prompt/OverlayPrompt'
-import ImagePrompt from './ImagePrompt'
+import ImagePrompt from '../Prompt/ImageForm'
 import GeoPointForm from './GeoPointForm'
 import { geoPointArray, geoPointType } from 'types'
 import { useRouter } from 'next/router'
@@ -20,6 +21,8 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from 'lib/firebase'
 import Floatingmenu from './FloatingMenu'
 import Bubblemenu from './BubbleMenu'
+import tippy from 'tippy.js'
+import LinkForm from 'components/Prompt/LinkForm'
 
 
 const TiptapEditor = ({
@@ -32,6 +35,7 @@ const TiptapEditor = ({
     const [ Marks, setMarks ] = useState<geoPointArray | null>(null)
     const [ ImageOverlay, setImageOverlay ] = useState<string>("none")
     const [ GeoOverlay, setGeoOverlay ] = useState<string>("none")
+    const [ LinkOverlay, setLinkOverlay ] = useState<string>("none")
 
     const router = useRouter()
     const { storyId } = router.query
@@ -59,8 +63,9 @@ const TiptapEditor = ({
               
                     return 'Tell your story...'
                 },
-            })
-        ]
+            }),
+        ],
+        autofocus: 'start',
     })
 
     
@@ -118,7 +123,7 @@ const TiptapEditor = ({
                     setMarks(temp)
                 })
             }, 100);
-            
+              
         }
     }, [editor])
 
@@ -157,7 +162,13 @@ const TiptapEditor = ({
     useEffect(() => {
         
         async function updateDB(content: any){
-            isSavingRef.current.textContent = "isSaving"
+            if (isSavingRef.current != "isSaving"){
+                isSavingRef.current.textContent = "isSaving"
+
+                setTimeout(() => {
+                    isSavingRef.current.textContent = "Saved"
+                }, 1000)
+            }
 
             if (authUser && authUser.uid && storyId){
                 const docRef = doc(db, "users", authUser.uid, "stories-edit", storyId as string)
@@ -165,10 +176,6 @@ const TiptapEditor = ({
                     "editorContent" : content
                 })
             }
-
-            setTimeout(() => {
-                isSavingRef.current.textContent = "Saved"
-            }, 800)
         }
         
         if (editor){
@@ -184,9 +191,9 @@ const TiptapEditor = ({
 
     return (
         <>
-            { editor && <Bubblemenu editor={editor} setGeoOverlay={setGeoOverlay} /> }
+            { editor && <Bubblemenu editor={editor} setGeoOverlay={setGeoOverlay} setLinkOverlay={setLinkOverlay}/> }
 
-            { editor && <Floatingmenu editor={editor} setImageOverlay={setImageOverlay}/> }
+            { editor && <Floatingmenu editor={editor} setImageOverlay={setImageOverlay} /> }
 
             { GeoOverlay === "flex" &&
                 <OverlayPrompt overylayDisplay={GeoOverlay} setOverlayDisplay={setGeoOverlay}>
@@ -197,6 +204,12 @@ const TiptapEditor = ({
             { ImageOverlay === "flex" && 
                 <OverlayPrompt overylayDisplay={ImageOverlay} setOverlayDisplay={setImageOverlay}>
                     <ImagePrompt setOverlayDisplay={setImageOverlay} editor={editor}/>
+                </OverlayPrompt>
+            }
+
+            { LinkOverlay === "flex" && 
+                <OverlayPrompt overylayDisplay={LinkOverlay} setOverlayDisplay={setLinkOverlay}>
+                    <LinkForm setOverlayDisplay={setLinkOverlay} editor={editor}/>
                 </OverlayPrompt>
             }
 

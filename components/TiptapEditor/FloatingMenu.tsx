@@ -3,33 +3,27 @@ import styles from './tiptap.module.scss'
 
 
 export default function Floatingmenu({ editor, setImageOverlay }: any) {
+
     return (
-        <FloatingMenu className={styles.floatingMenu} tippyOptions={{ duration: 100 }} editor={editor}>
+        <FloatingMenu className={styles.floatingMenu} tippyOptions={{ duration: 100, offset: [35, 0] }} editor={editor}>
             <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                className={editor.isActive('heading', { level: 1 }) ? styles.isActive : ''}
+                onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
             >
-                H1
-            </button>
-            <button
-                onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                className={editor.isActive('heading', { level: 2 }) ? styles.isActive : ''}
-            >
-                H2
+                <i className={styles.titleBlack}/>
             </button>
             <button
                 onClick={() => editor.chain().focus().toggleBlockquote().run()}
-                className={editor.isActive('blockquote') ? styles.isActive : ''}
             >
                 <i className={styles.quote}/>
             </button>
             <button
                 onClick={() => editor.chain().focus().toggleBulletList().run()}
-                className={editor.isActive('bulletList') ? 'is-active' : ''}
             >
                 <i className={styles.list}/>
             </button>
-            <button onClick={() => setImageOverlay("flex")}>
+            <button 
+                onClick={() => setImageOverlay("flex")}
+            >
                 <i className={styles.image}/>
             </button>
         </FloatingMenu>

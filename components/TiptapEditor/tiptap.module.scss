@@ -1,35 +1,46 @@
 .bubbleMenu {
     display: flex;
-    background-color: #2A2A2A;
-    padding: 8px;
+    padding-top: 7px;
+    padding-left: 3px;
+    padding-right: 3px;
+    background-color: black;
     border-radius: 3px;
-    height: 36px;
 
     button {
         border: none;
         background: none;
         color: white;
-        font-size: 13px;
-        font-weight: 500;
         opacity: 0.6;
+        height: 32px;
+        width: 32px;
+        display: flex;
+
 
         &:hover,
         &.isActive {
             opacity: 1;
+        }
+
+        i {
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: inline-block;
+            height: 100%;
+            width: 100%;
         }
     }
 }
 
 .floatingMenu {
     display: flex;
-    margin-top: 16px;
+    background-color: none;
 
     button {
         border: 1px solid black;
         border-radius: 18px;
         background-color: white;
-        height: 36px;
-        width: 36px;
+        height: 32px;
+        width: 32px;
         font-size: 14px;
         font-weight: 500;
         padding: 5px;
@@ -39,17 +50,21 @@
         align-items: center;
         transition: all .1s ease-in-out;
         cursor: pointer;
+        opacity: 0.5;
 
         &:hover {
-            transform: scale(0.92);
+            transform: scale(0.95);
+            opacity: 1;
         }
 
         i {
             background-size: contain;
+            background-repeat: no-repeat;
             display: inline-block;
-            height: 80%;
-            width: 80%;
+            height: 100%;
+            width: 100%;
         }
+        
     }
 }
 
@@ -61,15 +76,38 @@
     background-image: url(/images/icons/image.svg);
 }
 
-.bookmark {
-    background-image: url(/images/icons/bookmark-plus.svg);
-    // background-image: url(/images/icons/journal-bookmark-fill.svg);
-}
-
 .youtube {
     background-image: url(/images/icons/youtube.svg);
 }
 
 .list {
     background-image: url(/images/icons/list.svg);
+}
+
+.bold {
+    background-image: url(/images/icons/type-bold.svg);
+}
+
+.italic {
+    background-image: url(/images/icons/type-italic.svg);
+}
+
+.underline {
+    background-image: url(/images/icons/type-underline.svg);
+}
+
+.link {
+    background-image: url(/images/icons/link-45deg.svg);
+}
+
+.geo {
+    background-image: url(/images/icons/geo-fill.svg);
+}
+
+.title {
+    background-image: url(/images/icons/title-2.svg);
+}
+
+.titleBlack {
+    background-image: url(/images/icons/title-black.svg);
 }
