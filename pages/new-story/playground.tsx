@@ -1,12 +1,9 @@
-import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import styles from '../../styles/newStory.module.css'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import NavbarForEdit from 'components/Layout/NavbarForEdit'
-import { useAuth } from 'hooks/context'
 import { db } from 'lib/firebase'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
-import TiptapEditor from 'components/TiptapEditor/TiptapEditor'
+import { doc, getDoc } from 'firebase/firestore'
 import OverlayPrompt from 'components/Prompt/OverlayPrompt'
 import GpxForm from 'components/Prompt/GpxForm'
 import { geoPointArray, wayPointArray } from 'types'
@@ -14,23 +11,16 @@ import { Editor } from '@tiptap/react'
 import { LayerGroup, MapContainer } from 'react-leaflet'
 import BaseLayer from 'components/Map/BaseLayer'
 import { LatLngExpression } from 'leaflet'
-import GpxLayer from 'components/Map/GpxLayer'
-import GeoPointsLayer from 'components/Map/GeoPointsLayer'
 import FlyToLocation from 'components/Map/FlyToLocation'
 import * as L from "leaflet"
 import { Feature, Geometry } from 'geojson'
-import PublishButton from 'components/Layout/PublishButton'
-import PublishForm from 'components/Prompt/PublishForm'
-import DraggableMarker from 'components/Map/DraggableMarker'
+import PlaygroundEditor from 'components/TiptapEditor/PlaygroundEditor'
+import GpxLayer from 'components/Map/Playground/GpxLayer'
+import GeoPointsLayer from 'components/Map/Playground/GeoPointsLayer'
 import GpxButton from 'components/Map/GpxButton'
 
 
 export default function NewStoryEdit(){
-    
-    const [ isValid, setIsValid ] = useState<boolean>(false)
-    const router = useRouter()
-    const { storyId } = router.query
-    const { authUser } = useAuth()
 
     const [ title, setTitle ] = useState<string>()
     const isSavingRef = useRef<HTMLLIElement>(null)
@@ -43,66 +33,45 @@ export default function NewStoryEdit(){
     const [ gpxWaypoints, setGpxWaypoints ] = useState<wayPointArray | null>(null)
     const [ gpxtrackGeoJson, setGpxTrackGeoJson ] = useState<Array<LatLngExpression> | null>(null)
 
-    const [ publishOverlay, setPublishOverlay ] = useState<string>("none")
-
     const [ MAP, setMAP ] = useState<L.Map | null>(null)
     const [ EDITOR, setEDITOR ] = useState<Editor | null>(null)
 
     const gpxLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
     const geoLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
-    const dragLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
     const drawLayerRef = useRef<L.FeatureGroup<any>>(new L.FeatureGroup())
 
     const [ fetchData, setFetchData ] = useState<any | null>(null)
+    const [ isfetching, setIsFetching ] = useState<boolean>(false)
 
 
-    const DrawingToolbar = dynamic(
-        () => import('../../components/Map/DrawToolForWrite'), 
+    const DrawingToolBar = dynamic(
+        () => import('../../components/Map/Playground/DrawToolForWrite'), 
         { ssr: false }
     )
 
 
-    // check whether current url is valid & fetch data for editor and map
+    // fetch data for editor and map
     useEffect(() => {
 
         async function init(){
 
-            if (authUser && authUser.uid && storyId){
+            const docRef = doc(db, "playground", "write")
+            const docSnap = await getDoc(docRef)
 
-                const docRef = doc(db, "users", authUser.uid, "stories-edit", storyId as string)
-                const docSnap = await getDoc(docRef)
+            if (docSnap.exists()){
 
-                if (docSnap.exists()){
+                console.log("docSnap.data() -> ", docSnap.data())
 
-                    console.log("is fetching data")
+                setFetchData(docSnap.data())
 
-                    setFetchData(docSnap.data())
+                // fetch title
+                const fetchTitle = docSnap.data().title
+                fetchTitle ? setTitle(fetchTitle) : setTitle("Untitled")
 
-                    // fetch title
-                    const fetchTitle = docSnap.data().title
-                    fetchTitle ? setTitle(fetchTitle) : setTitle("Untitled")
-
-
-                    // update date 
-                    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"]
-                    const today = new Date()
-                    const date = monthNames[today.getMonth()].concat(" ", today.getDate().toString(), ", ", today.getFullYear().toString())
-                    await updateDoc(docRef, {"date": date})
-
-
-                    // update ms time
-                    const ms = Date.now()
-                    await updateDoc(docRef, {"ms": ms})
-
-                    
-                    setIsValid(true)
-                }
-                else {
-                    router.push("/")
-                }
-            }   
-        }
-
+                setIsFetching(true)
+            }
+        }   
+        
         init()
 
     }, [])
@@ -181,9 +150,7 @@ export default function NewStoryEdit(){
             }
             else {
                 MAP.locate().on("locationfound", e => {
-                    const marker = L.marker(e.latlng).bindPopup(`<h3>Your Current Location</h3><p>(Double click the map to get other location)</p>`)
-                    marker.on('add', e => e.target.openPopup())
-                    MAP.addLayer(marker)
+                    L.marker(e.latlng).bindPopup("Current Location").addTo(MAP)
                     MAP.flyTo(e.latlng, MAP.getZoom())
                 })
             }
@@ -218,8 +185,7 @@ export default function NewStoryEdit(){
                 <BaseLayer />
                 <LayerGroup ref={gpxLayerRef}/>
                 <LayerGroup ref={geoLayerRef}/>
-                <LayerGroup ref={dragLayerRef}/>
-                <DrawingToolbar
+                <DrawingToolBar
                     drawLayerRef={drawLayerRef}
                     isSavingRef={isSavingRef}
                 />
@@ -228,11 +194,10 @@ export default function NewStoryEdit(){
     }, [])
 
 
-    return isValid ? (
+    return isfetching ?
+    (
         <>
-            <NavbarForEdit title={title} isSavingRef={isSavingRef}>
-                <PublishButton setPublishOverlay={setPublishOverlay}/>
-            </NavbarForEdit>
+            <NavbarForEdit title={title} isSavingRef={isSavingRef} />
 
             <div className={styles.container}>
                 <div className={styles.map}>
@@ -256,20 +221,15 @@ export default function NewStoryEdit(){
                                     location={location}
                                     map={MAP}
                                 />
-                                <DraggableMarker
-                                    dragLayerRef={dragLayerRef}
-                                    map={MAP}
-                                />
                             </>
                     }
                     { Map }
                 </div>
 
                 <GpxButton handleClickGPX={handleClickGPX}/>
-                
             
                 <div className={styles.editor}>
-                    <TiptapEditor 
+                    <PlaygroundEditor 
                         geoPoints={geoPoints} 
                         setGeoPoints={setGeoPoints} 
                         setLocation={setLocation}
@@ -284,12 +244,6 @@ export default function NewStoryEdit(){
                         setGpxTracks={setGpxTracks} 
                         setGpxWaypoints={setGpxWaypoints}
                         setGpxTrackGeoJson={setGpxTrackGeoJson}
-                    />
-                </OverlayPrompt>
-
-                <OverlayPrompt overlayDisplay={publishOverlay} setOverlayDisplay={setPublishOverlay}>
-                    <PublishForm
-                        setPublishOverlay={setPublishOverlay}
                     />
                 </OverlayPrompt>
             </div>

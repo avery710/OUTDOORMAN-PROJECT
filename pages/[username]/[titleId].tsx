@@ -120,7 +120,7 @@ export default function Published({ storyData, mountains }: pageProps) {
 
     return (
         <>
-            <Layout>
+            {/* <Layout> */}
                 <div className={styles.container}>
                     <div className="map-wrapper" style={{height: "100vh", width: "50vw"}}>
                         <MapForView 
@@ -138,7 +138,7 @@ export default function Published({ storyData, mountains }: pageProps) {
                         />
                     </div>
                 </div>
-            </Layout>
+            {/* </Layout> */}
         </>
     )
 }

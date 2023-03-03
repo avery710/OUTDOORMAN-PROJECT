@@ -35,7 +35,7 @@ export default function BaseLayerWithoutData({ mountains }: Props){
 
     
     return (
-        <LayersControl position='bottomright'>
+        <LayersControl position='bottomleft'>
 
             <LayersControl.BaseLayer checked name='魯地圖 Taiwan Topo'>
                 <TileLayer

@@ -1,9 +1,8 @@
 import { getDocs, collection, doc, getDoc, query, where } from 'firebase/firestore'
 import { db } from '../../lib/firebase'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import React, { useEffect } from 'react'
-import Header from '../../components/Layout/Header'
-import profileStyle from '../../styles/profile.module.css'
+import { useEffect } from 'react'
+import Layout from 'components/Layout/Layout'
 
 
 // generate static pages
@@ -91,16 +90,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 export default function UserPage({ userInfo, published }: any){
 
-    useEffect(() => {
-        console.log("published -> ", published)
-    }, [published])
-
     return (
-        <div className={profileStyle.container}>
-            <Header title='Avery Lin' />
-            <div>
+        <Layout
+            leftComponent={<></>
+                // <LeftComponent
+                //     loaded={true}
+                //     list={}
 
-            </div>
-        </div>
+                // />
+            }
+            rightComponent={<div>profile photo</div>}
+        />
     )
 }

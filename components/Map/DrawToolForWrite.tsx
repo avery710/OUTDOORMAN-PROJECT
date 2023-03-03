@@ -9,13 +9,15 @@ import { useAuth } from "hooks/context"
 
 
 export default function DrawingToolBar({ drawLayerRef, isSavingRef }: any){
+    
     const router = useRouter()
     const { storyId } = router.query
     const { authUser } = useAuth()
 
 
     async function handleDraw(e: L.DrawEvents.Created){
-        isSavingRef.current.textContent = "Saving"
+
+        isSavingRef.current.textContent = "Saving in story draft..."
 
         const layer = e.layer
         drawLayerRef.current.addLayer(layer)
@@ -39,7 +41,7 @@ export default function DrawingToolBar({ drawLayerRef, isSavingRef }: any){
 
 
     async function handleUpdate(){    
-        isSavingRef.current.textContent = "Saving"
+        isSavingRef.current.textContent = "Saving in story draft..."
 
         if (authUser && authUser.uid && storyId){
             try {

@@ -1,7 +1,6 @@
 import {
-    // BubbleMenu,
     EditorContent,
-    isTextSelection,
+    JSONContent,
     useEditor,
 } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -21,7 +20,6 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from 'lib/firebase'
 import Floatingmenu from './FloatingMenu'
 import Bubblemenu from './BubbleMenu'
-import tippy from 'tippy.js'
 import LinkForm from 'components/Prompt/LinkForm'
 
 
@@ -161,9 +159,9 @@ const TiptapEditor = ({
     // save content to db
     useEffect(() => {
         
-        async function updateDB(content: any){
-            if (isSavingRef.current != "isSaving"){
-                isSavingRef.current.textContent = "isSaving"
+        async function updateDB(content: JSONContent, textContent: string){
+            if (isSavingRef.current != "Saving in story draft..."){
+                isSavingRef.current.textContent = "Saving in story draft..."
 
                 setTimeout(() => {
                     isSavingRef.current.textContent = "Saved"
@@ -173,7 +171,8 @@ const TiptapEditor = ({
             if (authUser && authUser.uid && storyId){
                 const docRef = doc(db, "users", authUser.uid, "stories-edit", storyId as string)
                 await updateDoc(docRef, {
-                    "editorContent" : content
+                    "editorContent" : content,
+                    "editorTextContent": textContent
                 })
             }
         }
@@ -182,7 +181,8 @@ const TiptapEditor = ({
             // save content to db
             editor.on('update', ({ editor }) => {
                 const content = editor.getJSON()
-                updateDB(content)
+                const textContent = editor.state.doc.textContent
+                updateDB(content, textContent)
             })
         }
 

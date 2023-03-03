@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    font-size: 16px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+i.geo {
+    background-image: url(/images/icons/geo-fill.svg);
+}
+
+.ProseMirror {
+    height: 100%;
+    padding: 30px 60px;
+}
+
+.ProseMirror:focus {
+    outline: none;
+}
+
+.ProseMirror blockquote {
+    border-left: 3px solid rgba(0, 0, 0, 0.1);
+    padding-left: 1rem;
+}
+
+.ProseMirror img {
+    max-width: 100%;
+    height: auto;
+}
+
+.ProseMirror img.ProseMirror-selectednode {
+    outline: 3px solid #80ff80;
+}
+
+.ProseMirror a {
+    cursor: pointer;
+    text-decoration: underline;
+    position: relative;
+}
+
+.ProseMirror a:hover {
+    transition: all .1s ease-in-out;
+}
+
+.ProseMirror a:hover::after {
+    content: attr(href);
+    position: absolute;
+    background-color: #404040;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    height: 24px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    margin-top: 5px;
+}
+
+
+.geolink {
+    cursor: pointer;
+    position: relative;
+    text-decoration: underline;
+    background-color: white;
+}
+
+.geolink:hover {
+    background-color: #80ff80;
+    transition: all .1s ease-in-out;
+}
+
+.geolink:hover::after {
+    content: attr(data-lat) ", " attr(data-lng);
+    position: absolute;
+    background-color: #404040;
+    color: white;
+    font-size: 13px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: fit-content;
+    height: 24px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    white-space: nowrap;
+    margin-top: 5px;
+}
+
+.ProseMirror .is-empty::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #ced4da;
+    pointer-events: none;
+    height: 0;
+}
+
+.popupInput {
+    outline: none;
+    border: none;
+    padding: 3px;
+    resize: none;
+    text-align: center;
+    font-family: 'Montserrat';
+    width: 100px;
+    border-radius: 3px;
+}
+
+.popupInput:hover,
+.popupInput:focus {
+    outline: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 5px;
+    width: fit-content;
+    max-width: 240px;
+}
+
+.leaflet-touch .leaflet-bar {
+    border: none;
+    border-radius: 3px;
+}
+
+.leaflet-control a{
+    background-color: black;
+    color: rgba(255, 255, 255, 0.6);
+    border: none;
+    cursor: pointer;
+}
+
+.leaflet-bar a:hover {
+    background-color: black;
+    color: rgba(255, 255, 255, 1);
+    transition: all .1s ease-in-out;
+    border: none;
+    cursor: pointer;
+}
+
+.leaflet-touch .leaflet-control-layers {
+    border: 1px solid black;
+}
+
+.leaflet-control-layers-selector {
+    color: black;
+}
+
+.leaflet-bar a.leaflet-disabled {
+    background-color: black;
+    color: rgba(255, 255, 255, 1);
+}
+
+.leaflet-retina .leaflet-draw-toolbar a {
+    background-image: url(/images/icons/spritesheet.svg);
+    background-size: 300px 30px;
+}
+
+.leaflet-draw-toolbar .leaflet-draw-draw-polygon:hover,
+.leaflet-draw-toolbar .leaflet-draw-draw-marker:hover,
+.leaflet-draw-toolbar .leaflet-draw-draw-polyline:hover,
+.leaflet-draw-toolbar .leaflet-draw-edit-remove:hover,
+.leaflet-draw-toolbar .leaflet-draw-edit-edit:hover {
+    background-image: url(/images/icons/spritesheet-white.svg);
+    transition: all .1s ease-in-out;
+    background-color: black;
+}
+
+.leaflet-touch .leaflet-bar a:last-child {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.leaflet-touch .leaflet-bar a:first-child {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.leaflet-popup-content {
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+}
+
+.leaflet-retina .leaflet-control-layers-toggle {
+    background-image: url(/images/icons/layers-fill.svg);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+}

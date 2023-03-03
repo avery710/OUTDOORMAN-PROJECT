@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react'
-import Header from '../../components/Layout/Header'
-import style from '../../styles/profile.module.css'
 import { db } from '../../lib/firebase'
 import { collection, getDocs } from "firebase/firestore"
 import { useAuth } from 'hooks/context'
 import { cardDataArray } from 'types'
-import Card from 'components/Layout/Card'
 import Layout from 'components/Layout/Layout'
 import OverlayPrompt from 'components/Prompt/OverlayPrompt'
 import DeletePlanForm from 'components/Prompt/DeletePlanForm'
+import MePage from 'components/Layout/MePage'
 
 
 export default function MyPlans(){
+    
     const [ loaded, setLoaded ] = useState<boolean>(false)
     const [ list, setList ] = useState<cardDataArray | null>(null)
     const { authUser } = useAuth()
@@ -47,32 +46,20 @@ export default function MyPlans(){
 
     return (
         <>
-            <Layout>
-                <div className={style.container}>
-                    <Header title='Your Plans' />
-                    <div style={{width: "80%"}}>
-                        {loaded ? 
-                            list ?
-                                (list.map(content => {
-                                    return <Card 
-                                        title={content.title} 
-                                        uuid={content.uuid} 
-                                        date={content.date} 
-                                        setDeleteId={setDeleteId}
-                                        setOverlayDisplay={setDeleteDisplay}
-                                        path="plan"
-                                        key={content.uuid}
-                                    />
-                                }))
-                                :
-                                (null)
-                            :
-                            (<div>loading...</div>)
-                        }
-                    </div>
-                </div>
-            </Layout>
-
+            <Layout
+                leftComponent={
+                    <MePage
+                        loaded={loaded} 
+                        list={list} 
+                        setDeleteId={setDeleteId}
+                        setOverlayDisplay={setDeleteDisplay}
+                        headerTitle="Your plans"
+                        path="plan"
+                    />
+                }
+                rightComponent={<div>right</div>}
+            />
+                
             <OverlayPrompt overlayDisplay={deleteDisplay} setOverlayDisplay={setDeleteDisplay}>
                 <DeletePlanForm 
                     setOverlayDisplay={setDeleteDisplay} 

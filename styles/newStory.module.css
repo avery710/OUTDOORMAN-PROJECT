@@ -7,7 +7,7 @@
 .map,
 .editor {
     width: 50vw;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 65px);
 }
 
 .map {
@@ -17,16 +17,3 @@
 .editor {
     overflow: auto;
 }
-
-.gpx {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    padding: 10px;
-    z-index: 400;
-    cursor: pointer;
-}
-
-/* .gpxIcon {
-    background-image: url(/images/icons/link.svg);
-} */

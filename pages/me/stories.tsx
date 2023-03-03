@@ -2,13 +2,11 @@ import Layout from 'components/Layout/Layout'
 import { useAuth } from 'hooks/context'
 import { useEffect, useState } from 'react'
 import { cardDataArray } from 'types'
-import Header from '../../components/Layout/Header'
-import style from '../../styles/profile.module.css'
 import { db } from '../../lib/firebase'
 import { collection, getDocs } from "firebase/firestore"
-import Card from 'components/Layout/Card'
 import OverlayPrompt from 'components/Prompt/OverlayPrompt'
 import DeletePlanForm from 'components/Prompt/DeletePlanForm'
+import MePage from 'components/Layout/MePage'
 
 
 export default function MyStories() {
@@ -49,31 +47,19 @@ export default function MyStories() {
 
     return (
         <>
-            <Layout>
-                <div className={style.container}>
-                    <Header title='Your Plans' />
-                    <div style={{width: "80%"}}>
-                        {loaded ? 
-                            list ?
-                                (list.map(content => {
-                                    return <Card 
-                                        title={content.title} 
-                                        uuid={content.uuid} 
-                                        date={content.date} 
-                                        setDeleteId={setDeleteId}
-                                        setOverlayDisplay={setDeleteDisplay}
-                                        path="new-story"
-                                        key={content.uuid}
-                                    />
-                                }))
-                                :
-                                (null)
-                            :
-                            (<div>loading...</div>)
-                        }
-                    </div>
-                </div>
-            </Layout>
+            <Layout
+                leftComponent={ 
+                    <MePage 
+                        loaded={loaded} 
+                        list={list} 
+                        setDeleteId={setDeleteId}
+                        setOverlayDisplay={setDeleteDisplay}
+                        headerTitle="Your story drafts"
+                        path="new-story"
+                    /> 
+                }
+                rightComponent={<div>right</div>}
+            />
 
             <OverlayPrompt overlayDisplay={deleteDisplay} setOverlayDisplay={setDeleteDisplay}>
                 <DeletePlanForm 
