@@ -55,11 +55,11 @@ export default function Home({ storyData }: any){
             authUser.username ?
                 (   
                     // login complete!
-                    <Layout>
+                    // <Layout>
                         <div>
                             <PublishedStories storyData={storyData}/>
                         </div>
-                    </Layout>
+                    // </Layout>
                 )
                 : (   
                     // login but missing username -> redirect to /set-username page
@@ -67,13 +67,15 @@ export default function Home({ storyData }: any){
                 )
         : ( 
             // logged out
-            <Layout>
-                <div>
-                    Landing page images
-                </div>
-                <div>
-                    <PublishedStories storyData={storyData}/>
-                </div>
-            </Layout>
+            // <Layout>
+                <>
+                    <div>
+                        Landing page images
+                    </div>
+                    <div>
+                        <PublishedStories storyData={storyData}/>
+                    </div>
+                </>
+            // </Layout>
         )
 }
