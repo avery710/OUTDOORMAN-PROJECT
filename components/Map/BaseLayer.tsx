@@ -118,7 +118,7 @@ export default function BaseLayer(){
                 <LayersControl.Overlay checked name='高山 高於3000m'>
                     <GeoJSON 
                         data={mountData.highMountains} 
-                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/peak.png')}
+                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/images/map/peak.png')}
                         onEachFeature={(feature, layer) => addPopup(feature, layer)}
                     />
                 </LayersControl.Overlay>
@@ -128,7 +128,7 @@ export default function BaseLayer(){
                 <LayersControl.Overlay name='中級山 1500-3000m'>
                     <GeoJSON 
                         data={mountData.middleMountains} 
-                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/mountain.png')}
+                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/images/map/mountain.png')}
                         onEachFeature={(feature, layer) => addPopup(feature, layer)}
                     />
                 </LayersControl.Overlay>
@@ -138,7 +138,7 @@ export default function BaseLayer(){
                 <LayersControl.Overlay name='郊山 低於1500m'>
                     <GeoJSON 
                         data={mountData.lowMountains} 
-                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/lowMountain.png')}
+                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/images/map/lowMountain.png')}
                         onEachFeature={(feature, layer) => addPopup(feature, layer)}
                     />
                 </LayersControl.Overlay>

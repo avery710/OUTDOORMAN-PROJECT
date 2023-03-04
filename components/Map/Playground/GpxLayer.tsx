@@ -1,9 +1,8 @@
 import { doc, updateDoc } from "firebase/firestore"
-import { useAuth } from "hooks/context"
 import L from "leaflet"
 import { LatLngExpression } from "leaflet"
 import { db } from "lib/firebase"
-import { useRouter } from "next/router"
+import { myMarkerOptions } from "lib/leafletMarkerOption"
 import { useEffect } from "react"
 import { geoPointArray, wayPointType } from 'types'
 
@@ -16,7 +15,7 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
             const geoJsonData = []
 
             // add polyline
-            const polyline = L.polyline(gpxtracks, {smoothFactor: 5.0 , weight: 4})
+            const polyline = L.polyline(gpxtracks, { smoothFactor: 5.0 , weight: 4, color: '#ffff00', opacity: 0.7 })
             layerGroupRef.current.addLayer(polyline)
 
             const lines = {
@@ -43,7 +42,8 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
                 div.innerHTML = innerHtml
 
                 const button = document.createElement("button")
-                button.innerHTML = "add to text-editor"
+                button.className = "addTextButton"
+                button.innerHTML = "Add to text-editor"
 
                 button.onclick = function() {
                     const mark = EDITOR.schema.marks.GeoLink.create({ lat: waypoint.lat, lng: waypoint.lng })
@@ -55,7 +55,7 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
 
                 div.appendChild(button)
 
-                const marker = L.marker(latlng).bindPopup(div)
+                const marker = L.marker(latlng, myMarkerOptions).bindPopup(div)
                 layerGroupRef.current.addLayer(marker)
 
                 const point = {

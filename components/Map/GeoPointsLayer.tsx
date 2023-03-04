@@ -3,6 +3,7 @@ import { useAuth } from "hooks/context"
 import L from "leaflet"
 import { LatLngExpression } from "leaflet"
 import { db } from "lib/firebase"
+import { myMarkerOptions } from "lib/leafletMarkerOption"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { geoPointType } from "types"
@@ -30,7 +31,7 @@ export default function GeoPointsLayer({ geoPoints, layerGroupRef }: any){
                     <p>位置：${geoPoint.lat}, ${geoPoint.lng}</p>
                 `
 
-                const marker = L.marker(latlng).bindPopup(descrip)
+                const marker = L.marker(latlng, myMarkerOptions).bindPopup(descrip)
                 layerGroupRef.current.addLayer(marker) 
 
                 const point = {

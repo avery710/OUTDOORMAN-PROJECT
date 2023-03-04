@@ -74,17 +74,17 @@ export default function MapForView({ mapRef, mountains, storyData }: any) {
         }
 
         const highMounts = L.geoJSON(mountains.highMountains, {
-            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/peak.png'),
+            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/map/peak.png'),
             onEachFeature: addPopup
         }).addTo(Map)
 
         const middleMounts = L.geoJSON(mountains.middleMountains, {
-            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/mountain.png'),
+            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/map/mountain.png'),
             onEachFeature: addPopup
         })
 
         const lowMounts = L.geoJSON(mountains.lowMountains, {
-            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/lowMountain.png'),
+            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/map/lowMountain.png'),
             onEachFeature: addPopup
         })
 

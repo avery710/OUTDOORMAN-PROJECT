@@ -18,6 +18,7 @@ import PlaygroundEditor from 'components/TiptapEditor/PlaygroundEditor'
 import GpxLayer from 'components/Map/Playground/GpxLayer'
 import GeoPointsLayer from 'components/Map/Playground/GeoPointsLayer'
 import GpxButton from 'components/Map/GpxButton'
+import { myMarkerOptions } from 'lib/leafletMarkerOption'
 
 
 export default function NewStoryEdit(){
@@ -97,6 +98,7 @@ export default function NewStoryEdit(){
             let gpxBounds = null
             if (fetchGpx){
                 gpxLayers = L.geoJSON(JSON.parse(fetchGpx), {
+
                     onEachFeature: (feature: Feature<Geometry, any>, layer: L.Layer) => {
     
                         if (feature.properties && feature.properties.descript) {
@@ -109,7 +111,8 @@ export default function NewStoryEdit(){
                             div.innerHTML = innerHtml
         
                             const button = document.createElement("button")
-                            button.innerHTML = "add to text-editor"
+                            button.className = "addTextButton"
+                            button.innerHTML = "Add to text-editor"
         
                             button.onclick = function(){
                                 const mark = EDITOR.schema.marks.GeoLink.create({ lat: feature.properties.lat, lng: feature.properties.lng })
@@ -123,7 +126,17 @@ export default function NewStoryEdit(){
         
                             layer.bindPopup(div)
                         }
-                    }
+                    },
+
+                    style: {
+                        "color": '#ffff00',
+                        "weight": 4,
+                        "opacity": 0.7,
+                    },
+    
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, myMarkerOptions)
+                    },
                 })
                 gpxLayerRef.current.addLayer(gpxLayers)
                 gpxBounds = gpxLayers.getBounds()
@@ -136,7 +149,13 @@ export default function NewStoryEdit(){
             let drawBounds = null
             if (fetchDraw){
                 console.log("draw add")
-                drawLayers = L.geoJSON(JSON.parse(fetchDraw))
+                drawLayers = L.geoJSON(JSON.parse(fetchDraw),{
+                    style: {
+                        "color": '#ffff00',
+                        "weight": 4,
+                        "opacity": 0.7,
+                    },
+                })
                 drawBounds = drawLayers.getBounds()
             }
 
@@ -147,12 +166,6 @@ export default function NewStoryEdit(){
             }
             else if (drawBounds && drawBounds.isValid()){
                 MAP.fitBounds(drawBounds)
-            }
-            else {
-                MAP.locate().on("locationfound", e => {
-                    L.marker(e.latlng).bindPopup("Current Location").addTo(MAP)
-                    MAP.flyTo(e.latlng, MAP.getZoom())
-                })
             }
 
 

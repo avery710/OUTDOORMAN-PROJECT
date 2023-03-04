@@ -5,11 +5,24 @@ import { EditControl } from "react-leaflet-draw"
 import { db } from '../../../lib/firebase'
 import { doc, updateDoc } from "firebase/firestore"
 import { v4 } from "uuid"
+import { myMarkerOptions } from "lib/leafletMarkerOption"
 
 
 export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, FeatureGroupRef }){
 
     const myMap = useMap()
+    const MyMarker = L.Icon.extend({
+        options: {
+            shadowUrl: null,
+            iconAnchor: [18, 38],
+            iconSize: new L.Point(36, 36),
+            popupAnchor: [0, -38],
+            iconUrl: '/images/icons/pin-yellow-2.png',
+            shadowUrl: '/images/map/shadow.png',
+            shadowSize: [33, 14],
+            shadowAnchor: [0, 16],
+        }
+    })
 
 
     // init load of geojson data
@@ -47,17 +60,26 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
 
 
                     popupInput.addEventListener('change', async (e) => {
-                        console.log("init add onchange ")
 
                         // update the changes to featureObject and save to db
-                        FeatureGroupRef.current.eachLayer((layer) => {
-                            if (layer.feature &&  layer.feature.properties && layer.feature.properties.uuid === feature.properties.uuid){
-                                layer.feature.properties.descript = (e.target).value
+                        myMap.eachLayer(curLayer => {
+                            if (curLayer.feature &&  curLayer.feature.properties && curLayer.feature.properties.uuid === e.target.dataset.uuid){
+                                curLayer.feature.properties.descript = e.target.value
                             }
                         })
 
                         updatedb()
                     })
+                },
+
+                style: {
+                    "color": '#ffff00',
+                    "weight": 4,
+                    "opacity": 0.7,
+                },
+
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng,myMarkerOptions)
                 },
             })
             
@@ -121,7 +143,7 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
 
             console.log("onchange ")
 
-            FeatureGroupRef.current.eachLayer((layer) => {
+            myMap.eachLayer((layer) => {
                 if (layer.feature &&  layer.feature.properties && layer.feature.properties.uuid === uuid){
                     layer.feature.properties.descript = (e.target).value
                 }
@@ -163,7 +185,33 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
                 onCreated={e => handleCreate(e)}
                 onDeleted={handleDelete}
                 edit={{ edit: false }}
-                draw={{ rectangle: false, circle: false, circlemarker: false }}
+                draw={{ 
+                    rectangle: false, 
+                    circle: false, 
+                    circlemarker: false,
+                    polyline: {
+                        shapeOptions: {
+                            color: '#ffff00',
+                            weight: 4,
+                            opacity: 0.7,
+                        }
+                    },
+                    polygon: {
+                        allowIntersection: false, 
+                        drawError: {
+                            color: '#FE5852', 
+                            message: '<strong>Uh oh!<strong> you can\'t draw that!' 
+                        },
+                        shapeOptions: {
+                            color: '#ffff00',
+                            weight: 4,
+                            opacity: 0.7,
+                        }
+                    },
+                    marker: {
+                        icon: new MyMarker()
+                    }
+                }}
             />
         </FeatureGroup>
     )

@@ -6,6 +6,7 @@ import { db } from "lib/firebase"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { geoPointType } from "types"
+import { myMarkerOptions } from '../../../lib/leafletMarkerOption'
 
 
 // geo points layer (control by text-editor)
@@ -25,7 +26,7 @@ export default function GeoPointsLayer({ geoPoints, layerGroupRef }: any){
                     <p>位置：${geoPoint.lat}, ${geoPoint.lng}</p>
                 `
 
-                const marker = L.marker(latlng).bindPopup(descrip)
+                const marker = L.marker(latlng, myMarkerOptions).bindPopup(descrip)
                 layerGroupRef.current.addLayer(marker) 
 
                 const point = {

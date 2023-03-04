@@ -23,6 +23,7 @@ import PublishButton from 'components/Layout/PublishButton'
 import PublishForm from 'components/Prompt/PublishForm'
 import DraggableMarker from 'components/Map/DraggableMarker'
 import GpxButton from 'components/Map/GpxButton'
+import { myMarkerOptions } from 'lib/leafletMarkerOption'
 
 
 export default function NewStoryEdit(){
@@ -128,6 +129,7 @@ export default function NewStoryEdit(){
             let gpxBounds = null
             if (fetchGpx){
                 gpxLayers = L.geoJSON(JSON.parse(fetchGpx), {
+
                     onEachFeature: (feature: Feature<Geometry, any>, layer: L.Layer) => {
     
                         if (feature.properties && feature.properties.descript) {
@@ -140,7 +142,8 @@ export default function NewStoryEdit(){
                             div.innerHTML = innerHtml
         
                             const button = document.createElement("button")
-                            button.innerHTML = "add to text-editor"
+                            button.className = "addTextButton"
+                            button.innerHTML = "Add to text-editor"
         
                             button.onclick = function(){
                                 const mark = EDITOR.schema.marks.GeoLink.create({ lat: feature.properties.lat, lng: feature.properties.lng })
@@ -154,7 +157,18 @@ export default function NewStoryEdit(){
         
                             layer.bindPopup(div)
                         }
-                    }
+                    },
+
+                    style: {
+                        "color": '#ffff00',
+                        "weight": 4,
+                        "opacity": 0.7,
+                    },
+    
+                    pointToLayer: function (feature, latlng) {
+                        return L.marker(latlng, myMarkerOptions)
+                    },
+
                 })
                 gpxLayerRef.current.addLayer(gpxLayers)
                 gpxBounds = gpxLayers.getBounds()
@@ -167,7 +181,13 @@ export default function NewStoryEdit(){
             let drawBounds = null
             if (fetchDraw){
                 console.log("draw add")
-                drawLayers = L.geoJSON(JSON.parse(fetchDraw))
+                drawLayers = L.geoJSON(JSON.parse(fetchDraw), {
+                    style: {
+                        "color": '#ffff00',
+                        "weight": 4,
+                        "opacity": 0.7,
+                    },
+                })
                 drawBounds = drawLayers.getBounds()
             }
 
@@ -181,7 +201,7 @@ export default function NewStoryEdit(){
             }
             else {
                 MAP.locate().on("locationfound", e => {
-                    const marker = L.marker(e.latlng).bindPopup(`<h3>Your Current Location</h3><p>(Double click the map to get other location)</p>`)
+                    const marker = L.marker(e.latlng, myMarkerOptions).bindPopup(`<h3>Your Current Location</h3><p>(Double click the map to get other location)</p>`)
                     marker.on('add', e => e.target.openPopup())
                     MAP.addLayer(marker)
                     MAP.flyTo(e.latlng, MAP.getZoom())
