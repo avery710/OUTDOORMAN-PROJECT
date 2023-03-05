@@ -7,8 +7,8 @@ import Layout from 'components/Layout/Layout'
 import styles from '../../styles/newStory.module.css'
 import EditorForView from 'components/TiptapEditor/EditorForView'
 import { useRef } from 'react'
-
 import dynamic from 'next/dynamic'
+import Navbar from 'components/Layout/Navbar'
 
 
 interface pageProps {
@@ -120,25 +120,26 @@ export default function Published({ storyData, mountains }: pageProps) {
 
     return (
         <>
-            {/* <Layout> */}
-                <div className={styles.container}>
-                    <div className="map-wrapper" style={{height: "100vh", width: "50vw"}}>
-                        <MapForView 
-                            mapRef={mapRef} 
-                            mountains={mountains}
-                            storyData={storyData}
-                        />
-                    </div>
-
-                    <div className={styles.editor}>
-                        <EditorForView 
-                            editorContent={storyData.editorContent} 
-                            title={storyData.title}
-                            mapRef={mapRef}
-                        />
-                    </div>
+            <Navbar/>
+            <div className={styles.container}>
+                <div className="map-wrapper" style={{height: "100vh", width: "50vw"}}>
+                    <MapForView 
+                        mapRef={mapRef} 
+                        mountains={mountains}
+                        storyData={storyData}
+                    />
                 </div>
-            {/* </Layout> */}
+
+                <div className={styles.editor}>
+                    <EditorForView 
+                        editorContent={storyData.editorContent} 
+                        title={storyData.title}
+                        mapRef={mapRef}
+                        userId={storyData.userId}
+                        date={storyData.date}
+                    />
+                </div>
+            </div>
         </>
     )
 }

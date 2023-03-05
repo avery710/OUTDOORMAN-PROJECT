@@ -1,5 +1,6 @@
 import { Feature, Geometry } from 'geojson';
 import L from 'leaflet';
+import { myMarkerOptions } from 'lib/leafletMarkerOption';
 import { useEffect } from 'react'
 import styles from '../../styles/newStory.module.css'
 
@@ -15,7 +16,7 @@ export default function MapForView({ mapRef, mountains, storyData }: any) {
             console.log("remove!")
         }
 
-        const Map = L.map("map", { zoomControl: false , attributionControl: false}).setView([23.46999192, 120.9572655], 13)
+        const Map = L.map("map", { attributionControl: false}).setView([23.46999192, 120.9572655], 13)
         // Map.attributionControl.setPosition('bottomleft')
 
         // tile layers
@@ -74,17 +75,17 @@ export default function MapForView({ mapRef, mountains, storyData }: any) {
         }
 
         const highMounts = L.geoJSON(mountains.highMountains, {
-            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/map/peak.png'),
+            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/images/map/peak.png'),
             onEachFeature: addPopup
         }).addTo(Map)
 
         const middleMounts = L.geoJSON(mountains.middleMountains, {
-            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/map/mountain.png'),
+            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/images/map/mountain.png'),
             onEachFeature: addPopup
         })
 
         const lowMounts = L.geoJSON(mountains.lowMountains, {
-            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/map/lowMountain.png'),
+            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/images/map/lowMountain.png'),
             onEachFeature: addPopup
         })
 
@@ -98,6 +99,12 @@ export default function MapForView({ mapRef, mountains, storyData }: any) {
 
 
         // add layergroup from db
+        const lineStyleOptions = {
+            "color": '#ffff00',
+            "weight": 4,
+            "opacity": 0.7,
+        }
+
         function onEachFeature(feature: Feature<Geometry, any>, layer: L.Layer){
             if (feature.properties && feature.properties.descript) {
                 const innerHtml = `
@@ -111,18 +118,44 @@ export default function MapForView({ mapRef, mountains, storyData }: any) {
 
         // add drawing layer
         const drawData = storyData.drawLayer
-        const drawLayers = L.geoJSON(JSON.parse(drawData)).addTo(Map)
-        const drawBounds = drawLayers.getBounds()
+        let drawLayers = null
+        let drawBounds = null
+        if (drawData){
+            drawLayers = L.geoJSON(JSON.parse(drawData), { style: lineStyleOptions }).addTo(Map)
+            drawBounds = drawLayers.getBounds()
+        }
 
         // add gpx layer
         const gpxData = storyData.gpxLayer
-        const gpxLayers = L.geoJSON(JSON.parse(gpxData), { onEachFeature: onEachFeature }).addTo(Map)
-        const gpxBounds = gpxLayers.getBounds()
+        let gpxLayers = null
+        let gpxBounds = null
+        if (gpxData){
+            gpxLayers = L.geoJSON(JSON.parse(gpxData), { 
+
+                onEachFeature: onEachFeature,
+                
+                style: lineStyleOptions,
+
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, myMarkerOptions)
+                },
+            }).addTo(Map)
+            gpxBounds = gpxLayers.getBounds()
+        }
 
         // add geoPoint layer
         const geoPointData = storyData.geoPointLayer
-        L.geoJSON(JSON.parse(geoPointData), { onEachFeature: onEachFeature }).addTo(Map)
+        if (geoPointData){
+            L.geoJSON(JSON.parse(geoPointData), { 
 
+                onEachFeature: onEachFeature,
+
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, myMarkerOptions)
+                },
+            }).addTo(Map)
+        }
+        
 
         // fit bound
         if (gpxBounds && gpxBounds.isValid()){
@@ -131,17 +164,10 @@ export default function MapForView({ mapRef, mountains, storyData }: any) {
         else if (drawBounds && drawBounds.isValid()){
             Map.fitBounds(drawBounds)
         }
-        else {
-            Map.locate().on("locationfound", e => {
-                L.marker(e.latlng).bindPopup("Current Location").addTo(Map)
-                Map.flyTo(e.latlng, Map.getZoom())
-            })
-        }
 
 
         // store map instance in mapRef
         mapRef.current = Map
-        console.log("mapref", mapRef.current)
 
     }, [mapRef, mountains, storyData])
 

@@ -1,31 +1,29 @@
-import { JSONContent } from '@tiptap/react'
 import { generateHTML } from '@tiptap/html'
-import { Dispatch, LegacyRef, SetStateAction, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
 import Image from '@tiptap/extension-image'
 import { GeoLink } from './extensions/GeoLink'
-import { LatLngExpression } from 'leaflet'
+import styled from 'styled-components'
+import AutherSection from 'components/Layout/AutherSection'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from 'lib/firebase'
 
 
-interface Props {
-    editorContent: JSONContent,
-    title: string,
-    setLocation: Dispatch<SetStateAction<LatLngExpression | null>>,
-}
 
-export default function EditorForView({ editorContent, title, mapRef }: any){
+export default function EditorForView({ editorContent, title, mapRef, userId, date }: any){
 
-    // const [ output, setOutput ] = useState<HTMLElement | null>(null)
     const divRef = useRef<HTMLDivElement>(null)
+    const [ autherPhotoUrl, setAutherPhotoUrl ] = useState<string>("")
+    const [ autherName, setAutherName ] = useState<string>("")
+    const [ autherUniqname, setAutherUniqname ] = useState<string>("")
 
     useEffect(() => {
         if (editorContent){
             const html = generateHTML(
-                editorContent, 
-                [
+                editorContent, [
                     StarterKit,
                     Underline,
                     Image,
@@ -47,17 +45,68 @@ export default function EditorForView({ editorContent, title, mapRef }: any){
                     geolink.addEventListener('click', () => {
                         mapRef.current.flyTo([lat, lng], 13)
                     })
-                    
                 })
             }, 1000)
             
         }
     }, [editorContent])
+
+    useEffect(() => {
+        async function fetchAuther(){
+            const docRef = doc(db, "users", userId)
+            const docSnap = await getDoc(docRef)
+
+            if (docSnap.exists()) {
+                setAutherPhotoUrl(docSnap.data().photoUrl)
+                setAutherName(docSnap.data().username)
+                setAutherUniqname(docSnap.data().uniqname)
+            }
+        }
+
+        fetchAuther()
+    }, [])
     
     return (
         <>
-            <h1>{title}</h1>
-            <div ref={divRef} className="ProseMirror"></div>
+            <BasicInfoWrapper>
+                <FirstSection>
+                    <AutherSection
+                        autherName={autherName}
+                        autherUniqname={autherUniqname}
+                        autherPhotoUrl={autherPhotoUrl}
+                    />
+                    <Date>{date}</Date>
+                </FirstSection>
+                
+                <TitleWrapper>{title}</TitleWrapper>
+            </BasicInfoWrapper>
+
+            <div ref={divRef} className="ProseMirror" style={{ paddingTop: "14px"}}></div>
         </>
     )
 }
+
+const BasicInfoWrapper = styled.div`
+    padding: 0px 60px;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+`
+
+const TitleWrapper = styled.div`
+    line-height: 40px;
+    font-size: 28px;
+    font-weight: 700;
+`
+
+const FirstSection = styled.div`
+    padding-bottom: 26px;
+    display: flex;
+    flex-direction: column;
+`
+
+const Date = styled.div`
+    font-size: 13px;
+    color: rgba(117,117,117,1);
+    padding-bottom: 8px;
+`

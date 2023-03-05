@@ -82,7 +82,7 @@ export default function PublishedCard({ content, setDeleteId, setOverlayDisplay,
                     </LeftUpper>
                     <PublishDate>
                         Published on {content.date}
-                        { ( authUser?.uniqname === auther?.uniqname ) &&
+                        { ( authUser && authUser.uniqname === auther?.uniqname ) &&
                                 <Button onClick={handleToggle} ref={buttonRef}>
                                     <Icon />
                                     <DeleteTooltip 

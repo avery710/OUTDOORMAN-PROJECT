@@ -31,7 +31,7 @@ export default function AutherSection({ autherUniqname, autherPhotoUrl, autherNa
 const AutherWrapper = styled.div`
     display: flex;
     align-items: center;
-    width: 100%;
+    width: fit-content;
     padding-bottom: 8px;
     cursor: pointer;
 `
