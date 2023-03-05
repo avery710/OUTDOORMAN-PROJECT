@@ -15,8 +15,6 @@ interface Props {
 
 
 export default function ProfilePage({ headerTitle, list, setDeleteId, setOverlayDisplay, auther }: Props){
-
-    const { authUser } = useAuth()
     
     return (
         <>

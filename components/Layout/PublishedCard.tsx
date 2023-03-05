@@ -1,27 +1,33 @@
 import DeleteTooltip from 'components/Prompt/DeleteTooltip'
+import { doc, getDoc } from 'firebase/firestore'
 import { useAuth } from 'hooks/context'
+import { db } from 'lib/firebase'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { autherInfo, publishCardType } from 'types'
+import AutherSection from './AutherSection'
 
 
 interface Props {
     content: publishCardType,
-    setDeleteId: Dispatch<SetStateAction<string | undefined>>,
-    setOverlayDisplay: Dispatch<SetStateAction<string>>,
-    auther: autherInfo,
+    setDeleteId: Dispatch<SetStateAction<string | undefined>> | null,
+    setOverlayDisplay: Dispatch<SetStateAction<string>> | null,
+    auther: autherInfo | null,
 }
 
 
-export default function PublishedCard({ content, setDeleteId, setOverlayDisplay, auther}: Props){
+export default function PublishedCard({ content, setDeleteId, setOverlayDisplay, auther }: Props){
 
     const { authUser } = useAuth()
     const { pathname } = useRouter()
     const [ tooltipDisplay, setTooltipDisplay ] = useState<boolean>(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
+    const [ autherPhotoUrl, setAutherPhotoUrl ] = useState<string>("")
+    const [ autherName, setAutherName ] = useState<string>("")
+    const [ autherUniqname, setAutherUniqname ] = useState<string>("")
 
 
     useEffect(() => {
@@ -30,6 +36,19 @@ export default function PublishedCard({ content, setDeleteId, setOverlayDisplay,
                 setTooltipDisplay(false)
             }
         })
+
+        async function fetchAuther(){
+            const docRef = doc(db, "users", content.userId)
+            const docSnap = await getDoc(docRef)
+
+            if (docSnap.exists()) {
+                setAutherPhotoUrl(docSnap.data().photoUrl)
+                setAutherName(docSnap.data().username)
+                setAutherUniqname(docSnap.data().uniqname)
+            }
+        }
+
+        fetchAuther()
     }, [])
 
 
@@ -46,20 +65,24 @@ export default function PublishedCard({ content, setDeleteId, setOverlayDisplay,
     return (
         <CardWrapper>
             { pathname != '/[username]' && 
-                <div>{auther.username}</div>
+                <AutherSection
+                    autherName={autherName}
+                    autherUniqname={autherUniqname}
+                    autherPhotoUrl={autherPhotoUrl}
+                />
             }
 
             <StoryWrapper>
                 <LeftSection>
                     <LeftUpper>
-                        <Link href={`/${auther.uniqname}/${content.url}`}>
+                        <Link href={`/${autherUniqname}/${content.url}`}>
                             <TitleWrapper>{content.title}</TitleWrapper>
                             <ContentWrapper>{content.editorTextContent}</ContentWrapper>
                         </Link>
                     </LeftUpper>
                     <PublishDate>
                         Published on {content.date}
-                        { ( authUser?.uniqname === auther.uniqname ) &&
+                        { ( authUser?.uniqname === auther?.uniqname ) &&
                                 <Button onClick={handleToggle} ref={buttonRef}>
                                     <Icon />
                                     <DeleteTooltip 
@@ -101,6 +124,7 @@ const CardWrapper = styled.div`
 `
 
 const StoryWrapper = styled.div`
+    padding-top: 10px;
     display: flex;
     justify-content: space-between;
 `

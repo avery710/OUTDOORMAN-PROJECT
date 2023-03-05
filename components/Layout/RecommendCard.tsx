@@ -5,6 +5,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { recommendCardType } from 'types'
+import AutherSection from './AutherSection'
 
 interface Props {
     content: recommendCardType
@@ -35,19 +36,11 @@ export default function RecommendCard({ content }: Props){
 
     return (
         <Wrapper>
-            <AutherWrapper onClick={() => window.location.href = `/${autherUniqname}`}>
-                <ImageWrapper>
-                    { autherPhotoUrl && 
-                        <Image
-                            src={autherPhotoUrl}
-                            alt="auther-photo"
-                            fill
-                            style={{objectFit: "cover", objectPosition: "center"}}
-                        />
-                    }
-                </ImageWrapper>
-                <AutherName>{autherName}</AutherName>
-            </AutherWrapper>
+            <AutherSection
+                autherPhotoUrl={autherPhotoUrl}
+                autherUniqname={autherUniqname}
+                autherName={autherName}
+            />
             
             <TitleWrapper>
                 <Link href={`/${autherUniqname}/${content.url}`}>
@@ -60,29 +53,6 @@ export default function RecommendCard({ content }: Props){
 
 const Wrapper = styled.div`
     padding-bottom: 14px;
-`
-
-const AutherWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding-bottom: 8px;
-    cursor: pointer;
-`
-
-const ImageWrapper = styled.div`
-    width: 20px;
-    height: 20px;
-    position: relative;
-    border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    margin-right: 10px;
-`
-
-const AutherName = styled.div`
-    font-size: 14px;
-    font-weight: 500;
 `
 
 const TitleWrapper = styled.div`
