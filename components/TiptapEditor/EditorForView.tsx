@@ -67,7 +67,7 @@ export default function EditorForView({ editorContent, title, mapRef, userId, da
     }, [])
     
     return (
-        <>
+        <Wrapper>
             <BasicInfoWrapper>
                 <FirstSection>
                     <AutherSection
@@ -80,11 +80,15 @@ export default function EditorForView({ editorContent, title, mapRef, userId, da
                 
                 <TitleWrapper>{title}</TitleWrapper>
             </BasicInfoWrapper>
-
             <div ref={divRef} className="ProseMirror" style={{ paddingTop: "30px"}}></div>
-        </>
+        </Wrapper>
     )
 }
+
+const Wrapper = styled.div`
+    overflow: auto;
+    height: calc(100vh - 65px);
+`
 
 const BasicInfoWrapper = styled.div`
     padding: 0px 60px;
