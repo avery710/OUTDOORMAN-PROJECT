@@ -64,7 +64,7 @@ const Ul = styled.ul`
     margin: 0;
     padding-left: 0;
     height: fit-content;
-    color: rgb(124,124,124);
+    color: rgb(70, 70, 70);
 `
 
 const Li = styled.li`
@@ -93,7 +93,7 @@ const Email = styled.div`
 const SignOutButton = styled.button`
     border: none;
     background-color: white;
-    color: rgb(117,117,117);
+    color: rgb(70, 70, 70);
     cursor: pointer;
     padding: 0;
     font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
