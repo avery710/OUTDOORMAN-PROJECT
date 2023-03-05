@@ -24,6 +24,9 @@ import PublishForm from 'components/Prompt/PublishForm'
 import DraggableMarker from 'components/Map/DraggableMarker'
 import GpxButton from 'components/Map/GpxButton'
 import { myMarkerOptions } from 'lib/leafletMarkerOption'
+import GeoPointForm from 'components/Prompt/GeoPointForm'
+import ImagePrompt from 'components/Prompt/ImageForm'
+import LinkForm from 'components/Prompt/LinkForm'
 
 
 export default function NewStoryEdit(){
@@ -48,6 +51,10 @@ export default function NewStoryEdit(){
 
     const [ MAP, setMAP ] = useState<L.Map | null>(null)
     const [ EDITOR, setEDITOR ] = useState<Editor | null>(null)
+
+    const [ ImageOverlay, setImageOverlay ] = useState<string>("none")
+    const [ GeoOverlay, setGeoOverlay ] = useState<string>("none")
+    const [ LinkOverlay, setLinkOverlay ] = useState<string>("none")
 
     const gpxLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
     const geoLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
@@ -249,7 +256,7 @@ export default function NewStoryEdit(){
 
 
     return isValid ? (
-        <>
+        <div style={{position: "relative"}}>
             <NavbarForEdit title={title} isSavingRef={isSavingRef}>
                 <PublishButton setPublishOverlay={setPublishOverlay}/>
             </NavbarForEdit>
@@ -295,6 +302,9 @@ export default function NewStoryEdit(){
                         setLocation={setLocation}
                         setEDITOR={setEDITOR}
                         isSavingRef={isSavingRef}
+                        setGeoOverlay={setGeoOverlay}
+                        setLinkOverlay={setLinkOverlay}
+                        setImageOverlay={setImageOverlay}
                     />
                 </div>
 
@@ -312,8 +322,20 @@ export default function NewStoryEdit(){
                         setPublishOverlay={setPublishOverlay}
                     />
                 </OverlayPrompt>
+
+                <OverlayPrompt overlayDisplay={GeoOverlay} setOverlayDisplay={setGeoOverlay}>
+                    <GeoPointForm geoPoints={geoPoints} setGeoPoints={setGeoPoints} setOverlayDisplay={setGeoOverlay} editor={EDITOR}/>
+                </OverlayPrompt>
+
+                <OverlayPrompt overlayDisplay={ImageOverlay} setOverlayDisplay={setImageOverlay}>
+                    <ImagePrompt setOverlayDisplay={setImageOverlay} editor={EDITOR}/>
+                </OverlayPrompt>
+
+                <OverlayPrompt overlayDisplay={LinkOverlay} setOverlayDisplay={setLinkOverlay}>
+                    <LinkForm setOverlayDisplay={setLinkOverlay} editor={EDITOR}/>
+                </OverlayPrompt>
             </div>
-        </>
+        </div>
     )
     :
     (

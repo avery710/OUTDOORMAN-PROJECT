@@ -1,13 +1,16 @@
 import { useRef, useState } from "react"
 import gpxParser from "gpxparser"
 import { wayPointArray } from "types"
+import styled from "styled-components"
 
 export default function GpxForm({setOverlayDisplay, setGpxTracks, setGpxWaypoints, setGpxTrackGeoJson}: any) {
     
     const gpxRef = useRef<HTMLInputElement | null>(null)
-    const [gpx, setGpx] = useState<string>("")
+    const [ gpx, setGpx ] = useState<string>("")
+    const [ file, setFile ] = useState<File>()
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+
         e.preventDefault()
 
         if (gpx){
@@ -38,17 +41,64 @@ export default function GpxForm({setOverlayDisplay, setGpxTracks, setGpxWaypoint
 
         if (files !== null && files.length > 0) {
             reader.readAsText(files[0])
+            setFile(files[0])
         }
     }
 
     return (
-        <form onSubmit={e => handleSubmit(e)}>
-            <label>
-                Upload GPX file!
-                <input type="file" accept=".gpx" ref={gpxRef} onChange={e => loadGPX(e.target.files)}/>
-            </label>
+        <FormWrapper onSubmit={e => handleSubmit(e)}>
+            <Label>
+                Upload GPX file
+                <Input type="file" accept=".gpx" ref={gpxRef} onChange={e => loadGPX(e.target.files)}/>
+            </Label>
+            <FileName>{file && file.name}</FileName>
             <br/>
-            <button type='submit'>submit</button>
-        </form>
+            <SubmitButton type='submit'>submit</SubmitButton>
+        </FormWrapper>
     )
 }
+
+const FormWrapper = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+
+const Label = styled.label`
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: rgb(26, 137, 23);
+    padding-bottom: 16px;
+
+    &:hover {
+        scale: 0.98;
+        transition: all .1s ease-in-out;
+    }
+`
+
+const Input = styled.input`
+    display: none;
+`
+
+const FileName = styled.div`
+    font-size: 14px;
+    color: rgba(117, 117, 117);
+`
+
+const SubmitButton = styled.button`
+    border: 1px solid rgb(26, 137, 23);
+    background-color: white;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(26, 137, 23);
+    cursor: pointer;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    border-radius: 15px;
+    padding-left: 14px;
+    padding-right: 14px;
+`

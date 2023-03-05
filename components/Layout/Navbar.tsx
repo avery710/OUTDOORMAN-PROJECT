@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import Toolbar from './Toolbar'
 import OverlayPrompt from '../Prompt/OverlayPrompt'
-import { SignInForm, SignUpForm } from './AuthForms'
+import { SignInForm, SignUpForm } from '../Prompt/AuthForms'
 import { useAuth } from 'hooks/context'
 import { db } from '../../lib/firebase'
 import { doc, addDoc, collection, getDoc } from "firebase/firestore"

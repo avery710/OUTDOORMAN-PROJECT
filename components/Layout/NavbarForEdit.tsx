@@ -9,7 +9,7 @@ import { useRouter } from "next/router"
 import { useAuth } from "hooks/context"
 import styled from "styled-components"
 import Logo from "./Logo"
-import { SignInForm, SignUpForm } from "./AuthForms"
+import { SignInForm, SignUpForm } from "../Prompt/AuthForms"
 import OverlayPrompt from "components/Prompt/OverlayPrompt"
 
 

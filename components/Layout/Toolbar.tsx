@@ -64,13 +64,13 @@ const Ul = styled.ul`
     margin: 0;
     padding-left: 0;
     height: fit-content;
-    color: rgb(70, 70, 70);
+    color: black;
 `
 
 const Li = styled.li`
     line-height: 20px;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 400;
     width: fit-content;
     min-width: 240px;
     display: flex;
@@ -94,9 +94,9 @@ const Email = styled.div`
 const SignOutButton = styled.button`
     border: none;
     background-color: white;
-    color: rgb(70, 70, 70);
+    color: black;
     cursor: pointer;
     padding: 0;
-    font-weight: 500;
+    font-weight: 400;
     font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
 `

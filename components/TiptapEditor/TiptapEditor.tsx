@@ -12,7 +12,7 @@ import { GeoLink } from './extensions/GeoLink'
 import { useEffect, useState } from 'react'
 import OverlayPrompt from 'components/Prompt/OverlayPrompt'
 import ImagePrompt from '../Prompt/ImageForm'
-import GeoPointForm from './GeoPointForm'
+import GeoPointForm from '../Prompt/GeoPointForm'
 import { geoPointArray, geoPointType } from 'types'
 import { useRouter } from 'next/router'
 import { useAuth } from 'hooks/context'
@@ -28,12 +28,13 @@ const TiptapEditor = ({
     setGeoPoints, 
     setLocation, 
     setEDITOR, 
-    isSavingRef }: any) => {
+    isSavingRef,
+    setGeoOverlay,
+    setLinkOverlay,
+    setImageOverlay }: any) => {
 
     const [ Marks, setMarks ] = useState<geoPointArray | null>(null)
-    const [ ImageOverlay, setImageOverlay ] = useState<string>("none")
-    const [ GeoOverlay, setGeoOverlay ] = useState<string>("none")
-    const [ LinkOverlay, setLinkOverlay ] = useState<string>("none")
+    
 
     const router = useRouter()
     const { storyId } = router.query
@@ -194,24 +195,6 @@ const TiptapEditor = ({
             { editor && <Bubblemenu editor={editor} setGeoOverlay={setGeoOverlay} setLinkOverlay={setLinkOverlay}/> }
 
             { editor && <Floatingmenu editor={editor} setImageOverlay={setImageOverlay} /> }
-
-            { GeoOverlay === "flex" &&
-                <OverlayPrompt overylayDisplay={GeoOverlay} setOverlayDisplay={setGeoOverlay}>
-                    <GeoPointForm geoPoints={geoPoints} setGeoPoints={setGeoPoints} setOverlayDisplay={setGeoOverlay} editor={editor}/>
-                </OverlayPrompt>
-            }
-
-            { ImageOverlay === "flex" && 
-                <OverlayPrompt overylayDisplay={ImageOverlay} setOverlayDisplay={setImageOverlay}>
-                    <ImagePrompt setOverlayDisplay={setImageOverlay} editor={editor}/>
-                </OverlayPrompt>
-            }
-
-            { LinkOverlay === "flex" && 
-                <OverlayPrompt overylayDisplay={LinkOverlay} setOverlayDisplay={setLinkOverlay}>
-                    <LinkForm setOverlayDisplay={setLinkOverlay} editor={editor}/>
-                </OverlayPrompt>
-            }
 
             <EditorContent editor={editor} />
         </>

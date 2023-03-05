@@ -88,7 +88,6 @@ export default function EditorForView({ editorContent, title, mapRef, userId, da
 const Wrapper = styled.div`
     overflow: auto;
     height: calc(100vh - 65px);
-    margin-bottom: 60px;
 `
 
 const BasicInfoWrapper = styled.div`

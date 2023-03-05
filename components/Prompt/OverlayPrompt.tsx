@@ -29,10 +29,11 @@ interface overlayProps {
 const OverlayBackground = styled.div<overlayProps>`
     height: 100vh;
     width: 100vw;
-    position: fixed; /* Stay in place */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 10000; /* Sit on top */
-    left: 0;
-    top: 0;
     background-color: rgb(0,0,0); /* Black fallback color */
     background-color: rgba(0,0,0, 0.7); /* Black w/opacity */
     overflow-x: hidden; /* Disable horizontal scroll */
@@ -45,7 +46,8 @@ const OverlayBackground = styled.div<overlayProps>`
 const OverlayContainer = styled.div`
     position: relative;
     height: fit-content;
-    width: 600px;
+    min-width: 400px;
+    width: fit-content;
     padding: 44px 56px;
     background-color: rgba(255, 255, 255, 1);
     border-radius: 5px;

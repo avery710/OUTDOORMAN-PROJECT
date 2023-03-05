@@ -100,10 +100,10 @@ export default function ChangeProfileForm({ setOverlayDisplay, auther, setProfil
     }
 
     return (
-        <form onSubmit={e => handleSubmit(e)}>
+        <FormWrapper onSubmit={e => handleSubmit(e)}>
             <h3>Profile Information</h3>
-            <div>
-                photo
+            <Wrapper>
+                <p>photo</p>
                 <PreviewPlaceholder>
                     { (imagePreview && previewUrl) ?
                         <Image 
@@ -124,24 +124,32 @@ export default function ChangeProfileForm({ setOverlayDisplay, auther, setProfil
                     <input type="file" id="files" style={{visibility: "hidden"}} accept=".jpg, .jpeg, .png" onChange={e => loadImage(e.target.files)}/>
                 </Update>
                 { warning && 
-                    <div>
+                    <Warning>
                         The image you are trying to upload is too big. 
                         Please resize it so that it is under 10MB.
-                    </div>
+                    </Warning>
                 }
-            </div>
+            </Wrapper>
 
-            <div>
+            <Wrapper>
                 <label htmlFor="textInput" style={{cursor: "pointer"}}>Name</label>
                 <br/>
-                <input type="text" id="textInput" onChange={e => InputChange(e)} placeholder={auther?.username}/>
-            </div>
+                <InputField type="text" id="textInput" onChange={e => InputChange(e)} placeholder={auther?.username}/>
+            </Wrapper>
 
-            <button onClick={handleCancel}>Cancel</button>
-            <button type='submit' ref={submitRef}>Publish</button>
-        </form>
+            <ButtonWrapper>
+                <CancelButton onClick={handleCancel}>Cancel</CancelButton>
+                <SubmitButton type='submit' ref={submitRef}>Submit</SubmitButton>
+            </ButtonWrapper>
+        </FormWrapper>
     )
 }
+
+const FormWrapper = styled.form`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+`
 
 const PreviewPlaceholder = styled.div`
     width: 88px;
@@ -163,4 +171,72 @@ const Update = styled.div`
     font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
     font-weight: 500;
     padding: 5px 0px;
+`
+
+const Warning = styled.div`
+    color: rgb(201, 74, 74);
+    font-size: 14px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+`
+
+const Wrapper = styled.div`
+    padding-top: 10px;
+    padding-bottom: 10px;
+`
+
+const ButtonWrapper = styled.div`
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+`
+
+const CancelButton = styled.button`
+    border: 1px solid rgb(26, 137, 23);
+    background-color: white;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgb(26, 137, 23);
+    cursor: pointer;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    border-radius: 15px;
+    padding-left: 14px;
+    padding-right: 14px;
+    margin-right: 16px;
+`
+
+const SubmitButton = styled.button`
+    border: 1px solid rgb(26, 137, 23);
+    background-color: rgb(26, 137, 23);
+    font-size: 14px;
+    font-weight: 400;
+    color: white;
+    cursor: pointer;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    border-radius: 15px;
+    padding-left: 14px;
+    padding-right: 14px;
+`
+
+const InputField = styled.input`
+    width: 300px;
+    height: 20px;
+    border: none;
+    font-size: 14px;
+    border-bottom: 1px solid black;
+    background-color: white;
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    margin-top: 10px;
+
+    &:focus {
+        outline: none;
+    }
 `
