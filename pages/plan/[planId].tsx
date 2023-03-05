@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { db } from '../../lib/firebase'
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { useAuth } from 'hooks/context'
+import Head from 'next/head'
 
 export default function NewPlan(){
     
@@ -57,17 +58,26 @@ export default function NewPlan(){
     )
 
 
-    return isValid ? 
-        (
-            <>
-                <NavbarForEdit title={title} isSavingRef={isSavingRef}/>
-                <div style={{ height: "calc(100vh - 60px)", width: "100vw" }}>
-                    <MapForPlan geoJsonData={geoJsonData} isSavingRef={isSavingRef}/>
-                </div>
-            </>
-        )
-        :
-        (
-            <div>loading...</div>
-        )
+    return (
+        <>
+            <Head>
+                <title>New plan</title>
+            </Head>
+            {
+                isValid ? 
+                (
+                    <>
+                        <NavbarForEdit title={title} isSavingRef={isSavingRef}/>
+                        <div style={{ height: "calc(100vh - 60px)", width: "100vw" }}>
+                            <MapForPlan geoJsonData={geoJsonData} isSavingRef={isSavingRef}/>
+                        </div>
+                    </>
+                )
+                :
+                (
+                    <div>loading...</div>
+                )
+            }
+        </>
+    )
 }

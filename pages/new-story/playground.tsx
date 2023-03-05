@@ -19,6 +19,7 @@ import GpxLayer from 'components/Map/Playground/GpxLayer'
 import GeoPointsLayer from 'components/Map/Playground/GeoPointsLayer'
 import GpxButton from 'components/Map/GpxButton'
 import { myMarkerOptions } from 'lib/leafletMarkerOption'
+import Head from 'next/head'
 
 
 export default function NewStoryEdit(){
@@ -207,63 +208,72 @@ export default function NewStoryEdit(){
     }, [])
 
 
-    return isfetching ?
-    (
+    return (
         <>
-            <NavbarForEdit title={title} isSavingRef={isSavingRef} />
-
-            <div className={styles.container}>
-                <div className={styles.map}>
-                    {  MAP && 
-                            <>
-                                <GpxLayer 
-                                    gpxtracks={gpxtracks} 
-                                    gpxWaypoints={gpxWaypoints}
-                                    EDITOR={EDITOR}
-                                    layerGroupRef={gpxLayerRef}
-                                    map={MAP}
-                                    isSavingRef={isSavingRef}
-                                    gpxtrackGeoJson={gpxtrackGeoJson}
-                                />
-                                <GeoPointsLayer 
-                                    geoPoints={geoPoints}
-                                    layerGroupRef={geoLayerRef}
-                                    map={MAP}
-                                />
-                                <FlyToLocation 
-                                    location={location}
-                                    map={MAP}
-                                />
-                            </>
-                    }
-                    { Map }
-                </div>
-
-                <GpxButton handleClickGPX={handleClickGPX}/>
+            <Head>
+                <title>Story playground</title>
+            </Head>
+            {
+                isfetching ?
+                (
+                    <>
+                        <NavbarForEdit title={title} isSavingRef={isSavingRef} />
             
-                <div className={styles.editor}>
-                    <PlaygroundEditor 
-                        geoPoints={geoPoints} 
-                        setGeoPoints={setGeoPoints} 
-                        setLocation={setLocation}
-                        setEDITOR={setEDITOR}
-                        isSavingRef={isSavingRef}
-                    />
-                </div>
-
-                <OverlayPrompt overlayDisplay={gpxOverlay} setOverlayDisplay={setGpxOverlay}>
-                    <GpxForm 
-                        setOverlayDisplay={setGpxOverlay} 
-                        setGpxTracks={setGpxTracks} 
-                        setGpxWaypoints={setGpxWaypoints}
-                        setGpxTrackGeoJson={setGpxTrackGeoJson}
-                    />
-                </OverlayPrompt>
-            </div>
+                        <div className={styles.container}>
+                            <div className={styles.map}>
+                                {  MAP && 
+                                        <>
+                                            <GpxLayer 
+                                                gpxtracks={gpxtracks} 
+                                                gpxWaypoints={gpxWaypoints}
+                                                EDITOR={EDITOR}
+                                                layerGroupRef={gpxLayerRef}
+                                                map={MAP}
+                                                isSavingRef={isSavingRef}
+                                                gpxtrackGeoJson={gpxtrackGeoJson}
+                                            />
+                                            <GeoPointsLayer 
+                                                geoPoints={geoPoints}
+                                                layerGroupRef={geoLayerRef}
+                                                map={MAP}
+                                            />
+                                            <FlyToLocation 
+                                                location={location}
+                                                map={MAP}
+                                            />
+                                        </>
+                                }
+                                { Map }
+                            </div>
+            
+                            <GpxButton handleClickGPX={handleClickGPX}/>
+                        
+                            <div className={styles.editor}>
+                                <PlaygroundEditor 
+                                    geoPoints={geoPoints} 
+                                    setGeoPoints={setGeoPoints} 
+                                    setLocation={setLocation}
+                                    setEDITOR={setEDITOR}
+                                    isSavingRef={isSavingRef}
+                                />
+                            </div>
+            
+                            <OverlayPrompt overlayDisplay={gpxOverlay} setOverlayDisplay={setGpxOverlay}>
+                                <GpxForm 
+                                    setOverlayDisplay={setGpxOverlay} 
+                                    setGpxTracks={setGpxTracks} 
+                                    setGpxWaypoints={setGpxWaypoints}
+                                    setGpxTrackGeoJson={setGpxTrackGeoJson}
+                                />
+                            </OverlayPrompt>
+                        </div>
+                    </>
+                )
+                :
+                (
+                    <div>loading...</div>
+                )
+            }
         </>
-    )
-    :
-    (
-        <div>loading...</div>
     )
 }

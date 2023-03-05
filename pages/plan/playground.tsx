@@ -6,6 +6,7 @@ import { mountDatas } from 'types'
 import NavbarForEdit from 'components/Layout/NavbarForEdit'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -75,6 +76,9 @@ export default function PlaygroundPlanPage({ storyData, mountains }: any){
       
     return (
         <>
+            <Head>
+                <title>Plan Playground</title>
+            </Head>
             <NavbarForEdit title={storyData.title} isSavingRef={isSavingRef} />
             <div style={{ height: "calc(100vh - 60px)", width: "100vw" }}>
                 <MapForPlan 

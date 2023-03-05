@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { useAuth } from '../hooks/context'
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import Head from 'next/head';
 
 export default function AddUsername() {
     // const [ formVal, setFormVal ] = useState<string>("")
@@ -59,35 +60,44 @@ export default function AddUsername() {
     }, [authUser, loading])
 
 
-    return loading ? 
-        (
-            // add loading effect soon...
-            <div>loading...</div>
-        )
-        : authUser ?
-            authUser.username ?
-                (
-                    // add loading effect soon...
-                    <div>loading...</div>
-                )
-                : (
-                    // if no username -> fill in the form
-                    <OverlayBackground>
-                        <OverlayContainer>
-                            <FormWrapper onSubmit={e => handleSubmit(e)}>
-                                <h3>set your username</h3>
-                                <InputField type="text" ref={inputRef} onChange={e => handleChange(e)} minLength={1}/>
-                                <SubmitButton type='submit'>submit</SubmitButton>
-                            </FormWrapper>
-                        </OverlayContainer>
-                        
-                    </OverlayBackground>
-                    
-                )   
-            : (
-                // add loading effect soon...
-                <div>loading...</div>
-            )
+    return (
+        <>
+            <Head>
+                <title>Set username</title>
+            </Head>
+            {
+                loading ? 
+                    (
+                        // add loading effect soon...
+                        <div>loading...</div>
+                    )
+                    : authUser ?
+                        authUser.username ?
+                            (
+                                // add loading effect soon...
+                                <div>loading...</div>
+                            )
+                            : (
+                                // if no username -> fill in the form
+                                <OverlayBackground>
+                                    <OverlayContainer>
+                                        <FormWrapper onSubmit={e => handleSubmit(e)}>
+                                            <h3>set your username</h3>
+                                            <InputField type="text" ref={inputRef} onChange={e => handleChange(e)} minLength={1}/>
+                                            <SubmitButton type='submit'>submit</SubmitButton>
+                                        </FormWrapper>
+                                    </OverlayContainer>
+                                    
+                                </OverlayBackground>
+                                
+                            )   
+                        : (
+                            // add loading effect soon...
+                            <div>loading...</div>
+                        )
+            }
+        </>
+    )
 }
 
 const OverlayBackground = styled.div`

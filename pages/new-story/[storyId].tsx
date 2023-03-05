@@ -27,6 +27,7 @@ import { myMarkerOptions } from 'lib/leafletMarkerOption'
 import GeoPointForm from 'components/Prompt/GeoPointForm'
 import ImagePrompt from 'components/Prompt/ImageForm'
 import LinkForm from 'components/Prompt/LinkForm'
+import Head from 'next/head'
 
 
 export default function NewStoryEdit(){
@@ -255,90 +256,99 @@ export default function NewStoryEdit(){
     }, [])
 
 
-    return isValid ? (
-        <div style={{position: "relative"}}>
-            <NavbarForEdit title={title} isSavingRef={isSavingRef}>
-                <PublishButton setPublishOverlay={setPublishOverlay}/>
-            </NavbarForEdit>
-
-            <div className={styles.container}>
-                <div className={styles.map}>
-                    {  MAP && 
-                            <>
-                                <GpxLayer 
-                                    gpxtracks={gpxtracks} 
-                                    gpxWaypoints={gpxWaypoints}
-                                    EDITOR={EDITOR}
-                                    layerGroupRef={gpxLayerRef}
-                                    map={MAP}
-                                    isSavingRef={isSavingRef}
-                                    gpxtrackGeoJson={gpxtrackGeoJson}
-                                />
-                                <GeoPointsLayer 
-                                    geoPoints={geoPoints}
-                                    layerGroupRef={geoLayerRef}
-                                    map={MAP}
-                                />
-                                <FlyToLocation 
-                                    location={location}
-                                    map={MAP}
-                                />
-                                <DraggableMarker
-                                    dragLayerRef={dragLayerRef}
-                                    map={MAP}
-                                />
-                            </>
-                    }
-                    { Map }
-                </div>
-
-                <GpxButton handleClickGPX={handleClickGPX}/>
-                
+    return (
+        <>
+            <Head>
+                <title>new story</title>
+            </Head>
+            {
+                isValid ? (
+                    <div style={{position: "relative"}}>
+                        <NavbarForEdit title={title} isSavingRef={isSavingRef}>
+                            <PublishButton setPublishOverlay={setPublishOverlay}/>
+                        </NavbarForEdit>
             
-                <div className={styles.editor}>
-                    <TiptapEditor 
-                        geoPoints={geoPoints} 
-                        setGeoPoints={setGeoPoints} 
-                        setLocation={setLocation}
-                        setEDITOR={setEDITOR}
-                        isSavingRef={isSavingRef}
-                        setGeoOverlay={setGeoOverlay}
-                        setLinkOverlay={setLinkOverlay}
-                        setImageOverlay={setImageOverlay}
-                    />
-                </div>
-
-                <OverlayPrompt overlayDisplay={gpxOverlay} setOverlayDisplay={setGpxOverlay}>
-                    <GpxForm 
-                        setOverlayDisplay={setGpxOverlay} 
-                        setGpxTracks={setGpxTracks} 
-                        setGpxWaypoints={setGpxWaypoints}
-                        setGpxTrackGeoJson={setGpxTrackGeoJson}
-                    />
-                </OverlayPrompt>
-
-                <OverlayPrompt overlayDisplay={publishOverlay} setOverlayDisplay={setPublishOverlay}>
-                    <PublishForm
-                        setPublishOverlay={setPublishOverlay}
-                    />
-                </OverlayPrompt>
-
-                <OverlayPrompt overlayDisplay={GeoOverlay} setOverlayDisplay={setGeoOverlay}>
-                    <GeoPointForm geoPoints={geoPoints} setGeoPoints={setGeoPoints} setOverlayDisplay={setGeoOverlay} editor={EDITOR}/>
-                </OverlayPrompt>
-
-                <OverlayPrompt overlayDisplay={ImageOverlay} setOverlayDisplay={setImageOverlay}>
-                    <ImagePrompt setOverlayDisplay={setImageOverlay} editor={EDITOR}/>
-                </OverlayPrompt>
-
-                <OverlayPrompt overlayDisplay={LinkOverlay} setOverlayDisplay={setLinkOverlay}>
-                    <LinkForm setOverlayDisplay={setLinkOverlay} editor={EDITOR}/>
-                </OverlayPrompt>
-            </div>
-        </div>
-    )
-    :
-    (
-        <div>loading...</div>
+                        <div className={styles.container}>
+                            <div className={styles.map}>
+                                {  MAP && 
+                                        <>
+                                            <GpxLayer 
+                                                gpxtracks={gpxtracks} 
+                                                gpxWaypoints={gpxWaypoints}
+                                                EDITOR={EDITOR}
+                                                layerGroupRef={gpxLayerRef}
+                                                map={MAP}
+                                                isSavingRef={isSavingRef}
+                                                gpxtrackGeoJson={gpxtrackGeoJson}
+                                            />
+                                            <GeoPointsLayer 
+                                                geoPoints={geoPoints}
+                                                layerGroupRef={geoLayerRef}
+                                                map={MAP}
+                                            />
+                                            <FlyToLocation 
+                                                location={location}
+                                                map={MAP}
+                                            />
+                                            <DraggableMarker
+                                                dragLayerRef={dragLayerRef}
+                                                map={MAP}
+                                            />
+                                        </>
+                                }
+                                { Map }
+                            </div>
+            
+                            <GpxButton handleClickGPX={handleClickGPX}/>
+                            
+                        
+                            <div className={styles.editor}>
+                                <TiptapEditor 
+                                    geoPoints={geoPoints} 
+                                    setGeoPoints={setGeoPoints} 
+                                    setLocation={setLocation}
+                                    setEDITOR={setEDITOR}
+                                    isSavingRef={isSavingRef}
+                                    setGeoOverlay={setGeoOverlay}
+                                    setLinkOverlay={setLinkOverlay}
+                                    setImageOverlay={setImageOverlay}
+                                />
+                            </div>
+            
+                            <OverlayPrompt overlayDisplay={gpxOverlay} setOverlayDisplay={setGpxOverlay}>
+                                <GpxForm 
+                                    setOverlayDisplay={setGpxOverlay} 
+                                    setGpxTracks={setGpxTracks} 
+                                    setGpxWaypoints={setGpxWaypoints}
+                                    setGpxTrackGeoJson={setGpxTrackGeoJson}
+                                />
+                            </OverlayPrompt>
+            
+                            <OverlayPrompt overlayDisplay={publishOverlay} setOverlayDisplay={setPublishOverlay}>
+                                <PublishForm
+                                    setPublishOverlay={setPublishOverlay}
+                                />
+                            </OverlayPrompt>
+            
+                            <OverlayPrompt overlayDisplay={GeoOverlay} setOverlayDisplay={setGeoOverlay}>
+                                <GeoPointForm geoPoints={geoPoints} setGeoPoints={setGeoPoints} setOverlayDisplay={setGeoOverlay} editor={EDITOR}/>
+                            </OverlayPrompt>
+            
+                            <OverlayPrompt overlayDisplay={ImageOverlay} setOverlayDisplay={setImageOverlay}>
+                                <ImagePrompt setOverlayDisplay={setImageOverlay} editor={EDITOR}/>
+                            </OverlayPrompt>
+            
+                            <OverlayPrompt overlayDisplay={LinkOverlay} setOverlayDisplay={setLinkOverlay}>
+                                <LinkForm setOverlayDisplay={setLinkOverlay} editor={EDITOR}/>
+                            </OverlayPrompt>
+                        </div>
+                    </div>
+                )
+                :
+                (
+                    <div>loading...</div>
+                )
+            }
+        </>
     )
 }

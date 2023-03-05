@@ -9,6 +9,7 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import RightSection from 'components/Layout/RightSection';
 import IndexLeftSection from 'components/Layout/IndexLeftSection';
+import Head from 'next/head';
 
 export async function getStaticProps(){
 
@@ -71,41 +72,50 @@ export default function Home({ recommendArray, publishedArray }: any){
     }, [authUser, loading])
 
 
-    return loading ? 
-        (   
-            // add loading effect soon...
-            <div>loading...</div>
-        )
-        : authUser ?
-            authUser.username ?
+    return  (
+        <>
+            <Head>
+                <title>Outdoorman Project</title>
+            </Head>
+            {
+                loading ? 
                 (   
-                    // login complete!
+                    // add loading effect soon...
+                    <div>loading...</div>
+                )
+                : authUser ?
+                    authUser.username ?
+                        (   
+                            // login complete!
+                                <Layout
+                                    leftComponent={<IndexLeftSection published={publishedArray}/>}
+                                    rightComponent={<RightSection recommendList={recommendArray}/>}
+                                />
+                        )
+                        : (   
+                            // login but missing username -> redirect to /set-username page
+                            <div>loading...</div>
+                        )
+                : ( 
+                    // logged out
                     <Layout
                         leftComponent={<IndexLeftSection published={publishedArray}/>}
                         rightComponent={<RightSection recommendList={recommendArray}/>}
+                        landingSection={
+                            <ImageWrapper>
+                                <Image
+                                    src="/images/landing-img.jpg"
+                                    alt="landing-img"
+                                    fill
+                                    style={{objectFit: "cover", objectPosition: "center"}}
+                                />
+                            </ImageWrapper>
+                        }
                     />
                 )
-                : (   
-                    // login but missing username -> redirect to /set-username page
-                    <div>loading...</div>
-                )
-        : ( 
-            // logged out
-            <Layout
-                leftComponent={<IndexLeftSection published={publishedArray}/>}
-                rightComponent={<RightSection recommendList={recommendArray}/>}
-                landingSection={
-                    <ImageWrapper>
-                        <Image
-                            src="/images/landing-img.jpg"
-                            alt="landing-img"
-                            fill
-                            style={{objectFit: "cover", objectPosition: "center"}}
-                        />
-                    </ImageWrapper>
-                }
-            />
-        )
+            }
+        </>
+    )
 }
 
 

@@ -8,6 +8,7 @@ import OverlayPrompt from 'components/Prompt/OverlayPrompt'
 import DeletePlanForm from 'components/Prompt/DeletePlanForm'
 import MePage from 'components/Layout/MePage'
 import RightSection from 'components/Layout/RightSection'
+import Head from 'next/head'
 
 
 export default function MyStories() {
@@ -68,35 +69,44 @@ export default function MyStories() {
     }, [])
 
 
-    return loaded ? (
+    return (
         <>
-            <Layout
-                leftComponent={ 
-                    <MePage 
-                        loaded={loaded} 
-                        list={list} 
-                        setDeleteId={setDeleteId}
-                        setOverlayDisplay={setDeleteDisplay}
-                        headerTitle="Your story drafts"
-                        path="draft"
-                    /> 
-                }
-                rightComponent={<RightSection recommendList={recommend}/>}
-            />
-
-            <OverlayPrompt overlayDisplay={deleteDisplay} setOverlayDisplay={setDeleteDisplay}>
-                <DeletePlanForm 
-                    setOverlayDisplay={setDeleteDisplay} 
-                    deleteId={deleteId} 
-                    list={list}
-                    setList={setList}
-                    path="draft"
-                />
-            </OverlayPrompt>
+            <Head>
+                <title>Your story Drafts</title>
+            </Head>
+            {
+                loaded ? (
+                    <>
+                        <Layout
+                            leftComponent={ 
+                                <MePage 
+                                    loaded={loaded} 
+                                    list={list} 
+                                    setDeleteId={setDeleteId}
+                                    setOverlayDisplay={setDeleteDisplay}
+                                    headerTitle="Your story drafts"
+                                    path="draft"
+                                /> 
+                            }
+                            rightComponent={<RightSection recommendList={recommend}/>}
+                        />
+            
+                        <OverlayPrompt overlayDisplay={deleteDisplay} setOverlayDisplay={setDeleteDisplay}>
+                            <DeletePlanForm 
+                                setOverlayDisplay={setDeleteDisplay} 
+                                deleteId={deleteId} 
+                                list={list}
+                                setList={setList}
+                                path="draft"
+                            />
+                        </OverlayPrompt>
+                    </>
+                )
+                :
+                (
+                    <div>loading...</div>
+                )
+            }
         </>
-    )
-    :
-    (
-        <div>loading...</div>
     )
 }

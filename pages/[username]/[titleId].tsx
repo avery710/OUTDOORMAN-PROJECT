@@ -9,6 +9,7 @@ import EditorForView from 'components/TiptapEditor/EditorForView'
 import { useRef } from 'react'
 import dynamic from 'next/dynamic'
 import Navbar from 'components/Layout/Navbar'
+import Head from 'next/head'
 
 
 interface pageProps {
@@ -120,6 +121,9 @@ export default function Published({ storyData, mountains }: pageProps) {
 
     return (
         <>
+            <Head>
+                <title>{storyData.title}</title>
+            </Head>
             <Navbar/>
             <div className={styles.container}>
                 <div className="map-wrapper" style={{height: "100vh", width: "50vw"}}>

@@ -11,6 +11,7 @@ import DeletePublishForm from 'components/Prompt/DeletePublishForm'
 import ProfileRightSection from 'components/Layout/ProfileRightSection'
 import ChangeProfileForm from 'components/Prompt/ChangeProfileForm'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 
 // generate static pages
@@ -155,50 +156,59 @@ export default function UserPage({ userInfo, published }: PageProps){
 
 
 
-    return loaded ? (
+    return (
         <>
-            <Layout
-                leftComponent={
-                    <ProfilePage
-                        headerTitle={username}
-                        list={list}
-                        setDeleteId={setDeleteId}
-                        setOverlayDisplay={setDeleteDisplay}
-                        auther={userInfo}
-                    />
-                }
-                rightComponent={
-                    <ProfileRightSection
-                        auther={userInfo}
-                        profileUrl={profileUrl}
-                        username={username}
-                        recommendList={recommend}
-                        setOverlayDisplay={setProfilePicDisplay}
-                    />
-                }
-            />
-
-            <OverlayPrompt overlayDisplay={deleteDisplay} setOverlayDisplay={setDeleteDisplay}>
-                <DeletePublishForm 
-                    setOverlayDisplay={setDeleteDisplay} 
-                    deleteId={deleteId} 
-                    list={list}
-                    setList={setList}
-                />
-            </OverlayPrompt>
-
-            <OverlayPrompt overlayDisplay={profilePicDisplay} setOverlayDisplay={setProfilePicDisplay}>
-                <ChangeProfileForm 
-                    auther={userInfo}
-                    setOverlayDisplay={setProfilePicDisplay}
-                    setProfileUrl={setProfileUrl}
-                    setUsername={setUsername}
-                />
-            </OverlayPrompt>
+            <Head>
+                <title>{userInfo?.uniqname}</title>
+            </Head>
+            {
+                loaded ? (
+                    <>
+                        <Layout
+                            leftComponent={
+                                <ProfilePage
+                                    headerTitle={username}
+                                    list={list}
+                                    setDeleteId={setDeleteId}
+                                    setOverlayDisplay={setDeleteDisplay}
+                                    auther={userInfo}
+                                />
+                            }
+                            rightComponent={
+                                <ProfileRightSection
+                                    auther={userInfo}
+                                    profileUrl={profileUrl}
+                                    username={username}
+                                    recommendList={recommend}
+                                    setOverlayDisplay={setProfilePicDisplay}
+                                />
+                            }
+                        />
+            
+                        <OverlayPrompt overlayDisplay={deleteDisplay} setOverlayDisplay={setDeleteDisplay}>
+                            <DeletePublishForm 
+                                setOverlayDisplay={setDeleteDisplay} 
+                                deleteId={deleteId} 
+                                list={list}
+                                setList={setList}
+                            />
+                        </OverlayPrompt>
+            
+                        <OverlayPrompt overlayDisplay={profilePicDisplay} setOverlayDisplay={setProfilePicDisplay}>
+                            <ChangeProfileForm 
+                                auther={userInfo}
+                                setOverlayDisplay={setProfilePicDisplay}
+                                setProfileUrl={setProfileUrl}
+                                setUsername={setUsername}
+                            />
+                        </OverlayPrompt>
+                    </>
+                )
+                :
+                (
+                    <div>loading...</div>
+                )
+            }
         </>
-    )
-    :
-    (
-        <div>loading...</div>
     )
 }
