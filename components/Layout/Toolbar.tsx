@@ -70,6 +70,7 @@ const Ul = styled.ul`
 const Li = styled.li`
     line-height: 20px;
     font-size: 14px;
+    font-weight: 500;
     width: fit-content;
     min-width: 240px;
     display: flex;
@@ -96,5 +97,6 @@ const SignOutButton = styled.button`
     color: rgb(70, 70, 70);
     cursor: pointer;
     padding: 0;
+    font-weight: 500;
     font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
 `
