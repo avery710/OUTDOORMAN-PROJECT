@@ -70,3 +70,31 @@ export interface storyCardType {
 }
 
 export interface storyCardArray extends Array<storyCardType>{}
+
+export interface publishCardType {
+    title: string,
+    date: string,
+    editorTextContent: string,
+    previewImageUrl: string,
+    ms: number,
+    uuid: string,
+    url: string,
+    userId: string,
+}
+
+export interface publishCardArray extends Array<publishCardType>{}
+
+export interface autherInfo {
+    photoUrl: string,
+    username: string,
+    uniqname: string,
+}
+
+export interface recommendCardType {
+    title: string,
+    ms: number,
+    userId: string,
+    url: string,
+}
+
+export interface recommendCardArray extends Array<recommendCardType>{}

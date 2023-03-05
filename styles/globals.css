@@ -205,3 +205,19 @@ i.geo {
     background-repeat: no-repeat;
     background-size: 24px 24px;
 }
+
+.addTextButton {
+    padding: 5px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
+    opacity: 0.7;
+}
+
+.addTextButton:hover {
+    opacity: 1;
+    transition: all .1s ease-in-out;
+}

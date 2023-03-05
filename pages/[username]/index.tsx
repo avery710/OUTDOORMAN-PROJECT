@@ -1,8 +1,16 @@
 import { getDocs, collection, doc, getDoc, query, where } from 'firebase/firestore'
 import { db } from '../../lib/firebase'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Layout from 'components/Layout/Layout'
+import OverlayPrompt from 'components/Prompt/OverlayPrompt'
+import { useAuth } from 'hooks/context'
+import { autherInfo, publishCardArray, recommendCardArray } from 'types'
+import ProfilePage from 'components/Layout/ProfilePage'
+import DeletePublishForm from 'components/Prompt/DeletePublishForm'
+import ProfileRightSection from 'components/Layout/ProfileRightSection'
+import ChangeProfileForm from 'components/Prompt/ChangeProfileForm'
+import { useRouter } from 'next/router'
 
 
 // generate static pages
@@ -30,9 +38,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     // get user id
     let userId = ""
-    let userInfo = null
+    const userInfo: autherInfo = {
+        photoUrl: "",
+        username: "",
+        uniqname: ""
+    }
     let publishedId: Array<string> = []
-    let published: Array<any> = []
+    let published: publishCardArray = []
 
     if (params && params.username){
         const docRef = doc(db, "uniqname", params.username as string)
@@ -49,7 +61,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         const docSnap = await getDoc(docRef)
 
         if (docSnap.exists()) {
-            userInfo = docSnap.data()
+            userInfo.photoUrl = docSnap.data().photoUrl,
+            userInfo.username = docSnap.data().username,
+            userInfo.uniqname = docSnap.data().uniqname
         }
 
         const querySnapshot = await getDocs(collection(db, "users", userId, "published"))
@@ -69,7 +83,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                 published.push({
                     title: docSnap.data().title,
                     date: docSnap.data().date,
-                    editorContent: docSnap.data().editorContent
+                    editorTextContent: docSnap.data().editorTextContent,
+                    previewImageUrl: docSnap.data().previewImageUrl,
+                    ms: docSnap.data().ms,
+                    url: docSnap.data().url,
+                    userId: docSnap.data().userId,
+                    uuid: id,
                 })
             }
         }
@@ -88,18 +107,98 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 }
 
 
-export default function UserPage({ userInfo, published }: any){
+interface PageProps {
+    userInfo: autherInfo,
+    published: publishCardArray,
+}
 
-    return (
-        <Layout
-            leftComponent={<></>
-                // <LeftComponent
-                //     loaded={true}
-                //     list={}
 
-                // />
-            }
-            rightComponent={<div>profile photo</div>}
-        />
+export default function UserPage({ userInfo, published }: PageProps){
+
+    const router = useRouter()
+
+    const [ loaded, setLoaded ] = useState<boolean>(false)
+    const [ recommend, setRecommend ] = useState<recommendCardArray>([])
+
+    const [ profileUrl, setProfileUrl ] = useState<string>(userInfo?.photoUrl)
+    const [ username, setUsername ] = useState<string>(userInfo?.username)
+    const [ list, setList ] = useState<publishCardArray>(published)
+    const [ deleteId, setDeleteId ] = useState<string>()
+    const [ deleteDisplay, setDeleteDisplay ] = useState<string>("none")
+    const [ profilePicDisplay, setProfilePicDisplay ] = useState<string>("none")
+
+
+    useEffect(() => {
+        // fetch recommended section 
+        async function fetchPublished(){
+            const temp: recommendCardArray = []
+
+            const querySnapshot = await getDocs(collection(db, "published"))
+            querySnapshot.forEach((doc) => {
+
+                const recommendCard = {
+                    title: doc.data().title,
+                    ms: doc.data().ms,
+                    userId: doc.data().userId,
+                    url: doc.data().url
+                }
+
+                temp.push(recommendCard)
+            })
+
+            setRecommend(temp)
+            setLoaded(true)
+        }
+    
+        fetchPublished()
+    }, [])
+
+
+
+    return loaded ? (
+        <>
+            <Layout
+                leftComponent={
+                    <ProfilePage
+                        headerTitle={username}
+                        list={list}
+                        setDeleteId={setDeleteId}
+                        setOverlayDisplay={setDeleteDisplay}
+                        auther={userInfo}
+                    />
+                }
+                rightComponent={
+                    <ProfileRightSection
+                        auther={userInfo}
+                        profileUrl={profileUrl}
+                        username={username}
+                        recommendList={recommend}
+                        setOverlayDisplay={setProfilePicDisplay}
+                    />
+                }
+            />
+
+            <OverlayPrompt overlayDisplay={deleteDisplay} setOverlayDisplay={setDeleteDisplay}>
+                <DeletePublishForm 
+                    setOverlayDisplay={setDeleteDisplay} 
+                    deleteId={deleteId} 
+                    list={list}
+                    setList={setList}
+                />
+            </OverlayPrompt>
+
+            <OverlayPrompt overlayDisplay={profilePicDisplay} setOverlayDisplay={setProfilePicDisplay}>
+                <ChangeProfileForm 
+                    auther={userInfo}
+                    setOverlayDisplay={setProfilePicDisplay}
+                    setProfileUrl={setProfileUrl}
+                    setUsername={setUsername}
+                />
+            </OverlayPrompt>
+        </>
+    )
+    :
+    (
+        <div>loading...</div>
     )
 }

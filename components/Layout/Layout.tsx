@@ -30,7 +30,7 @@ export default Layout
 
 const ContentWrapper = styled.div`
     width: 100vw;
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 65px);
     padding: 0;
     margin: 0;
     display: flex;

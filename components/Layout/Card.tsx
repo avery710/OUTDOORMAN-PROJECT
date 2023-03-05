@@ -45,7 +45,6 @@ export default function Card({ title, uuid, date, setDeleteId, setOverlayDisplay
                         uuid={uuid}
                     />
                 </Button>
-                
             </InfoWrapper>
         </CardContainer>
     )
@@ -83,7 +82,7 @@ const InfoWrapper = styled.div`
 const LastEdit = styled.div`
     font-size: 14px;
     font-weight: 400;
-    color: rgba(117, 117, 117, 0.9);
+    color: rgba(117, 117, 117, 1);
     margin-right: 5px;
 `
 

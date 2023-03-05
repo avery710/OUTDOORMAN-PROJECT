@@ -151,7 +151,6 @@ const PreviewPlaceholder = styled.div`
     width: 300px;
     height: 200px;
     background-color: rgba(0, 0, 0, 0.1);
-    aspect-ratio: 1/1;
     overflow: hidden;
     position: relative;
     border-radius: 3px;

@@ -6,6 +6,9 @@ import { db } from 'lib/firebase'
 import { getDocs, collection } from 'firebase/firestore';
 import { storyCardArray } from 'types';
 import PublishedStories from 'components/Layout/PublishedStories';
+import Navbar from 'components/Layout/Navbar';
+import Image from 'next/image';
+import styled from 'styled-components';
 
 export async function getStaticProps(){
 
@@ -55,11 +58,8 @@ export default function Home({ storyData }: any){
             authUser.username ?
                 (   
                     // login complete!
-                    // <Layout>
-                        <div>
-                            <PublishedStories storyData={storyData}/>
-                        </div>
-                    // </Layout>
+                    // <Layout/>
+                    <></>
                 )
                 : (   
                     // login but missing username -> redirect to /set-username page
@@ -67,15 +67,23 @@ export default function Home({ storyData }: any){
                 )
         : ( 
             // logged out
-            // <Layout>
-                <>
-                    <div>
-                        Landing page images
-                    </div>
-                    <div>
-                        <PublishedStories storyData={storyData}/>
-                    </div>
-                </>
-            // </Layout>
+            <>
+            <Navbar/>
+            <ImageWrapper>
+                <Image
+                    src="/images/landing-img.jpg"
+                    alt="landing-img"
+                    fill
+                    style={{objectFit: "cover", objectPosition: "center"}}
+                />
+            </ImageWrapper>
+            </>
         )
 }
+
+
+const ImageWrapper = styled.div`
+    width: 100vw;
+    height: calc(100vh - 65px);
+    position: relative;
+`

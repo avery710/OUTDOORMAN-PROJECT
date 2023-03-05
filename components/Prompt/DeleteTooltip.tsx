@@ -11,7 +11,7 @@ export default function DeleteTooltip({ tooltipDisplay, path, setOverlayDisplay,
         <>
             <Tooltip>
                 <DeleteButton onClick={handleClick}>
-                    Delete {path === "new-story" ? "draft" : "plan"}
+                    Delete {path}
                 </DeleteButton>
             </Tooltip>
             <Triangle/>
@@ -33,7 +33,7 @@ const Tooltip = styled.div`
     z-index: 10;
 `
 
-const DeleteButton = styled.button`
+const DeleteButton = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;

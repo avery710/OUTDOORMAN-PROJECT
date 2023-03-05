@@ -1,5 +1,7 @@
 import Header from "./Header"
-import Contents from 'components/Layout/Contents'
+import styled from "styled-components"
+import Card from "./Card"
+import { storyCardType } from "types"
 
 
 export default function MePage({ loaded, list, setDeleteId, setOverlayDisplay, headerTitle, path }: any){
@@ -7,15 +9,30 @@ export default function MePage({ loaded, list, setDeleteId, setOverlayDisplay, h
         <>
             <Header title={headerTitle} />
             { loaded ?
-                <Contents 
-                    list={list}
-                    setDeleteId={setDeleteId}
-                    setOverlayDisplay={setOverlayDisplay}
-                    path={path}
-                />
+                list && (
+                    <Wrapper>
+                        { list.map((content: storyCardType) => {
+                            return <Card 
+                                        title={content.title} 
+                                        uuid={content.uuid} 
+                                        date={content.date} 
+                                        setDeleteId={setDeleteId}
+                                        setOverlayDisplay={setOverlayDisplay}
+                                        key={content.uuid}
+                                        path={path}
+                                    />
+                            })
+                        }
+                    </Wrapper>
+                )
                 :
                 <div>loading...</div>
             }
         </>
     )
 }
+
+const Wrapper = styled.div`
+    padding-bottom: 20px;
+    border-top: 1px solid rgba(230, 230, 230, 1);
+`

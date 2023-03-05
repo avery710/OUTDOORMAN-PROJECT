@@ -55,7 +55,7 @@ export default function MyStories() {
                         setDeleteId={setDeleteId}
                         setOverlayDisplay={setDeleteDisplay}
                         headerTitle="Your story drafts"
-                        path="new-story"
+                        path="draft"
                     /> 
                 }
                 rightComponent={<div>right</div>}
@@ -67,7 +67,7 @@ export default function MyStories() {
                     deleteId={deleteId} 
                     list={list}
                     setList={setList}
-                    path="new-story"
+                    path="draft"
                 />
             </OverlayPrompt>
         </>

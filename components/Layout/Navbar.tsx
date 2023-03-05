@@ -54,7 +54,7 @@ export default function Navbar() {
     
                 const planDoc = await addDoc(collection(userDoc, "plans"), {
                     geoJsonData: "",
-                    title: "untitled",
+                    title: "Untitled",
                     date: "",
                     ms: 0,
                 })
@@ -73,7 +73,7 @@ export default function Navbar() {
                     geoPointLayer: "",
                     editorContent: null,
                     editorTextContent: "",
-                    title: "",
+                    title: "Untitled",
                     date: "",
                     ms: 0,
                 })
@@ -133,16 +133,16 @@ export default function Navbar() {
                                 <Ul>
                                     <Li>
                                         <Playground>
-                                            <Link href={'/new-story/playground'}>
-                                                Write
+                                            <Link href={'/new-story/playground'} style={{display: "flex", alignItems:" center"}}>
+                                                <WriteIcon/>Write
                                             </Link>
                                         </Playground>
                                         
                                     </Li>
                                     <Li>
                                         <Playground>
-                                            <Link href={'/plan/playground'} style={{fontSize: "14px", marginRight: "10px"}}>
-                                                Plan
+                                            <Link href={'/plan/playground'} style={{display: "flex", alignItems:" center"}}>
+                                                <PlanIcon/>Plan
                                             </Link>
                                         </Playground>
                                     </Li>
@@ -214,6 +214,7 @@ const Playground = styled.div`
     margin-right: 14px;
     opacity: 0.9;
     width: fit-content;
+    margin-right: 16px;
 
     &:hover {
         opacity: 1;
@@ -299,8 +300,6 @@ const PlanIcon = styled.i`
     margin-right: 6px;
     background-image: url(/images/icons/plan-flower.svg);
 `
-
-
 
 const ProfileWrapper = styled.div`
     width: 30px;
