@@ -9,14 +9,28 @@ import { useRouter } from "next/router"
 import { useAuth } from "hooks/context"
 import styled from "styled-components"
 import Logo from "./Logo"
+import { SignInForm, SignUpForm } from "./AuthForms"
+import OverlayPrompt from "components/Prompt/OverlayPrompt"
 
 
 export default function NavbarForEdit({ title, isSavingRef, children }: any){
     
     const router = useRouter()
     const { authUser } = useAuth()
-    const [ toolbarDisplay, setToolbarDisplay ] = useState<string>("none")
     const titleRef = useRef<HTMLInputElement>(null)
+    const [ toolbarVisibility, setToolbarVisibility ] = useState<string>("hidden")
+    const [ overlayDisplay, setOverlayDisplay ] = useState<string>("none")
+    const [ signInForm, setSignInForm ] = useState<boolean>(false)
+    const toolbarRef = useRef<HTMLDivElement>(null)
+
+
+    useEffect(() => {
+        document.addEventListener('click', (e) => {
+            if (!toolbarRef.current?.contains(e.target as Node)){
+                setToolbarVisibility("hidden")
+            }
+        })
+    }, [])
 
 
     // fetch the original title and show on navbar
@@ -52,9 +66,14 @@ export default function NavbarForEdit({ title, isSavingRef, children }: any){
 
 
     function toggleToolbar(){
-        toolbarDisplay === "none" ? 
-            setToolbarDisplay("block")
-            : setToolbarDisplay("none")
+        toolbarVisibility === "hidden" ? 
+            setToolbarVisibility("visible")
+            : setToolbarVisibility("hidden")
+    }
+
+    function handleSignUp(){
+        setOverlayDisplay("flex")
+        setSignInForm(false)
     }
 
 
@@ -75,25 +94,48 @@ export default function NavbarForEdit({ title, isSavingRef, children }: any){
 
                 <Ul>
                     <Li ref={isSavingRef} style={{fontSize: "14px", fontWeight: "500", cursor: "default"}}></Li>
-                    {children}
-                    {authUser && 
+                    { children }
+                    { authUser ?
                         <Li>
-                            <ProfileWrapper>
-                                <Image 
-                                    src='/profile_pic.png'
-                                    alt='profile-pic' 
-                                    width={30} 
-                                    height={30}
-                                    onClick={toggleToolbar}
-                                />
+                            <ProfileWrapper ref={toolbarRef}>
+                                { authUser.photoUrl && 
+                                    <Image 
+                                        src={authUser.photoUrl}
+                                        alt='profile-pic' 
+                                        fill
+                                        style={{objectFit: "cover", objectPosition: "center"}}
+                                        onClick={toggleToolbar}
+                                    />
+                                }
                             </ProfileWrapper>
+                        </Li>
+                        :
+                        <Li>
+                            <GetStarted onClick={handleSignUp}>
+                                Get Started
+                            </GetStarted>
                         </Li>
                     }
                 </Ul>
                 </NavBar>
             </NavbarWrapper>
 
-            <Toolbar display={toolbarDisplay} />
+            { authUser ? 
+                <Toolbar 
+                    visibility={toolbarVisibility} 
+                    setToolbarVisibility={setToolbarVisibility} 
+                />
+                :
+                <OverlayPrompt 
+                    overlayDisplay={overlayDisplay} 
+                    setOverlayDisplay={setOverlayDisplay}
+                >
+                    { signInForm ? 
+                        <SignInForm setSignInForm={setSignInForm}/>
+                        : <SignUpForm setSignInForm={setSignInForm}/> 
+                    }
+                </OverlayPrompt>
+            }
         </>
     )
 }
@@ -163,4 +205,26 @@ const ProfileWrapper = styled.div`
     height: 30px;
     position: relative;
     margin-left: 10px;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+`
+
+const GetStarted = styled.button`
+    border: none;
+    background-color: #80ff80;
+    color: black;
+    width: 100px;
+    height: 36px;
+    border-radius: 18px;
+    font-weight: 400;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Montserrat';
+    opacity: 0.9;
+
+    &:hover {
+        opacity: 1;
+        transition: all .1s ease-in-out;
+    }
 `

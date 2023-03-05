@@ -82,7 +82,7 @@ export default function PublishedCard({ content, setDeleteId, setOverlayDisplay,
                     </LeftUpper>
                     <PublishDate>
                         Published on {content.date}
-                        { ( authUser && authUser.uniqname === auther?.uniqname ) &&
+                        { ( authUser && authUser?.uniqname === auther?.uniqname ) &&
                                 <Button onClick={handleToggle} ref={buttonRef}>
                                     <Icon />
                                     <DeleteTooltip 
@@ -127,11 +127,13 @@ const StoryWrapper = styled.div`
     padding-top: 10px;
     display: flex;
     justify-content: space-between;
+    width: 100%;
 `
 
 const LeftSection = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
 `
 
 const LeftUpper = styled.div`

@@ -81,7 +81,7 @@ export default function EditorForView({ editorContent, title, mapRef, userId, da
                 <TitleWrapper>{title}</TitleWrapper>
             </BasicInfoWrapper>
 
-            <div ref={divRef} className="ProseMirror" style={{ paddingTop: "14px"}}></div>
+            <div ref={divRef} className="ProseMirror" style={{ paddingTop: "30px"}}></div>
         </>
     )
 }

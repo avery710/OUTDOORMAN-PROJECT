@@ -23,8 +23,10 @@ export default function useFirebaseAuth(){
         const docRef = doc(db, "users", user.uid)
         const docSnap = await getDoc(docRef)
         let username = ""
+        let photoUrl = user.photoURL
         if (docSnap.exists()) {
             username = docSnap.data().username
+            photoUrl = docSnap.data().photoUrl
         }
 
         // get uniqName from email
@@ -38,13 +40,12 @@ export default function useFirebaseAuth(){
         
         const formattedUser: userType = {
             uid: user.uid,
-            photoUrl: user.photoURL,
+            photoUrl: photoUrl,
             email: user.email,
             username: username, // get username from db
             uniqname: uniqname,
         }
 
-        console.log(formattedUser)
         setAuthUser(formattedUser)
         setLoading(false)
     }

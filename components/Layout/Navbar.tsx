@@ -1,36 +1,31 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
-// import navStyles from '../../styles/Navbar.module.css'
+import { useEffect, useRef, useState } from 'react'
 import Toolbar from './Toolbar'
 import OverlayPrompt from '../Prompt/OverlayPrompt'
 import { SignInForm, SignUpForm } from './AuthForms'
 import { useAuth } from 'hooks/context'
 import { db } from '../../lib/firebase'
-import { doc, addDoc, collection } from "firebase/firestore"
+import { doc, addDoc, collection, getDoc } from "firebase/firestore"
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Logo from './Logo'
 
 
 export default function Navbar() {
-    const [ overlayDisplay, setOverlayDisplay ] = useState<string>("none")
-    const [ signInForm, setSignInForm ] = useState<boolean>(false)
-    const [ toolbarDisplay, setToolbarDisplay ] = useState<string>("none")
+
     const { authUser } = useAuth()
     const router = useRouter()
+    const [ overlayDisplay, setOverlayDisplay ] = useState<string>("none")
+    const [ signInForm, setSignInForm ] = useState<boolean>(false)
+    const [ toolbarVisibility, setToolbarVisibility ] = useState<string>("hidden")
+    const toolbarRef = useRef<HTMLDivElement>(null)
 
 
-    function handleImageClick(){
-        toolbarDisplay === "none" ? 
-            setToolbarDisplay("block")
-            : setToolbarDisplay("none")
-    }
-
-
-    function handleSignIn(){
-        setOverlayDisplay("flex")
-        setSignInForm(true)
+    function toggleToolbar(){
+        toolbarVisibility === "hidden" ? 
+            setToolbarVisibility("visible")
+            : setToolbarVisibility("hidden")
     }
 
 
@@ -38,6 +33,15 @@ export default function Navbar() {
         setOverlayDisplay("flex")
         setSignInForm(false)
     }
+    
+
+    useEffect(() => {
+        document.addEventListener('click', (e) => {
+            if (!toolbarRef.current?.contains(e.target as Node)){
+                setToolbarVisibility("hidden")
+            }
+        })
+    }, [])
 
 
     // user signed out -> write-playground / plan-playground / get-started
@@ -114,18 +118,24 @@ export default function Navbar() {
                                         </PlanButton>
                                     </Li>
                                     <Li>
-                                        <ProfileWrapper>
-                                            <Image 
-                                                src='/profile_pic.png'
-                                                alt='profile-pic' 
-                                                fill
-                                                style={{objectFit: "cover", objectPosition: "center"}}
-                                                onClick={handleImageClick}
-                                            />
+                                        <ProfileWrapper ref={toolbarRef}>
+                                            { authUser.photoUrl && 
+                                                <Image 
+                                                    src={authUser.photoUrl}
+                                                    alt='profile-pic' 
+                                                    fill
+                                                    style={{objectFit: "cover", objectPosition: "center"}}
+                                                    onClick={toggleToolbar}
+                                                />
+                                            }
                                         </ProfileWrapper>
                                         
                                     </Li>
                                 </Ul>
+                                <Toolbar 
+                                    visibility={toolbarVisibility} 
+                                    setToolbarVisibility={setToolbarVisibility} 
+                                />
                             </>
                         )
                         : (
@@ -152,25 +162,21 @@ export default function Navbar() {
                                         </GetStarted>
                                     </Li>
                                 </Ul> 
+
+                                <OverlayPrompt 
+                                    overlayDisplay={overlayDisplay} 
+                                    setOverlayDisplay={setOverlayDisplay}
+                                >
+                                    { signInForm ? 
+                                        <SignInForm setSignInForm={setSignInForm}/>
+                                        : <SignUpForm setSignInForm={setSignInForm}/> 
+                                    }
+                                </OverlayPrompt>
                             </>
                         )
                     }
                 </NavBar>
             </NavbarWrapper>
-
-            { authUser ? 
-                <Toolbar display={toolbarDisplay} />
-                :
-                <OverlayPrompt 
-                    overlayDisplay={overlayDisplay} 
-                    setOverlayDisplay={setOverlayDisplay}
-                >
-                    { signInForm ? 
-                        <SignInForm setSignInForm={setSignInForm}/>
-                        : <SignUpForm setSignInForm={setSignInForm}/> 
-                    }
-                </OverlayPrompt>
-            }
         </>
     )
 }
@@ -306,4 +312,7 @@ const ProfileWrapper = styled.div`
     height: 30px;
     position: relative;
     margin-left: 10px;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
 `

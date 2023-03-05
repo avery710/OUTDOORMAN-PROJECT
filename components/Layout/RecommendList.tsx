@@ -25,7 +25,6 @@ export default function RecommendList({ recommendList }: Props) {
 
 const RecommendWrap = styled.div`
     margin-bottom: 50px;
-
 `
 
 const RecommendHeader = styled.div`
