@@ -44,7 +44,7 @@ export default function GeoPointsLayer({ geoPoints, layerGroupRef }: any){
                 geoJsonData.push(point)
             })
 
-            updateDB(geoJsonData)
+            // updateDB(geoJsonData)
         }
 
     }, [geoPoints, layerGroupRef])

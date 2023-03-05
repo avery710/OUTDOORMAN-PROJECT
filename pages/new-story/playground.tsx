@@ -20,6 +20,9 @@ import GeoPointsLayer from 'components/Map/Playground/GeoPointsLayer'
 import GpxButton from 'components/Map/GpxButton'
 import { myMarkerOptions } from 'lib/leafletMarkerOption'
 import Head from 'next/head'
+import GeoPointForm from 'components/Prompt/GeoPointForm'
+import ImagePrompt from 'components/Prompt/ImageForm'
+import LinkForm from 'components/Prompt/LinkForm'
 
 
 export default function NewStoryEdit(){
@@ -37,6 +40,10 @@ export default function NewStoryEdit(){
 
     const [ MAP, setMAP ] = useState<L.Map | null>(null)
     const [ EDITOR, setEDITOR ] = useState<Editor | null>(null)
+
+    const [ ImageOverlay, setImageOverlay ] = useState<string>("none")
+    const [ GeoOverlay, setGeoOverlay ] = useState<string>("none")
+    const [ LinkOverlay, setLinkOverlay ] = useState<string>("none")
 
     const gpxLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
     const geoLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
@@ -255,6 +262,9 @@ export default function NewStoryEdit(){
                                     setLocation={setLocation}
                                     setEDITOR={setEDITOR}
                                     isSavingRef={isSavingRef}
+                                    setGeoOverlay={setGeoOverlay}
+                                    setLinkOverlay={setLinkOverlay}
+                                    setImageOverlay={setImageOverlay}
                                 />
                             </div>
             
@@ -265,6 +275,18 @@ export default function NewStoryEdit(){
                                     setGpxWaypoints={setGpxWaypoints}
                                     setGpxTrackGeoJson={setGpxTrackGeoJson}
                                 />
+                            </OverlayPrompt>
+
+                            <OverlayPrompt overlayDisplay={GeoOverlay} setOverlayDisplay={setGeoOverlay}>
+                                <GeoPointForm geoPoints={geoPoints} setGeoPoints={setGeoPoints} setOverlayDisplay={setGeoOverlay} editor={EDITOR}/>
+                            </OverlayPrompt>
+            
+                            <OverlayPrompt overlayDisplay={ImageOverlay} setOverlayDisplay={setImageOverlay}>
+                                <ImagePrompt setOverlayDisplay={setImageOverlay} editor={EDITOR}/>
+                            </OverlayPrompt>
+            
+                            <OverlayPrompt overlayDisplay={LinkOverlay} setOverlayDisplay={setLinkOverlay}>
+                                <LinkForm setOverlayDisplay={setLinkOverlay} editor={EDITOR}/>
                             </OverlayPrompt>
                         </div>
                     </>

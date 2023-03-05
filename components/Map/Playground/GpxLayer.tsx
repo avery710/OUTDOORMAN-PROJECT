@@ -79,7 +79,7 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
 
 
             // update to db
-            updateDB(geoJsonData)
+            // updateDB(geoJsonData)
 
         }
     }, [gpxtracks, gpxWaypoints])

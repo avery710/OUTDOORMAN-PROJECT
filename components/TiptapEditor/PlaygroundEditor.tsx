@@ -21,11 +21,12 @@ const TiptapEditor = ({
     setGeoPoints, 
     setLocation, 
     setEDITOR, 
-    isSavingRef }: any) => {
+    isSavingRef,
+    setGeoOverlay,
+    setLinkOverlay,
+    setImageOverlay }: any) => {
 
     const [ Marks, setMarks ] = useState<geoPointArray | null>(null)
-    const [ ImageOverlay, setImageOverlay ] = useState<string>("none")
-    const [ GeoOverlay, setGeoOverlay ] = useState<string>("none")
 
 
     // editor configure
@@ -163,7 +164,7 @@ const TiptapEditor = ({
             // save content to db
             editor.on('update', ({ editor }) => {
                 const content = editor.getJSON()
-                updateDB(content)
+                // updateDB(content)
             })
         }
 
@@ -172,21 +173,9 @@ const TiptapEditor = ({
 
     return (
         <>
-            { editor && <Bubblemenu editor={editor} setGeoOverlay={setGeoOverlay} /> }
+            { editor && <Bubblemenu editor={editor} setGeoOverlay={setGeoOverlay} setLinkOverlay={setLinkOverlay}/> }
 
             { editor && <Floatingmenu editor={editor} setImageOverlay={setImageOverlay}/> }
-
-            { GeoOverlay === "flex" &&
-                <OverlayPrompt overylayDisplay={GeoOverlay} setOverlayDisplay={setGeoOverlay}>
-                    <GeoPointForm geoPoints={geoPoints} setGeoPoints={setGeoPoints} setOverlayDisplay={setGeoOverlay} editor={editor}/>
-                </OverlayPrompt>
-            }
-
-            { ImageOverlay === "flex" && 
-                <OverlayPrompt overylayDisplay={ImageOverlay} setOverlayDisplay={setImageOverlay}>
-                    <ImagePrompt setOverlayDisplay={setImageOverlay} editor={editor}/>
-                </OverlayPrompt>
-            }
 
             <EditorContent editor={editor} />
         </>
