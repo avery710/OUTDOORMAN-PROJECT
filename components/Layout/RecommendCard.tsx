@@ -60,7 +60,7 @@ const TitleWrapper = styled.div`
     font-size: 15px;
     line-height: 20px;
     overflow: hidden;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;

@@ -80,7 +80,7 @@ export default function EditorForView({ editorContent, title, mapRef, userId, da
                 
                 <TitleWrapper>{title}</TitleWrapper>
             </BasicInfoWrapper>
-            <div ref={divRef} className="ProseMirror" style={{ paddingTop: "30px"}}></div>
+            <EditorContent ref={divRef} className="ProseMirror"></EditorContent>
         </Wrapper>
     )
 }
@@ -88,6 +88,7 @@ export default function EditorForView({ editorContent, title, mapRef, userId, da
 const Wrapper = styled.div`
     overflow: auto;
     height: calc(100vh - 65px);
+    margin-bottom: 60px;
 `
 
 const BasicInfoWrapper = styled.div`
@@ -113,4 +114,8 @@ const Date = styled.div`
     font-size: 13px;
     color: rgba(117,117,117,1);
     padding-bottom: 8px;
+`
+
+const EditorContent = styled.div`
+    padding-top: 30px;
 `
