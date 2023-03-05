@@ -68,7 +68,7 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
                             }
                         })
 
-                        updatedb()
+                        // updatedb()
                     })
                 },
 
@@ -89,13 +89,6 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
 
             if (bounds.isValid()){
                 myMap.fitBounds(bounds)
-            }
-            else {
-                // never edited before
-                myMap.locate().on("locationfound", e => {
-                    L.marker(e.latlng).bindPopup("Current Location").addTo(myMap)
-                    myMap.flyTo(e.latlng, myMap.getZoom())
-                })
             }
         }
         
@@ -123,7 +116,7 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
         })
 
         FeatureGroupRef.current.addLayer(layer)
-        updatedb()
+        // updatedb()
         
 
         // add popup on layer
@@ -149,7 +142,7 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
                 }
             })
 
-            updatedb()
+            // updatedb()
         })
     
 
@@ -159,7 +152,7 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
     }
 
     async function handleDelete(){
-        updatedb()
+        // updatedb()
     }
 
     async function updatedb(){
