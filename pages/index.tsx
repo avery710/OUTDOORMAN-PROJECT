@@ -104,7 +104,7 @@ export default function Home({ recommendArray, publishedArray }: any){
                         landingSection={
                             <ImageWrapper>
                                 <Image
-                                    src="/images/landing-img.jpg"
+                                    src="/images/landing-page.jpg"
                                     alt="landing-img"
                                     fill
                                     style={{objectFit: "cover", objectPosition: "center"}}
