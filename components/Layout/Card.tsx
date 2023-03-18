@@ -28,10 +28,8 @@ export default function Card({ title, uuid, date, setDeleteId, setOverlayDisplay
 
     return (
         <CardContainer>
-            <TitleWrapper>
-                <Link href={`/${path}/${uuid}`}>
-                    {title}
-                </Link>
+            <TitleWrapper href={path === "draft" ? `/new-story/${uuid}` : `/${path}/${uuid}`}>
+                {title}
             </TitleWrapper>
             <InfoWrapper>
                 <LastEdit>Last edited {date}</LastEdit>
@@ -63,12 +61,13 @@ const CardContainer = styled.div`
     padding-bottom: 20px;
 `
 
-const TitleWrapper = styled.div`
+const TitleWrapper = styled.a`
     height: 30px;
     font-weight: 700;
     font-size: 16px;
     display: flex;
     align-items: center;
+    text-decoration: none;
 `
 
 const InfoWrapper = styled.div`
