@@ -33,10 +33,11 @@ export default function DeletePlanForm({ setOverlayDisplay, deleteId, list, setL
     return (
         <Wrapper>
             <h3>Delete {path}</h3>
-            <div>
+            <Prompt>
                 Deletion is not reversible, and the {path} will be completely deleted. 
+                <br/>
                 Do you really want to delete the {path}?
-            </div>
+            </Prompt>
             <ButtonWrapper>
                 <CancelButton onClick={handleCancel}>Cancel</CancelButton>
                 <SubmitButton onClick={handleDelete}>Delete</SubmitButton>
@@ -55,6 +56,10 @@ const ButtonWrapper = styled.div`
     padding-top: 20px;
     padding-bottom: 20px;
     display: flex;
+`
+
+const Prompt = styled.div`
+    text-align: center;
 `
 
 const CancelButton = styled.button`

@@ -41,11 +41,8 @@ export default function RecommendCard({ content }: Props){
                 autherUniqname={autherUniqname}
                 autherName={autherName}
             />
-            
-            <TitleWrapper>
-                <Link href={`/${autherUniqname}/${content.url}`}>
-                    {content.title}
-                </Link>
+            <TitleWrapper href={`/${autherUniqname}/${content.url}`}>
+                {content.title}
             </TitleWrapper>
         </Wrapper>
     )
@@ -55,7 +52,7 @@ const Wrapper = styled.div`
     padding-bottom: 14px;
 `
 
-const TitleWrapper = styled.div`
+const TitleWrapper = styled.a`
     font-weight: 700;
     font-size: 15px;
     line-height: 20px;
@@ -64,4 +61,5 @@ const TitleWrapper = styled.div`
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    text-decoration: none;
 `

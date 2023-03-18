@@ -74,11 +74,9 @@ export default function PublishedCard({ content, setDeleteId, setOverlayDisplay,
 
             <StoryWrapper>
                 <LeftSection>
-                    <LeftUpper>
-                        <Link href={`/${autherUniqname}/${content.url}`}>
-                            <TitleWrapper>{content.title}</TitleWrapper>
-                            <ContentWrapper>{content.editorTextContent}</ContentWrapper>
-                        </Link>
+                    <LeftUpper href={`/${autherUniqname}/${content.url}`}>
+                        <TitleWrapper>{content.title}</TitleWrapper>
+                        <ContentWrapper>{content.editorTextContent}</ContentWrapper>
                     </LeftUpper>
                     <PublishDate>
                         Published on {content.date}
@@ -136,9 +134,10 @@ const LeftSection = styled.div`
     width: 100%;
 `
 
-const LeftUpper = styled.div`
+const LeftUpper = styled.a`
     display: flex;
     flex-direction: column;
+    text-decoration: none;
 `
 
 const PublishDate = styled.div`
