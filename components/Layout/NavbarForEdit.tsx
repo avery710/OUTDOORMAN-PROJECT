@@ -88,7 +88,7 @@ export default function NavbarForEdit({ title, isSavingRef, children }: any){
                         </Link>
                     </Li>
                     <Li>
-                        <TitleInput type="text" ref={titleRef} onChange={e => handleTitleChange(e)} maxLength={15}/>
+                        <TitleInput type="text" ref={titleRef} onChange={e => handleTitleChange(e)} maxLength={24}/>
                     </Li>
                 </Ul>
 
