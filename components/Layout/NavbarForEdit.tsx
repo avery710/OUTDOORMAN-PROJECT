@@ -183,7 +183,7 @@ const TitleInput = styled.input`
     font-weight: 500;
     font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
     height: 26px;
-    width: 160px;
+    width: 200px;
     margin-left: 30px;
 
     &:hover {
