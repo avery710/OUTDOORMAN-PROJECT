@@ -52,7 +52,8 @@ export default function PublishButton({ setPublishOverlay }: any){
             if (docSnap.exists()){
 
                 const data = docSnap.data()
-                const uuid = v4()
+                const uuid = v4().replace(/-/g, '')
+                console.log("uuid -> ", uuid)
 
                 // save to users -> published
                 const userDoc = doc(db, "users", authUser.uid)
