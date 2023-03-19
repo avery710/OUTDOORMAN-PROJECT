@@ -104,6 +104,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
             userInfo,
             published,
         },
+        revalidate: 60,
     }
 }
 
