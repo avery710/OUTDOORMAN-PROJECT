@@ -6,6 +6,7 @@ import { useRouter } from "next/router"
 import { useRef, useState } from "react"
 import styled from "styled-components"
 import Image from "next/image"
+import { v4 } from "uuid"
 
 
 export default function PublishButton({ setPublishOverlay }: any){
@@ -51,15 +52,16 @@ export default function PublishButton({ setPublishOverlay }: any){
             if (docSnap.exists()){
 
                 const data = docSnap.data()
+                const uuid = v4()
 
                 // save to users -> published
                 const userDoc = doc(db, "users", authUser.uid)
-                await setDoc(doc(userDoc, "published", storyId as string), {
+                await setDoc(doc(userDoc, "published", uuid), {
                     data: null,
                 })
 
                 // open a new doc & save details in published -> article uuid
-                const publishedDoc = doc(db, "published", storyId as string)
+                const publishedDoc = doc(db, "published", uuid)
                 await setDoc(publishedDoc, {
                     uniqname: authUser.uniqname,
                     userId: authUser.uid,
@@ -68,7 +70,7 @@ export default function PublishButton({ setPublishOverlay }: any){
                     geoPointLayer: data.geoPointLayer,
                     editorContent: data.editorContent,
                     editorTextContent: data.editorTextContent,
-                    url: (data.title.replace(/\s/g, '-')).concat("-", storyId as string),
+                    url: (data.title.replace(/\s/g, '-')).concat("-", uuid),
                     title: data.title,
                     date: data.date,
                     ms: data.ms,
