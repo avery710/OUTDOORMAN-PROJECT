@@ -221,7 +221,7 @@ export default function NewStoryEdit(){
                 if (drawLayers){
                     drawLayerRef.current.addLayer(drawLayers)
                 }
-            }, 100)
+            }, 500)
         }
         
     }, [EDITOR, MAP])
@@ -259,7 +259,7 @@ export default function NewStoryEdit(){
     return (
         <>
             <Head>
-                <title>new story</title>
+                <title>New story</title>
             </Head>
             {
                 isValid ? (
