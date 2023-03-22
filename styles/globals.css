@@ -207,17 +207,19 @@ i.geo {
 }
 
 .addTextButton {
-    padding: 5px;
+    height: 28px;
+    border-radius: 14px;
     background-color: white;
     border: 1px solid black;
-    border-radius: 3px;
     cursor: pointer;
     font-size: 12px;
     font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
     opacity: 0.7;
+    padding: 0px 8px;
 }
 
 .addTextButton:hover {
     opacity: 1;
+    scale: 0.98;
     transition: all .1s ease-in-out;
 }
