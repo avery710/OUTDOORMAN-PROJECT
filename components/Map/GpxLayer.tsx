@@ -106,7 +106,6 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
                 await updateDoc(docRef, {
                     "gpxLayer" : JSON.stringify(geoLayer)
                 })
-                console.log("gpx added!")
             }
             catch(error){
                 console.log(error)

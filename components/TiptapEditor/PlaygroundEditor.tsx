@@ -58,7 +58,6 @@ const TiptapEditor = ({
     // get editor instance
     useEffect(() => {
         if (editor){
-            console.log("editor -> ", editor)
             setEDITOR(editor)
             
             setTimeout(() => {
@@ -129,8 +128,6 @@ const TiptapEditor = ({
                     
                     if (object.length > 0){
                         if (object[0].descript != geoPoint.descript){
-                            console.log("Marks -> ", Marks)
-                            console.log("geoPoints -> ", geoPoints)
                             result = true
                         }
                     }
@@ -164,7 +161,6 @@ const TiptapEditor = ({
             // save content to db
             editor.on('update', ({ editor }) => {
                 const content = editor.getJSON()
-                // updateDB(content)
             })
         }
 

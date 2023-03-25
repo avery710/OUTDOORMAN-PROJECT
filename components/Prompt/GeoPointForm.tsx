@@ -24,7 +24,6 @@ export default function GeoPointForm({geoPoints, setGeoPoints, setOverlayDisplay
                 descript: descript,
                 uuid: key,
             }
-            console.log(newGeoPoint)
             
             // save input data & add to the public ARRAY
             if (geoPoints){

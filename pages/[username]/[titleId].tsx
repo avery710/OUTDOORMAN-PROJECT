@@ -27,7 +27,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const querySnapshot = await getDocs(collection(db, "published"))
     querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data())
         paths.push({ params: { username: doc.data().uniqname, titleId: doc.data().url }})
 
     })
@@ -40,7 +39,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-    console.log("params -> ", params)
 
     // fetch (CallBack = true) data
     let storyData = {}

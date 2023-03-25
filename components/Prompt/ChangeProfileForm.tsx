@@ -80,7 +80,6 @@ export default function ChangeProfileForm({ setOverlayDisplay, auther, setProfil
 
             if (submitRef.current && files[0]){
                 if (files[0].size / (1024 * 1024) >= 10){
-                    console.log("file size -> ", files[0].size)
                     setWarning(true)
                     submitRef.current.disabled = true
                 }

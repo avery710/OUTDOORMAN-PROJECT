@@ -13,7 +13,6 @@ export default function MapForView({ mapRef, mountains, storyData }: any) {
         if(mapRef.current != null){
             mapRef.current.off()
             mapRef.current.remove()
-            console.log("remove!")
         }
 
         const Map = L.map("map", { attributionControl: false}).setView([23.46999192, 120.9572655], 13)

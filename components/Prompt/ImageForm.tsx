@@ -39,7 +39,6 @@ export default function ImagePrompt({setOverlayDisplay, editor}: any) {
             
             if (submitRef.current && warningRef.current){
                 if (files[0].size / (1024 * 1024) >= 10){
-                    console.log("file size -> ", files[0].size)
                     submitRef.current.disabled = true
                     warningRef.current.style.display = "block"
                 }

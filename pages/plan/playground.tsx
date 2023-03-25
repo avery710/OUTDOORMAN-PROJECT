@@ -4,8 +4,7 @@ import { doc, getDoc } from "firebase/firestore"
 import { GetStaticProps } from "next"
 import { mountDatas } from 'types'
 import NavbarForEdit from 'components/Layout/NavbarForEdit'
-import { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useRef} from 'react'
 import Head from 'next/head'
 
 

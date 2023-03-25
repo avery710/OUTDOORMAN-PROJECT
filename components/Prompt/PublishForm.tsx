@@ -53,7 +53,6 @@ export default function PublishButton({ setPublishOverlay }: any){
 
                 const data = docSnap.data()
                 const uuid = v4().replace(/-/g, '')
-                console.log("uuid -> ", uuid)
 
                 // save to users -> published
                 const userDoc = doc(db, "users", authUser.uid)
@@ -95,7 +94,6 @@ export default function PublishButton({ setPublishOverlay }: any){
 
             if (publishRef.current && files[0]){
                 if (files[0].size / (1024 * 1024) >= 10){
-                    console.log("file size -> ", files[0].size)
                     setWarning(true)
                     publishRef.current.disabled = true
                 }

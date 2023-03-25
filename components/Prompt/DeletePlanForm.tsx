@@ -20,11 +20,9 @@ export default function DeletePlanForm({ setOverlayDisplay, deleteId, list, setL
             // delete in db
             if (path === "plan"){
                 await deleteDoc(doc(db, "users", authUser.uid, "plans", deleteId))
-                console.log("delete")
             }
             else if (path === "draft"){
                 await deleteDoc(doc(db, "users", authUser.uid, "stories-edit", deleteId))
-                console.log("delete")
             }
             
         }

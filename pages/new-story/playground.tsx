@@ -69,8 +69,6 @@ export default function NewStoryEdit(){
 
             if (docSnap.exists()){
 
-                console.log("docSnap.data() -> ", docSnap.data())
-
                 setFetchData(docSnap.data())
 
                 // fetch title
@@ -90,10 +88,6 @@ export default function NewStoryEdit(){
     useEffect(() => {
 
         if (EDITOR && fetchData && MAP){
-
-            console.log("add add")
-
-            console.log("MAP -> ", MAP)
 
             // fetch editor content
             const editorContent = fetchData.editorContent
@@ -156,7 +150,6 @@ export default function NewStoryEdit(){
             let drawLayers: any = null
             let drawBounds = null
             if (fetchDraw){
-                console.log("draw add")
                 drawLayers = L.geoJSON(JSON.parse(fetchDraw),{
                     style: {
                         "color": '#ffff00',
@@ -181,7 +174,7 @@ export default function NewStoryEdit(){
                 if (drawLayers){
                     drawLayerRef.current.addLayer(drawLayers)
                 }
-            }, 100)
+            }, 500)
         }
         
     }, [EDITOR, MAP])

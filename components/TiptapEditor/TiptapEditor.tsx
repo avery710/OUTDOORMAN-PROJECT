@@ -10,9 +10,6 @@ import Placeholder from '@tiptap/extension-placeholder'
 import Image from '@tiptap/extension-image'
 import { GeoLink } from './extensions/GeoLink'
 import { useEffect, useState } from 'react'
-import OverlayPrompt from 'components/Prompt/OverlayPrompt'
-import ImagePrompt from '../Prompt/ImageForm'
-import GeoPointForm from '../Prompt/GeoPointForm'
 import { geoPointArray, geoPointType } from 'types'
 import { useRouter } from 'next/router'
 import { useAuth } from 'hooks/context'
@@ -20,7 +17,7 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from 'lib/firebase'
 import Floatingmenu from './FloatingMenu'
 import Bubblemenu from './BubbleMenu'
-import LinkForm from 'components/Prompt/LinkForm'
+import HardBreak from '@tiptap/extension-hard-break'
 
 
 const TiptapEditor = ({
@@ -34,8 +31,6 @@ const TiptapEditor = ({
     setImageOverlay }: any) => {
 
     const [ Marks, setMarks ] = useState<geoPointArray | null>(null)
-    
-
     const router = useRouter()
     const { storyId } = router.query
     const { authUser } = useAuth()
@@ -47,6 +42,7 @@ const TiptapEditor = ({
             StarterKit,
             Underline,
             Image,
+            HardBreak,
             Link.configure({
                 validate: href => /^https?:\/\//.test(href),
                 autolink: false,
@@ -71,7 +67,6 @@ const TiptapEditor = ({
     // get editor instance
     useEffect(() => {
         if (editor){
-            console.log("editor -> ", editor)
             setEDITOR(editor)
             
             setTimeout(() => {
@@ -142,8 +137,6 @@ const TiptapEditor = ({
                     
                     if (object.length > 0){
                         if (object[0].descript != geoPoint.descript){
-                            console.log("Marks -> ", Marks)
-                            console.log("geoPoints -> ", geoPoints)
                             result = true
                         }
                     }

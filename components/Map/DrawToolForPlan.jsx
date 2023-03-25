@@ -145,8 +145,6 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
         // add eventlistener on popup input field
         popupInput.addEventListener('change', async (e) => {
 
-            console.log("onchange ")
-
             myMap.eachLayer((layer) => {
                 if (layer.feature &&  layer.feature.properties && layer.feature.properties.uuid === uuid){
                     layer.feature.properties.descript = (e.target).value
@@ -167,8 +165,6 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
     }
 
     async function updatedb(){
-
-        console.log("update db! ", FeatureGroupRef.current.toGeoJSON())
 
         if (authUser && authUser.uid && planId){
             try {
