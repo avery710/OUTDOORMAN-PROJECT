@@ -76,7 +76,7 @@ export default function BaseLayerWithoutData({ mountains }: Props){
                 <LayersControl.Overlay checked name='高山 高於3000m'>
                     <GeoJSON 
                         data={mountains.highMountains} 
-                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/map/peak.png')}
+                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/images/map/peak.png')}
                         onEachFeature={(feature, layer) => addPopup(feature, layer)}
                     />
                 </LayersControl.Overlay>
@@ -86,7 +86,7 @@ export default function BaseLayerWithoutData({ mountains }: Props){
                 <LayersControl.Overlay name='中級山 1500-3000m'>
                     <GeoJSON 
                         data={mountains.middleMountains} 
-                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/map/mountain.png')}
+                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/images/map/mountain.png')}
                         onEachFeature={(feature, layer) => addPopup(feature, layer)}
                     />
                 </LayersControl.Overlay>
@@ -96,7 +96,7 @@ export default function BaseLayerWithoutData({ mountains }: Props){
                 <LayersControl.Overlay name='郊山 低於1500m'>
                     <GeoJSON 
                         data={mountains.lowMountains} 
-                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/map/lowMountain.png')}
+                        pointToLayer={(feature, latlng) => adjustMarker(latlng, '/images/map/lowMountain.png')}
                         onEachFeature={(feature, layer) => addPopup(feature, layer)}
                     />
                 </LayersControl.Overlay>
