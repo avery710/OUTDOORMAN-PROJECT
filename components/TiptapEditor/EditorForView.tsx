@@ -7,7 +7,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import Image from '@tiptap/extension-image'
 import { GeoLink } from './extensions/GeoLink'
 import styled from 'styled-components'
-import AutherSection from 'components/Layout/AutherSection'
+import AutherSection from 'components/Common/Card/AutherSection'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from 'lib/firebase'
 

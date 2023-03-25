@@ -1,6 +1,6 @@
 import Header from "./Header"
 import styled from "styled-components"
-import Card from "./Card"
+import Card from "../Common/Card/Card"
 import { storyCardType } from "types"
 
 

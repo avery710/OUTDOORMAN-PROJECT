@@ -9,8 +9,8 @@ import { useRouter } from "next/router"
 import { useAuth } from "hooks/context"
 import styled from "styled-components"
 import Logo from "./Logo"
-import { SignInForm, SignUpForm } from "../Prompt/AuthForms"
-import OverlayPrompt from "components/Prompt/OverlayPrompt"
+import { SignInForm, SignUpForm } from "../Common/Form/AuthForms"
+import OverlayPrompt from "components/Common/OverlayPrompt/OverlayPrompt"
 
 
 export default function NavbarForEdit({ title, isSavingRef, children }: any){

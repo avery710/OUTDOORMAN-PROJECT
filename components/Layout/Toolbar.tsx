@@ -1,4 +1,3 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useAuth } from '../../hooks/context'
 import styled from 'styled-components';
@@ -17,7 +16,8 @@ export default function Toolbar({ visibility }: any) {
         <ToolbarContainer visibility={visibility}>
             <Ul>
                 <Li>
-                    <Link href={`/${authUser?.uniqname}/`}>Profile</Link>
+                    {/* <Link href={`/${authUser?.uniqname}/`}>Profile</Link> */}
+                    <Button onClick={() => window.location.href = `/${authUser?.uniqname}/`}>Profile</Button>
                 </Li>
                 <Li>
                     <Link href="/me/stories">Story drafts</Link>
@@ -78,6 +78,17 @@ const Li = styled.li`
     align-items: center;
     border-bottom: 1px solid rgb(234, 234, 234);
     padding: 20px;
+`
+
+const Button = styled.button`
+    background-color: white;
+    border: none;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0;
+    font-family: 'Montserrat';
+    cursor: pointer;
 `
 
 const SignOutWrapper = styled.div`

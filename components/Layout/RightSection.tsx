@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { recommendCardArray } from 'types'
-import RecommendList from './RecommendList'
+import RecommendList from '../Common/Card/RecommendList'
 
 interface Props {
     recommendList: recommendCardArray

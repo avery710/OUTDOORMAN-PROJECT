@@ -3,7 +3,8 @@ import React, { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 import { autherInfo, recommendCardArray } from 'types'
 import Profile from './Profile'
-import RecommendList from './RecommendList'
+import RecommendList from '../Common/Card/RecommendList'
+import { useRouter } from 'next/router'
 
 
 interface Props {

@@ -1,9 +1,8 @@
 import styled from "styled-components"
 import Header from "./Header"
-import PublishedCard from "./PublishedCard"
+import PublishedCard from "../Common/Card/PublishedCard"
 import { publishCardType, publishCardArray, autherInfo } from "types"
 import { Dispatch, SetStateAction } from "react"
-import { useAuth } from "hooks/context"
 
 interface Props {
     headerTitle: string,

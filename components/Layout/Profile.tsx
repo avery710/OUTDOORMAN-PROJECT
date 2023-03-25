@@ -1,8 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
-import { autherInfo } from 'types'
 import Image from "next/image"
-import { useAuth } from 'hooks/context'
 
 interface Props {
     setOverlayDisplay: Dispatch<SetStateAction<string>>,

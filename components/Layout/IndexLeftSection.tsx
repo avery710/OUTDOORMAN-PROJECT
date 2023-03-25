@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { publishCardArray, publishCardType } from 'types'
-import PublishedCard from './PublishedCard'
+import PublishedCard from '../Common/Card/PublishedCard'
 
 interface Props {
     published: publishCardArray
