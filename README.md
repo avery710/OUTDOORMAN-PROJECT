@@ -18,6 +18,7 @@
 - #### styled-components
 ## Architecture
 - #### Integrated [Leaflet](https://leafletjs.com/) map and [Tiptap](https://tiptap.dev/) text-editor to develop main features
+  ![architecture](https://github.com/avery710/OUTDOORMAN-PROJECT/blob/f7afa7f7cae2a1303bff7a5b7ced05aa58898ee8/public/README/architecture.jpg)
 ## Highlights
 - #### Mark selected texts with geo location
   ![add-geolink](https://github.com/avery710/OUTDOORMAN-PROJECT/blob/f5f7fd34f18631fc126f0513783d0c10b483a836/public/README/demo-geolink.gif)
