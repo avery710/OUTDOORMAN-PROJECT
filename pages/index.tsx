@@ -8,7 +8,8 @@ import { publishCardArray, publishCardType, recommendCardArray, recommendCardTyp
 import RightSection from 'components/Layout/RightSection';
 import IndexLeftSection from 'components/Layout/IndexLeftSection';
 import Head from 'next/head';
-import LandingPage from 'components/Layout/landingPage';
+import LandingSection from 'components/Layout/LandingSection';
+
 
 export async function getStaticProps(){
 
@@ -100,7 +101,7 @@ export default function Home({ recommendArray, publishedArray }: PageProps){
                     <Layout
                         leftComponent={<IndexLeftSection published={publishedArray}/>}
                         rightComponent={<RightSection recommendList={recommendArray}/>}
-                        landingSection={<LandingPage/>}
+                        landingSection={<LandingSection/>}
                     />
                 )
             }
