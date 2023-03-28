@@ -5,11 +5,10 @@ import Layout from '../components/Layout/Layout'
 import { db } from 'lib/firebase'
 import { getDocs, collection } from 'firebase/firestore';
 import { publishCardArray, publishCardType, recommendCardArray, recommendCardType, storyCardArray } from 'types';
-import Image from 'next/image';
-import styled from 'styled-components';
 import RightSection from 'components/Layout/RightSection';
 import IndexLeftSection from 'components/Layout/IndexLeftSection';
 import Head from 'next/head';
+import LandingPage from 'components/Layout/landingPage';
 
 export async function getStaticProps(){
 
@@ -101,58 +100,10 @@ export default function Home({ recommendArray, publishedArray }: PageProps){
                     <Layout
                         leftComponent={<IndexLeftSection published={publishedArray}/>}
                         rightComponent={<RightSection recommendList={recommendArray}/>}
-                        landingSection={
-                            <>
-                            <ImageWrapper>
-                                <Image
-                                    src="/images/landing-page-cover.jpg"
-                                    alt="landing-img"
-                                    fill
-                                    style={{objectFit: "cover", objectPosition: "center"}}
-                                />
-                            </ImageWrapper>
-                            </>
-                        }
+                        landingSection={<LandingPage/>}
                     />
                 )
             }
         </>
     )
 }
-
-
-const ImageWrapper = styled.div`
-    width: 100vw;
-    height: calc(100vh - 65px);
-    position: relative;
-`
-
-const DetailFirst = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    background-color: #1f1f1f;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-`
-
-const DetailSecond = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    background-color: #e8e8e8;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-`
-
-const DetailThird = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    background-color: #1f1f1f;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-`
