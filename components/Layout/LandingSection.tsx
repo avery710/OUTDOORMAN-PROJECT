@@ -15,16 +15,16 @@ export default function LandingPage(){
 
             const windowPos = window.scrollY
 
-            if (sectionOneRef.current && windowPos > 150){
+            if (sectionOneRef.current && windowPos > 450){
                 console.log("add")
                 sectionOneRef.current.style.opacity = "1"
             }
 
-            if (sectionTwoRef.current && windowPos > 200 + 605*0.85 + 150){
+            if (sectionTwoRef.current && windowPos > 450 + 605*0.85 + 170){
                 sectionTwoRef.current.style.opacity = "1"
             }
 
-            if (sectionThreeRef.current && windowPos > 200 + 605*0.85 + 200 + 658*0.85 + 150){
+            if (sectionThreeRef.current && windowPos > 450 + 605*0.85 + 200 + 658*0.85 + 130){
                 sectionThreeRef.current.style.opacity = "1"
             }
         }
@@ -33,7 +33,6 @@ export default function LandingPage(){
         window.addEventListener('scroll', () => handleScroll())
 
         return () => window.removeEventListener('scroll', () => handleScroll())
-        
         
     }, [])
 
@@ -50,57 +49,61 @@ export default function LandingPage(){
 
         <DetailWrapper>
 
-            <DetailSection style={{justifyContent: "flex-start"}} ref={sectionOneRef}>
-                <Image 
-                    src="/gif/gif-1.gif"
-                    alt="gif"
-                    width={1715*0.42}
-                    height={1212*0.42}
-                    
-                />
-                <Details style={{right: "0"}}>
-                    <div style={{width: "100%", height: "70px"}}></div>
-                    <Title>Mark selected texts <br/>with geo location</Title>
+            <DetailSection1 ref={sectionOneRef}>
+                <ImageContainer1>
+                    <Image 
+                        src="/gif/gif-1-black.gif"
+                        alt="gif"
+                        fill
+                        style={{objectFit: "contain", objectPosition: "center"}}
+                    />
+                </ImageContainer1>
+                <Detail1>
+                    <Title>Mark selected texts with geo location</Title>
                     <br/>
                     <Content>
-                        While editing your stories, you can select texts and add geo location just as the way of adding links. The marker with description &#38; location will then show up on the map. Besides, your afterwards modification of texts will be syncing on the map.
+                        While editing your stories, you can select texts and add geo location just as the way of adding links. The marker with description &#38; location will then show up on the map.
                     </Content>
-                </Details>
-            </DetailSection>
+                </Detail1>
+            </DetailSection1>
 
-            <DetailSection style={{justifyContent: "flex-end"}} ref={sectionTwoRef}>
-                <Details style={{left: "0"}}>
-                    <div style={{width: "100%", height: "45px"}}></div>
-                    <Title>Upload GPX file &#38; add waypoint description <br/>to text-editor</Title>
+            <DetailSection2 ref={sectionTwoRef}>
+                <Detail2>
+                    <Title>Add GPX waypoint description to text-editor</Title>
                     <br/>
                     <Content>
-                        After uploading your GPX file to the map, you can add the descriptions of waypoints to the text-editor. Next time when you click on the added text, the map will centralize the corresponding marker.
+                        After uploading your GPX file to the map, you can add the descriptions of waypoints to the text-editor.
                     </Content>
-                </Details>
-                <Image 
-                    src="/gif/gif-2.gif"
-                    alt="gif"
-                    width={1526*0.42}
-                    height={1315*0.42}
-                />
-            </DetailSection>
+                </Detail2>
+                <ImageContainer2>
+                    <Image 
+                        src="/gif/gif-2-black.gif"
+                        alt="gif"
+                        fill
+                        style={{objectFit: "contain", objectPosition: "center"}}
+                    />
+                </ImageContainer2>
+                
+            </DetailSection2>
 
-            <DetailSection ref={sectionThreeRef}>
-                <Details style={{top: "70px", width: "100%", textAlign: "center"}}>
-                    <Title>Read the stories along with map</Title>
+            <DetailSection3 ref={sectionThreeRef}>
+                <Detail3>
+                    <Title>Read stories along with map</Title>
                     <br/>
                     <Content>
-                        While reading the published stories, you can quickly grasp the precise location of <br/>what the texts are describing simply just by clicking the texts with geo-link.
+                        While reading the published stories, you can quickly grasp the precise location of what the texts are describing simply just by clicking the texts with geo-link.
                     </Content>
-                </Details>
-                <div style={{width: "300px", height: "100%"}}></div>
-                <Image 
-                    src="/gif/gif-3.gif"
-                    alt="gif"
-                    width={1534*0.42}
-                    height={1211*0.42}
-                />
-            </DetailSection>
+                </Detail3>
+                <ImageContainer3>
+                    <Image 
+                        src="/gif/gif-3-black.gif"
+                        alt="gif"
+                        fill
+                        style={{objectFit: "contain", objectPosition: "center"}}
+                    />
+                </ImageContainer3>
+                
+            </DetailSection3>
 
         </DetailWrapper>
         </>
@@ -119,33 +122,166 @@ const DetailWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     border-bottom: 1px solid rgba(230, 230, 230, 1);
+    background-color: black;
+    padding-bottom: 100px;
+    
+    @media (min-width: 360px) and (max-width: 1200px) {
+        padding-top: 100px;
+    }
 `
 
 const DetailSection = styled.div`
     width: 80%;
-    max-width: 1200px;
+    max-width: 1100px;
     height: auto;
     background-color: white;
     display: flex;
     align-items: center;
     position: relative;
-    padding-top: 100px;
-    padding-bottom: 100px;
     opacity: 0;
     transition: all 1s ease-in-out;
+    padding-top: 180px;
+    padding-bottom: 100px;
+    background-color: black;
+    color: white;
+
+    @media (min-width: 360px) and (max-width: 1200px) {
+        justify-content: center;
+    }
 `
 
-const Details = styled.div`
-    width: 500px;
+const DetailSection1 = styled(DetailSection)`
+    @media (min-width: 1200px) and (max-width: 2000px) {
+        justify-content: flex-start;
+    }
+`
+
+const DetailSection2 = styled(DetailSection)`
+    @media (min-width: 1200px) and (max-width: 2000px) {
+        justify-content: flex-end;
+    }
+`
+
+const DetailSection3 = styled(DetailSection)`
+    @media (min-width: 1200px) and (max-width: 2000px) {
+        justify-content: center;
+    }
+`
+
+const ImageContainer = styled.div`
+    @media (min-width: 360px) and (max-width: 800px) {
+        width: 100%;
+        height: 100%;
+    }
+
+    z-index: 9;
+`
+
+const ImageContainer1 = styled(ImageContainer)`
+    width: 720px;
+    height: 509px;
+    position: relative;
+`
+
+const ImageContainer2 = styled(ImageContainer)`
+    width: 641px;
+    height: 552px;
+    position: relative;
+`
+
+const ImageContainer3 = styled(ImageContainer)`
+    width: 644px;
+    height: 508px;
+    position: relative;
+`
+
+const Detail1 = styled.div`
     position: absolute;
+
+    @media (min-width: 1400px) and (max-width: 2000px) {
+        right: 50px;
+        max-width: 450px;
+        top: 360px;
+    }
+
+    @media (min-width: 1200px) and (max-width: 1400px) {
+        right: 50px;
+        width: 35%;
+        top: 280px;
+    }
+
+    @media (min-width: 360px) and (max-width: 1200px) {
+        top: 0;
+        left: 0;
+        width: 95%;
+    }
+
+    z-index: 10;
+`
+
+const Detail2 = styled.div`
+    position: absolute;
+    left: 0;
+    
+    @media (min-width: 1400px) and (max-width: 2000px) {
+        top: 350px;
+        max-width: 450px;
+    }
+
+    @media (min-width: 1200px) and (max-width: 1400px) {
+        top: 300px;
+        width: 35%;
+    }
+
+    @media (min-width: 360px) and (max-width: 1200px) {
+        top: 0px;
+        width: 95%;
+    }
+
+    z-index: 10;
+`
+
+const Detail3 = styled.div`
+    position: absolute;
+
+    @media (min-width: 1200px) and (max-width: 2000px) {
+        top: 100px;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 70%;
+    }
+
+    @media (min-width: 360px) and (max-width: 1200px) {
+        top: 0;
+        left: 0;
+        width: 95%;
+    }
+
+    z-index: 10;
 `
 
 const Title = styled.div`
-    font-size: 36px;
     font-weight: 700;
+    width: 93%;
+
+    @media (min-width: 1200px) and (max-width: 2000px) {
+        line-height: 50px;
+        font-size: 36px;
+    }
+
+    @media (min-width: 360px) and (max-width: 1200px) {
+        font-size: 30px;
+    }
 `
 
 const Content = styled.div`
     font-size: 18px;
     line-height: 28px;
+
+    @media (min-width: 360px) and (max-width: 1200px) {
+        font-size: 16px;
+    }
 `
