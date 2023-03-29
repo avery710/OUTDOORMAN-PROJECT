@@ -40,11 +40,27 @@ export default function LandingPage(){
         <>
         <ImageWrapper>
             <Image
-                src="/images/landing-page-cover.jpg"
+                src="/images/landing-img.jpg"
                 alt="landing-img"
                 fill
                 style={{objectFit: "cover", objectPosition: "center"}}
             />
+            <SloganWrapper>
+                <Image
+                    src="/images/slogan.png"
+                    alt="slogan"
+                    fill
+                    style={{objectFit: "cover", objectPosition: "center"}}
+                />
+            </SloganWrapper>
+            <SloganWrapper2>
+                <Image
+                    src="/images/slogan-360.png"
+                    alt="slogan"
+                    fill
+                    style={{objectFit: "cover", objectPosition: "center"}}
+                />
+            </SloganWrapper2>
         </ImageWrapper>
 
         <DetailWrapper>
@@ -114,6 +130,38 @@ const ImageWrapper = styled.div`
     width: 100vw;
     height: calc(100vh - 65px);
     position: relative;
+`
+
+const SloganWrapper = styled.div`
+    width: 572px;
+    height: 99px;
+    position: absolute;
+    top: 30%;
+    left: 10%;
+
+    @media (min-width: 360px) and (max-width: 800px) {
+        display: none;
+    }
+
+    @media (min-width: 800px) and (max-width: 2000px) {
+        display: block;
+    }
+`
+
+const SloganWrapper2 = styled.div`
+    width: 351px;
+    height: 242px;
+    position: absolute;
+    top: 30%;
+    left: 10%;
+
+    @media (min-width: 360px) and (max-width: 800px) {
+        display: block;
+    }
+
+    @media (min-width: 800px) and (max-width: 2000px) {
+        display: none;
+    }
 `
 
 const DetailWrapper = styled.div`
