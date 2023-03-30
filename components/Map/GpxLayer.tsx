@@ -6,7 +6,7 @@ import { db } from "lib/firebase"
 import { myMarkerOptions } from "lib/leafletMarkerOption"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
-import { geoPointArray, wayPointType } from 'types'
+import { wayPointType } from 'types'
 
 // read only gpx layer (control by gpx upload)
 export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRef, map, isSavingRef, gpxtrackGeoJson }: any){
