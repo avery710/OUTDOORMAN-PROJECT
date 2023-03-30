@@ -3,10 +3,10 @@ import { useEffect } from "react"
 export default function FlyToLocation({ location, map }: any){
     
     useEffect(() => {
-        if (location){
+        if (location && map){
             map.flyTo(location, map.getZoom())
         }
-    }, [location])
+    }, [location, map])
 
     return (null)
 }

@@ -7,7 +7,7 @@ interface Props {
 }
 
 
-export default function DraggableMarker({ map, dragLayerRef}: Props) {
+export default function DraggableMarker({ map, dragLayerRef }: Props) {
     useEffect(() => {
         if (map){
             map.on('dblclick', (e) => {

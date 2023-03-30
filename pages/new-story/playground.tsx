@@ -23,6 +23,7 @@ import Head from 'next/head'
 import GeoPointForm from 'components/Common/Form/GeoPointForm'
 import ImagePrompt from 'components/Common/Form/ImageForm'
 import LinkForm from 'components/Common/Form/LinkForm'
+import DraggableMarker from 'components/Map/DraggableMarker'
 
 
 export default function NewStoryEdit(){
@@ -31,7 +32,7 @@ export default function NewStoryEdit(){
     const isSavingRef = useRef<HTMLLIElement>(null)
 
     const [ geoPoints, setGeoPoints ] = useState<geoPointArray | null>(null)
-    const [ location, setLocation ] = useState<LatLngExpression | null>(null)
+    const [ location, setLocation ] = useState<LatLngExpression>([23.27194, 121.00771])
 
     const [ gpxOverlay, setGpxOverlay ] = useState<string>("none")
     const [ gpxtracks, setGpxTracks ] = useState<Array<LatLngExpression> | null>(null)
@@ -47,6 +48,7 @@ export default function NewStoryEdit(){
 
     const gpxLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
     const geoLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
+    const dragLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
     const drawLayerRef = useRef<L.FeatureGroup<any>>(new L.FeatureGroup())
 
     const [ fetchData, setFetchData ] = useState<any | null>(null)
@@ -169,6 +171,10 @@ export default function NewStoryEdit(){
                 MAP.fitBounds(drawBounds)
             }
 
+            const marker = L.marker(location, myMarkerOptions).bindPopup(`<p>Double click the map to get other location</p>`)
+            marker.on('add', e => e.target.openPopup())
+            MAP.addLayer(marker)
+
 
             setTimeout(() => {
                 if (drawLayers){
@@ -199,6 +205,7 @@ export default function NewStoryEdit(){
                 <BaseLayer />
                 <LayerGroup ref={gpxLayerRef}/>
                 <LayerGroup ref={geoLayerRef}/>
+                <LayerGroup ref={dragLayerRef}/>
                 <DrawingToolBar
                     drawLayerRef={drawLayerRef}
                     isSavingRef={isSavingRef}
@@ -237,8 +244,12 @@ export default function NewStoryEdit(){
                                                 layerGroupRef={geoLayerRef}
                                                 map={MAP}
                                             />
-                                            <FlyToLocation 
+                                            {/* <FlyToLocation 
                                                 location={location}
+                                                map={MAP}
+                                            /> */}
+                                            <DraggableMarker
+                                                dragLayerRef={dragLayerRef}
                                                 map={MAP}
                                             />
                                         </>
