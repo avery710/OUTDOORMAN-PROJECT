@@ -139,7 +139,7 @@ const SloganWrapper = styled.div`
     top: 30%;
     left: 10%;
 
-    @media (min-width: 360px) and (max-width: 800px) {
+    @media (min-width: 300px) and (max-width: 800px) {
         display: none;
     }
 
@@ -149,13 +149,13 @@ const SloganWrapper = styled.div`
 `
 
 const SloganWrapper2 = styled.div`
-    width: 351px;
-    height: 242px;
+    width: 281px;
+    height: 194px;
     position: absolute;
     top: 30%;
     left: 10%;
 
-    @media (min-width: 360px) and (max-width: 800px) {
+    @media (min-width: 300px) and (max-width: 800px) {
         display: block;
     }
 

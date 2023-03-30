@@ -53,7 +53,7 @@ const LeftSection = styled.div`
     max-width: 680px;
     min-height: calc(100vh - 65px);
     height: fit-content;
-    width: 100%;
+    width: 95%;
 `
 
 const RightSection = styled.div`

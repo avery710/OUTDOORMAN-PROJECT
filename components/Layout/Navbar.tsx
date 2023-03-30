@@ -52,6 +52,7 @@ export default function Navbar() {
         e.preventDefault()
 
         if (authUser && authUser.uid){
+
             if (action === "plan"){
                 // add a new doc for plan in db
                 const userDoc = doc(db, "users", authUser.uid)
@@ -69,6 +70,7 @@ export default function Navbar() {
                 return
             }
             else if (action === "write"){
+
                 const userDoc = doc(db, "users", authUser.uid)
     
                 const planDoc = await addDoc(collection(userDoc, "stories-edit"), {
@@ -107,16 +109,16 @@ export default function Navbar() {
                         (
                             <>
                                 <Ul>
-                                    <Li>
+                                    <LoginLi>
                                         <WriteButton onClick={e => handleClick(e, "write")}>
                                             <WriteIcon/>Write
                                         </WriteButton>
-                                    </Li>
-                                    <Li>
+                                    </LoginLi>
+                                    <LoginLi>
                                         <PlanButton onClick={e => handleClick(e, "plan")}>
                                             <PlanIcon/>Plan
                                         </PlanButton>
-                                    </Li>
+                                    </LoginLi>
                                     <Li>
                                         <ProfileWrapper ref={toolbarRef}>
                                             { authUser.photoUrl && 
@@ -129,7 +131,6 @@ export default function Navbar() {
                                                 />
                                             }
                                         </ProfileWrapper>
-                                        
                                     </Li>
                                 </Ul>
                                 <Toolbar 
@@ -141,21 +142,21 @@ export default function Navbar() {
                         : (
                             <>
                                 <Ul>
-                                    <Li>
+                                    <PlaygroundLi>
                                         <Playground>
                                             <Link href={'/new-story/playground'} style={{display: "flex", alignItems:" center"}}>
                                                 <WriteIcon/>Write
                                             </Link>
                                         </Playground>
                                         
-                                    </Li>
-                                    <Li>
+                                    </PlaygroundLi>
+                                    <PlaygroundLi>
                                         <Playground>
                                             <Link href={'/plan/playground'} style={{display: "flex", alignItems:" center"}}>
                                                 <PlanIcon/>Plan
                                             </Link>
                                         </Playground>
-                                    </Li>
+                                    </PlaygroundLi>
                                     <Li>
                                         <GetStarted onClick={handleSignUp}>
                                             Get Started
@@ -198,7 +199,6 @@ const NavBar = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1400px;
     width: 95%;
 `
 
@@ -213,6 +213,22 @@ const Ul = styled.ul`
 const Li = styled.li`
     margin: 5px 6px;
     cursor: pointer;
+
+    @media (min-width: 800px) and (max-width: 2000px) {
+        display: inline-block;
+    }
+`
+
+const PlaygroundLi = styled(Li)`
+    @media (min-width: 300px) and (max-width: 800px) {
+        display: none;
+    }
+`
+
+const LoginLi = styled(Li)`
+    @media (min-width: 300px) and (max-width: 800px) {
+        display: none;
+    }
 `
 
 const Playground = styled.div`
