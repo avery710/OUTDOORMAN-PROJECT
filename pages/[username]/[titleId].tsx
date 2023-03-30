@@ -11,6 +11,7 @@ import Navbar from 'components/Layout/NavbarForPublished'
 import Head from 'next/head'
 import OverlayPrompt from 'components/Common/OverlayPrompt/OverlayPrompt'
 import { SignInForm, SignUpForm } from 'components/Common/Form/AuthForms'
+import LoadingEffect from 'components/Common/Loading/LoadingEffect'
 
 
 interface pageProps {
@@ -129,7 +130,11 @@ export default function Published({ storyData, mountains, isLoaded }: pageProps)
 
 
     if (router.isFallback){
-        return <div>Loading...</div>
+        return (
+            <div style={{width: "100vw", height: "100vh"}}>
+                <LoadingEffect/>
+            </div>
+        )
     }
 
 
@@ -162,7 +167,9 @@ export default function Published({ storyData, mountains, isLoaded }: pageProps)
                     </div>
                 </>
                 :
-                <div>loading...</div>
+                <div style={{width: "100vw", height: "100vh"}}>
+                    <LoadingEffect/>
+                </div>
             }
             
             <OverlayPrompt 

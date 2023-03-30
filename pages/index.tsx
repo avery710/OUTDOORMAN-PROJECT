@@ -9,6 +9,7 @@ import RightSection from 'components/Layout/RightSection';
 import IndexLeftSection from 'components/Layout/IndexLeftSection';
 import Head from 'next/head';
 import LandingSection from 'components/Layout/LandingSection';
+import LoadingEffect from 'components/Common/Loading/LoadingEffect';
 
 
 export async function getStaticProps(){
@@ -80,8 +81,9 @@ export default function Home({ recommendArray, publishedArray }: PageProps){
             {
                 loading ? 
                 (   
-                    // add loading effect soon...
-                    <div>loading...</div>
+                    <div style={{width: "100vw", height: "100vh"}}>
+                        <LoadingEffect/>
+                    </div>
                 )
                 : authUser ?
                     authUser.username ?
@@ -94,7 +96,9 @@ export default function Home({ recommendArray, publishedArray }: PageProps){
                         )
                         : (   
                             // login but missing username -> redirect to /set-username page
-                            <div>loading...</div>
+                            <div style={{width: "100vw", height: "100vh"}}>
+                                <LoadingEffect/>
+                            </div>
                         )
                 : ( 
                     // logged out

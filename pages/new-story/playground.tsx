@@ -24,6 +24,7 @@ import GeoPointForm from 'components/Common/Form/GeoPointForm'
 import ImagePrompt from 'components/Common/Form/ImageForm'
 import LinkForm from 'components/Common/Form/LinkForm'
 import DraggableMarker from 'components/Map/DraggableMarker'
+import LoadingEffect from 'components/Common/Loading/LoadingEffect'
 
 
 export default function NewStoryEdit(){
@@ -297,7 +298,9 @@ export default function NewStoryEdit(){
                 )
                 :
                 (
-                    <div>loading...</div>
+                    <div style={{width: "100vw", height: "100vh"}}>
+                        <LoadingEffect/>
+                    </div>
                 )
             }
         </>

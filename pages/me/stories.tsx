@@ -9,6 +9,7 @@ import DeletePlanForm from 'components/Common/Form/DeletePlanForm'
 import MePage from 'components/Layout/MePage'
 import RightSection from 'components/Layout/RightSection'
 import Head from 'next/head'
+import LoadingEffect from 'components/Common/Loading/LoadingEffect'
 
 
 export default function MyStories() {
@@ -104,7 +105,9 @@ export default function MyStories() {
                 )
                 :
                 (
-                    <div>loading...</div>
+                    <div style={{width: "100vw", height: "100vh"}}>
+                        <LoadingEffect/>
+                    </div>
                 )
             }
         </>

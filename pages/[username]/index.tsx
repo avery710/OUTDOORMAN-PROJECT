@@ -12,6 +12,7 @@ import ProfileRightSection from 'components/Layout/ProfileRightSection'
 import ChangeProfileForm from 'components/Common/Form/ChangeProfileForm'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import LoadingEffect from 'components/Common/Loading/LoadingEffect'
 
 
 // generate static pages
@@ -206,7 +207,9 @@ export default function UserPage({ userInfo, published }: PageProps){
                 )
                 :
                 (
-                    <div>loading...</div>
+                    <div style={{width: "100vw", height: "100vh"}}>
+                        <LoadingEffect/>
+                    </div>
                 )
             }
         </>

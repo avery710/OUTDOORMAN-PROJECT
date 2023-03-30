@@ -6,6 +6,7 @@ import { db } from '../../lib/firebase'
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { useAuth } from 'hooks/context'
 import Head from 'next/head'
+import LoadingEffect from 'components/Common/Loading/LoadingEffect'
 
 export default function NewPlan(){
     
@@ -75,7 +76,9 @@ export default function NewPlan(){
                 )
                 :
                 (
-                    <div>loading...</div>
+                    <div style={{width: "100vw", height: "100vh"}}>
+                        <LoadingEffect/>
+                    </div>
                 )
             }
         </>

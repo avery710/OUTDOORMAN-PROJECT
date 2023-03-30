@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/context'
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import Head from 'next/head';
+import LoadingEffect from 'components/Common/Loading/LoadingEffect';
 
 export default function AddUsername() {
     // const [ formVal, setFormVal ] = useState<string>("")
@@ -68,14 +69,16 @@ export default function AddUsername() {
             {
                 loading ? 
                     (
-                        // add loading effect soon...
-                        <div>loading...</div>
+                        <div style={{width: "100vw", height: "100vh"}}>
+                            <LoadingEffect/>
+                        </div>
                     )
                     : authUser ?
                         authUser.username ?
                             (
-                                // add loading effect soon...
-                                <div>loading...</div>
+                                <div style={{width: "100vw", height: "100vh"}}>
+                                    <LoadingEffect/>
+                                </div>
                             )
                             : (
                                 // if no username -> fill in the form
@@ -92,8 +95,9 @@ export default function AddUsername() {
                                 
                             )   
                         : (
-                            // add loading effect soon...
-                            <div>loading...</div>
+                            <div style={{width: "100vw", height: "100vh"}}>
+                                <LoadingEffect/>
+                            </div>
                         )
             }
         </>

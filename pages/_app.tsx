@@ -5,6 +5,7 @@ import { AuthUserProvider } from 'hooks/context'
 import { useRouter } from 'next/router'
 import { useAuth } from 'hooks/context'
 import { useEffect } from 'react'
+import LoadingEffect from 'components/Common/Loading/LoadingEffect'
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter()
@@ -37,7 +38,9 @@ function LoginOrNot({ Component, pageProps }: any){
 
     return loading ?
         (
-            <div>loading...</div>
+            <div style={{width: "100vw", height: "100vh"}}>
+                <LoadingEffect/>
+            </div>
         )
         : authUser ?
             (
@@ -45,6 +48,8 @@ function LoginOrNot({ Component, pageProps }: any){
             )
             :
             (
-                <div>loading...</div>
+                <div style={{width: "100vw", height: "100vh"}}>
+                    <LoadingEffect/>
+                </div>
             )
 }
