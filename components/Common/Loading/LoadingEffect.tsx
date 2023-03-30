@@ -9,8 +9,9 @@ export default function LoadingEffect(){
                 <Image
                     src="/images/loading-effect.png"
                     alt="loading-image"
-                    fill
-                    style={{objectFit: "contain", objectPosition: "center"}}
+                    width={140}
+                    height={30}
+                    // style={{objectFit: "contain", objectPosition: "center"}}
                 />
             </ImageWrapper>
         </Wrapper>
