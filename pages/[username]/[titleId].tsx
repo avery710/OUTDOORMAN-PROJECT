@@ -5,7 +5,7 @@ import { mountDatas, storyDataType } from 'types'
 import { useRouter } from 'next/router'
 import styles from '../../styles/newStory.module.css'
 import EditorForView from 'components/TiptapEditor/EditorForView'
-import { Key, useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Navbar from 'components/Layout/NavbarForPublished'
 import Head from 'next/head'
@@ -109,18 +109,17 @@ export default function Published({ storyData, mountains }: pageProps) {
     const [ signInForm, setSignInForm ] = useState<boolean>(false)
 
     const MapForView = useMemo(() => {
-
         return dynamic(
             () => import('../../components/Map/MapForView'), 
             { ssr: false }
         )
-
     }, [])
 
 
     if (router.isFallback){
         return <div>Loading...</div>
     }
+
 
     return (
         <>

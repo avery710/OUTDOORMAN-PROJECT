@@ -33,8 +33,12 @@ export default function EditorForView({ editorContent, title, mapRef, userId, da
                 ]
             )
 
+            const paddingBottom = document.createElement("div")
+            paddingBottom.className = "paddingBottom"
+
             if (divRef.current){
                 divRef.current.innerHTML = html
+                divRef.current.appendChild(paddingBottom)
             }
 
             setTimeout(() => {
