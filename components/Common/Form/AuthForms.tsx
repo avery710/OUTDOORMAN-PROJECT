@@ -99,4 +99,5 @@ const ToggleButton = styled.button`
     font-weight: 500;
     font-size: 14px;
     cursor: pointer;
+    font-family: 'Montserrat', 'Noto Sans TC', sans-serif;
 `
