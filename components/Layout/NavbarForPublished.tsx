@@ -2,8 +2,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import Toolbar from './Toolbar'
-import OverlayPrompt from '../Common/OverlayPrompt/OverlayPrompt'
-import { SignInForm, SignUpForm } from '../Common/Form/AuthForms'
 import { useAuth } from 'hooks/context'
 import { db } from '../../lib/firebase'
 import { doc, addDoc, collection } from "firebase/firestore"
@@ -12,12 +10,10 @@ import styled from 'styled-components'
 import Logo from './Logo'
 
 
-export default function Navbar() {
+export default function Navbar({ setOverlayDisplay, setSignInForm }: any){
 
     const { authUser } = useAuth()
     const router = useRouter()
-    const [ overlayDisplay, setOverlayDisplay ] = useState<string>("none")
-    const [ signInForm, setSignInForm ] = useState<boolean>(false)
     const [ toolbarVisibility, setToolbarVisibility ] = useState<string>("hidden")
     const toolbarRef = useRef<HTMLDivElement>(null)
 
@@ -42,10 +38,6 @@ export default function Navbar() {
             }
         })
     }, [])
-
-
-    // user signed out -> write-playground / plan-playground / get-started
-    // user signed in -> write / plan / profile
 
 
     async function handleClick(e: React.MouseEvent<HTMLButtonElement>, action: string){
@@ -163,16 +155,6 @@ export default function Navbar() {
                                         </GetStarted>
                                     </Li>
                                 </Ul> 
-
-                                <OverlayPrompt 
-                                    overlayDisplay={overlayDisplay} 
-                                    setOverlayDisplay={setOverlayDisplay}
-                                >
-                                    { signInForm ? 
-                                        <SignInForm setSignInForm={setSignInForm}/>
-                                        : <SignUpForm setSignInForm={setSignInForm}/> 
-                                    }
-                                </OverlayPrompt>
                             </>
                         )
                     }

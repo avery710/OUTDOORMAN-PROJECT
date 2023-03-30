@@ -3,13 +3,14 @@ import { db } from '../../lib/firebase'
 import { doc, collection, getDocs, getDoc  } from "firebase/firestore"
 import { mountDatas, storyDataType } from 'types'
 import { useRouter } from 'next/router'
-import Layout from 'components/Layout/Layout'
 import styles from '../../styles/newStory.module.css'
 import EditorForView from 'components/TiptapEditor/EditorForView'
-import { useRef } from 'react'
+import { Key, useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
-import Navbar from 'components/Layout/Navbar'
+import Navbar from 'components/Layout/NavbarForPublished'
 import Head from 'next/head'
+import OverlayPrompt from 'components/Common/OverlayPrompt/OverlayPrompt'
+import { SignInForm, SignUpForm } from 'components/Common/Form/AuthForms'
 
 
 interface pageProps {
@@ -104,25 +105,29 @@ export default function Published({ storyData, mountains }: pageProps) {
 
     const router = useRouter()
     const mapRef = useRef<any | null>(null)
+    const [ overlayDisplay, setOverlayDisplay ] = useState<string>("none")
+    const [ signInForm, setSignInForm ] = useState<boolean>(false)
+
+    const MapForView = useMemo(() => {
+
+        return dynamic(
+            () => import('../../components/Map/MapForView'), 
+            { ssr: false }
+        )
+
+    }, [])
 
 
     if (router.isFallback){
         return <div>Loading...</div>
     }
 
-
-    const MapForView = dynamic(
-        () => import('../../components/Map/MapForView'), 
-        { ssr: false }
-    )
-
-
     return (
         <>
             <Head>
                 <title>{storyData.title}</title>
             </Head>
-            <Navbar/>
+            <Navbar setOverlayDisplay={setOverlayDisplay} setSignInForm={setSignInForm}/>
             <div className={styles.container}>
                 <div className="map-wrapper" style={{height: "100vh", width: "50vw"}}>
                     <MapForView 
@@ -142,6 +147,16 @@ export default function Published({ storyData, mountains }: pageProps) {
                     />
                 </div>
             </div>
+
+            <OverlayPrompt 
+                overlayDisplay={overlayDisplay} 
+                setOverlayDisplay={setOverlayDisplay}
+            >
+                { signInForm ? 
+                    <SignInForm setSignInForm={setSignInForm}/>
+                    : <SignUpForm setSignInForm={setSignInForm}/> 
+                }
+            </OverlayPrompt>
         </>
     )
 }
