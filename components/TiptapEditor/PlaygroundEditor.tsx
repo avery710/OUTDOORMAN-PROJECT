@@ -6,9 +6,6 @@ import Placeholder from '@tiptap/extension-placeholder'
 import Image from '@tiptap/extension-image'
 import { GeoLink } from './extensions/GeoLink'
 import { useEffect, useState } from 'react'
-import OverlayPrompt from 'components/Common/OverlayPrompt/OverlayPrompt'
-import ImagePrompt from '../Common/Form/ImageForm'
-import GeoPointForm from '../Common/Form/GeoPointForm'
 import { geoPointArray, geoPointType } from 'types'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from 'lib/firebase'
@@ -21,7 +18,6 @@ const TiptapEditor = ({
     setGeoPoints, 
     setLocation, 
     setEDITOR, 
-    isSavingRef,
     setGeoOverlay,
     setLinkOverlay,
     setImageOverlay }: any) => {
@@ -51,7 +47,8 @@ const TiptapEditor = ({
                     return 'Tell your story...'
                 },
             })
-        ]
+        ],
+        autofocus: true,
     })
 
     
@@ -139,32 +136,6 @@ const TiptapEditor = ({
             }
         }
     }, [geoPoints, Marks])
-    
-
-    // save content to db
-    useEffect(() => {
-        
-        async function updateDB(content: any){
-            isSavingRef.current.textContent = "isSaving"
-
-            const docRef = doc(db, "playground", "write")
-            await updateDoc(docRef, {
-                "editorContent" : content
-            })
-
-            setTimeout(() => {
-                isSavingRef.current.textContent = "Saved"
-            }, 800)
-        }
-        
-        if (editor){
-            // save content to db
-            editor.on('update', ({ editor }) => {
-                const content = editor.getJSON()
-            })
-        }
-
-    }, [editor])
 
 
     return (
