@@ -33,7 +33,7 @@ export default function NewStoryEdit(){
     const isSavingRef = useRef<HTMLLIElement>(null)
 
     const [ geoPoints, setGeoPoints ] = useState<geoPointArray | null>(null)
-    const [ location, setLocation ] = useState<LatLngExpression>([23.27194, 121.00771])
+    const [ location, setLocation ] = useState<LatLngExpression | null>(null)
 
     const [ gpxOverlay, setGpxOverlay ] = useState<string>("none")
     const [ gpxtracks, setGpxTracks ] = useState<Array<LatLngExpression> | null>(null)
@@ -172,7 +172,7 @@ export default function NewStoryEdit(){
                 MAP.fitBounds(drawBounds)
             }
 
-            const marker = L.marker(location, myMarkerOptions).bindPopup(`<p>Double click the map to get other location</p>`)
+            const marker = L.marker([23.27194, 121.00771], myMarkerOptions).bindPopup(`<p>Double click the map to get other location</p>`)
             marker.on('add', e => e.target.openPopup())
             MAP.addLayer(marker)
 
@@ -245,10 +245,10 @@ export default function NewStoryEdit(){
                                                 layerGroupRef={geoLayerRef}
                                                 map={MAP}
                                             />
-                                            {/* <FlyToLocation 
+                                            <FlyToLocation 
                                                 location={location}
                                                 map={MAP}
-                                            /> */}
+                                            />
                                             <DraggableMarker
                                                 dragLayerRef={dragLayerRef}
                                                 map={MAP}
