@@ -5,7 +5,7 @@ import { mountDatas, storyDataType } from 'types'
 import { useRouter } from 'next/router'
 import styles from '../../styles/newStory.module.css'
 import EditorForView from 'components/TiptapEditor/EditorForView'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Navbar from 'components/Layout/NavbarForPublished'
 import Head from 'next/head'
@@ -16,6 +16,7 @@ import { SignInForm, SignUpForm } from 'components/Common/Form/AuthForms'
 interface pageProps {
     storyData: storyDataType,
     mountains: mountDatas,
+    isLoaded: boolean
 }
 
 
@@ -90,29 +91,40 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     catch (error){
         console.log(error)
     }
-
+    
+    let isLoaded = false
     
     return {
         props: {
             storyData,
             mountains,
+            isLoaded,
         },
     }
 }
 
 
-export default function Published({ storyData, mountains }: pageProps) {
+export default function Published({ storyData, mountains, isLoaded }: pageProps) {
 
     const router = useRouter()
     const mapRef = useRef<any | null>(null)
     const [ overlayDisplay, setOverlayDisplay ] = useState<string>("none")
     const [ signInForm, setSignInForm ] = useState<boolean>(false)
+    const [ Loaded, setLoaded ] = useState<boolean>(isLoaded)
 
+    
     const MapForView = useMemo(() => {
         return dynamic(
             () => import('../../components/Map/MapForView'), 
             { ssr: false }
         )
+    }, [])
+
+
+    useEffect(() => {
+        setTimeout(() => {
+            setLoaded(true)
+        }, 1000)
     }, [])
 
 
@@ -122,31 +134,37 @@ export default function Published({ storyData, mountains }: pageProps) {
 
 
     return (
-        <>
-            <Head>
-                <title>{storyData.title}</title>
-            </Head>
-            <Navbar setOverlayDisplay={setOverlayDisplay} setSignInForm={setSignInForm}/>
-            <div className={styles.container}>
-                <div className="map-wrapper" style={{height: "100vh", width: "50vw"}}>
-                    <MapForView 
-                        mapRef={mapRef} 
-                        mountains={mountains}
-                        storyData={storyData}
-                    />
-                </div>
+        <>{ Loaded ? 
+                <>
+                    <Head>
+                        <title>{storyData.title}</title>
+                    </Head>
+                    <Navbar setOverlayDisplay={setOverlayDisplay} setSignInForm={setSignInForm}/>
 
-                <div className={styles.editor}>
-                    <EditorForView 
-                        editorContent={storyData.editorContent} 
-                        title={storyData.title}
-                        mapRef={mapRef}
-                        userId={storyData.userId}
-                        date={storyData.date}
-                    />
-                </div>
-            </div>
+                    <div className={styles.container}>
+                        <div className="map-wrapper" style={{height: "100vh", width: "50vw"}}>
+                            <MapForView 
+                                mapRef={mapRef} 
+                                mountains={mountains}
+                                storyData={storyData}
+                            />
+                        </div>
 
+                        <div className={styles.editor}>
+                            <EditorForView 
+                                editorContent={storyData.editorContent} 
+                                title={storyData.title}
+                                mapRef={mapRef}
+                                userId={storyData.userId}
+                                date={storyData.date}
+                            />
+                        </div>
+                    </div>
+                </>
+                :
+                <div>loading...</div>
+            }
+            
             <OverlayPrompt 
                 overlayDisplay={overlayDisplay} 
                 setOverlayDisplay={setOverlayDisplay}
