@@ -25,6 +25,7 @@ import ImagePrompt from 'components/Common/Form/ImageForm'
 import LinkForm from 'components/Common/Form/LinkForm'
 import DraggableMarker from 'components/Map/DraggableMarker'
 import LoadingEffect from 'components/Common/Loading/LoadingEffect'
+import PlaygroundForm from 'components/Common/Form/PlaygroundForm'
 
 
 export default function NewStoryEdit(){
@@ -46,6 +47,7 @@ export default function NewStoryEdit(){
     const [ ImageOverlay, setImageOverlay ] = useState<string>("none")
     const [ GeoOverlay, setGeoOverlay ] = useState<string>("none")
     const [ LinkOverlay, setLinkOverlay ] = useState<string>("none")
+    const [ PlaygroundOverlay, setPlaygroundOverlay ] = useState<string>("flex")
 
     const gpxLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
     const geoLayerRef = useRef<L.LayerGroup<any>>(new L.LayerGroup())
@@ -292,6 +294,10 @@ export default function NewStoryEdit(){
             
                             <OverlayPrompt overlayDisplay={LinkOverlay} setOverlayDisplay={setLinkOverlay}>
                                 <LinkForm setOverlayDisplay={setLinkOverlay} editor={EDITOR}/>
+                            </OverlayPrompt>
+
+                            <OverlayPrompt overlayDisplay={PlaygroundOverlay} setOverlayDisplay={setPlaygroundOverlay}>
+                                <PlaygroundForm />
                             </OverlayPrompt>
                         </div>
                     </>
