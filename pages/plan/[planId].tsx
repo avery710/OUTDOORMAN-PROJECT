@@ -7,6 +7,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { useAuth } from 'hooks/context'
 import Head from 'next/head'
 import LoadingEffect from 'components/Common/Loading/LoadingEffect'
+import styled from 'styled-components'
 
 export default function NewPlan(){
     
@@ -69,18 +70,21 @@ export default function NewPlan(){
                 (
                     <>
                         <NavbarForEdit title={title} isSavingRef={isSavingRef}/>
-                        <div style={{ height: "calc(100vh - 60px)", width: "100vw" }}>
+                        <MapWrapper>
                             <MapForPlan geoJsonData={geoJsonData} isSavingRef={isSavingRef}/>
-                        </div>
+                        </MapWrapper>
                     </>
                 )
                 :
                 (
-                    <div style={{width: "100vw", height: "100vh"}}>
-                        <LoadingEffect/>
-                    </div>
+                    <LoadingEffect/>
                 )
             }
         </>
     )
 }
+
+const MapWrapper = styled.div`
+    height: calc(100vh - 60px);
+    width: 100vw
+`

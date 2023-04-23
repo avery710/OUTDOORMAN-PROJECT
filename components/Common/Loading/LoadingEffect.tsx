@@ -11,7 +11,6 @@ export default function LoadingEffect(){
                     alt="loading-image"
                     width={140}
                     height={30}
-                    // style={{objectFit: "contain", objectPosition: "center"}}
                 />
             </ImageWrapper>
         </Wrapper>
@@ -19,8 +18,8 @@ export default function LoadingEffect(){
 }
 
 const Wrapper = styled.div`
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;

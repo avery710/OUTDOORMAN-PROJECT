@@ -131,11 +131,7 @@ export default function Published({ storyData, mountains, isLoaded }: pageProps)
 
 
     if (router.isFallback){
-        return (
-            <div style={{width: "100vw", height: "100vh"}}>
-                <LoadingEffect/>
-            </div>
-        )
+        return (<LoadingEffect/>)
     }
 
 
@@ -168,9 +164,7 @@ export default function Published({ storyData, mountains, isLoaded }: pageProps)
                     </div>
                 </>
                 :
-                <div style={{width: "100vw", height: "100vh"}}>
-                    <LoadingEffect/>
-                </div>
+                <LoadingEffect/>
             }
             
             <OverlayPrompt 

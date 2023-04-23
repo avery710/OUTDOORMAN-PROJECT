@@ -10,6 +10,7 @@ import MePage from 'components/Layout/MePage'
 import RightSection from 'components/Layout/RightSection'
 import Head from 'next/head'
 import LoadingEffect from 'components/Common/Loading/LoadingEffect'
+import styled from 'styled-components'
 
 
 export default function MyStories() {
@@ -105,11 +106,14 @@ export default function MyStories() {
                 )
                 :
                 (
-                    <div style={{width: "100vw", height: "100vh"}}>
-                        <LoadingEffect/>
-                    </div>
+                    <LoadingEffect/>
                 )
             }
         </>
     )
 }
+
+const LoadingWrapper = styled.div`
+    width: 100vw;
+    height: 100vh;
+`

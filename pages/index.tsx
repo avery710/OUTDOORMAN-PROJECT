@@ -1,5 +1,5 @@
 import { useAuth } from 'hooks/context'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout/Layout'
 import { db } from 'lib/firebase'
@@ -10,6 +10,7 @@ import IndexLeftSection from 'components/Layout/IndexLeftSection';
 import Head from 'next/head';
 import LandingSection from 'components/Layout/LandingSection';
 import LoadingEffect from 'components/Common/Loading/LoadingEffect';
+import styled from 'styled-components';
 
 
 export async function getStaticProps(){
@@ -81,9 +82,7 @@ export default function Home({ recommendArray, publishedArray }: PageProps){
             {
                 loading ? 
                 (   
-                    <div style={{width: "100vw", height: "100vh"}}>
-                        <LoadingEffect/>
-                    </div>
+                    <LoadingEffect/>
                 )
                 : authUser ?
                     authUser.username ?
@@ -96,9 +95,7 @@ export default function Home({ recommendArray, publishedArray }: PageProps){
                         )
                         : (   
                             // login but missing username -> redirect to /set-username page
-                            <div style={{width: "100vw", height: "100vh"}}>
-                                <LoadingEffect/>
-                            </div>
+                            <LoadingEffect/>
                         )
                 : ( 
                     // logged out

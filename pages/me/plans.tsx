@@ -10,6 +10,7 @@ import MePage from 'components/Layout/MePage'
 import RightSection from 'components/Layout/RightSection'
 import Head from 'next/head'
 import LoadingEffect from 'components/Common/Loading/LoadingEffect'
+import styled from 'styled-components'
 
 
 export default function MyPlans(){
@@ -103,9 +104,7 @@ export default function MyPlans(){
                 )
                 :
                 (
-                    <div style={{width: "100vw", height: "100vh"}}>
-                        <LoadingEffect/>
-                    </div>
+                    <LoadingEffect/>
                 )
             }
         </>

@@ -50,21 +50,17 @@ export default function AddUsername(){
     return (
         <>
             <Head>
-                <title>Set username</title>
+                <title>Set Username</title>
             </Head>
             {
                 loading ? 
                     (
-                        <div style={{width: "100vw", height: "100vh"}}>
-                            <LoadingEffect/>
-                        </div>
+                        <LoadingEffect/>
                     )
                     : authUser ?
                         authUser.username ?
                             (
-                                <div style={{width: "100vw", height: "100vh"}}>
-                                    <LoadingEffect/>
-                                </div>
+                                <LoadingEffect/>
                             )
                             : (
                                 // if no username -> fill in the form
@@ -81,9 +77,7 @@ export default function AddUsername(){
                                 
                             )   
                         : (
-                            <div style={{width: "100vw", height: "100vh"}}>
-                                <LoadingEffect/>
-                            </div>
+                            <LoadingEffect/>
                         )
             }
         </>

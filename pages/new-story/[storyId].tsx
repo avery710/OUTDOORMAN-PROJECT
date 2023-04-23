@@ -29,6 +29,7 @@ import ImagePrompt from 'components/Common/Form/ImageForm'
 import LinkForm from 'components/Common/Form/LinkForm'
 import Head from 'next/head'
 import LoadingEffect from 'components/Common/Loading/LoadingEffect'
+import styled from 'styled-components'
 
 
 export default function NewStoryEdit(){
@@ -257,7 +258,7 @@ export default function NewStoryEdit(){
             </Head>
             {
                 isValid ? (
-                    <div style={{position: "relative"}}>
+                    <Wrapper>
                         <NavbarForEdit title={title} isSavingRef={isSavingRef}>
                             <PublishButton setPublishOverlay={setPublishOverlay}/>
                         </NavbarForEdit>
@@ -333,15 +334,17 @@ export default function NewStoryEdit(){
                                 <LinkForm setOverlayDisplay={setLinkOverlay} editor={EDITOR}/>
                             </OverlayPrompt>
                         </div>
-                    </div>
+                    </Wrapper>
                 )
                 :
                 (
-                    <div style={{width: "100vw", height: "100vh"}}>
-                        <LoadingEffect/>
-                    </div>
+                    <LoadingEffect/>
                 )
             }
         </>
     )
 }
+
+const Wrapper = styled.div`
+    position: relative;
+`

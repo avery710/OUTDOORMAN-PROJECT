@@ -26,6 +26,7 @@ import LinkForm from 'components/Common/Form/LinkForm'
 import DraggableMarker from 'components/Map/DraggableMarker'
 import LoadingEffect from 'components/Common/Loading/LoadingEffect'
 import PlaygroundForm from 'components/Common/Form/PlaygroundForm'
+import styled from 'styled-components'
 
 
 export default function NewStoryEdit(){
@@ -297,9 +298,7 @@ export default function NewStoryEdit(){
                 )
                 :
                 (
-                    <div style={{width: "100vw", height: "100vh"}}>
-                        <LoadingEffect/>
-                    </div>
+                    <LoadingEffect/>
                 )
             }
         </>

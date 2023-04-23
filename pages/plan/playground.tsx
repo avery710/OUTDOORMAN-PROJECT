@@ -6,6 +6,7 @@ import { mountDatas } from 'types'
 import NavbarForEdit from 'components/Layout/NavbarForEdit'
 import { useRef} from 'react'
 import Head from 'next/head'
+import styled from 'styled-components'
 
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -89,13 +90,18 @@ export default function PlaygroundPlanPage({ storyData, mountains }: Props){
                 <title>Plan Playground</title>
             </Head>
             <NavbarForEdit title={storyData.title} isSavingRef={isSavingRef} />
-            <div style={{ height: "calc(100vh - 60px)", width: "100vw" }}>
+            <MapWrapper>
                 <MapForPlan 
                     geoJsonData={storyData.geoJsonData} 
                     mountains={mountains}
                     isSavingRef={isSavingRef}
                 />
-            </div>
+            </MapWrapper>
         </>
     )
 }
+
+const MapWrapper = styled.div`
+    height: calc(100vh - 60px);
+    width: 100vw;
+`

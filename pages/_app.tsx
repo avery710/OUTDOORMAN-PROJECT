@@ -38,9 +38,7 @@ function LoginOrNot({ Component, pageProps }: any){
 
     return loading ?
         (
-            <div style={{width: "100vw", height: "100vh"}}>
-                <LoadingEffect/>
-            </div>
+            <LoadingEffect/>
         )
         : authUser ?
             (
@@ -48,8 +46,6 @@ function LoginOrNot({ Component, pageProps }: any){
             )
             :
             (
-                <div style={{width: "100vw", height: "100vh"}}>
-                    <LoadingEffect/>
-                </div>
+                <LoadingEffect/>
             )
 }

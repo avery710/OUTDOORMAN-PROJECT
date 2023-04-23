@@ -207,9 +207,7 @@ export default function UserPage({ userInfo, published }: PageProps){
                 )
                 :
                 (
-                    <div style={{width: "100vw", height: "100vh"}}>
-                        <LoadingEffect/>
-                    </div>
+                    <LoadingEffect/>
                 )
             }
         </>
