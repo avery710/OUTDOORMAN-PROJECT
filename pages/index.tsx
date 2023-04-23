@@ -49,7 +49,7 @@ export async function getStaticProps(){
             recommendArray,
             publishedArray,
         },
-        revalidate: 60,
+        revalidate: 5,
     }
 }
 
