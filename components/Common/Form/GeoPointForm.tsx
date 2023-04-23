@@ -1,42 +1,54 @@
-import { useRef } from 'react'
-import styled from 'styled-components';
-import { geoPointType } from 'types'
-import { v4 as uuidv4 } from 'uuid';
+import { Editor } from '@tiptap/react'
+import { Dispatch, SetStateAction, useRef } from 'react'
+import styled from 'styled-components'
+import { geoPointArray, geoPointType } from 'types'
+import { v4 as uuidv4 } from 'uuid'
 
-export default function GeoPointForm({geoPoints, setGeoPoints, setOverlayDisplay, editor}: any) {
+interface Props {
+    geoPoints: geoPointArray | null, 
+    setGeoPoints: Dispatch<SetStateAction<geoPointArray | null>>, 
+    setOverlayDisplay: Dispatch<SetStateAction<string>>, 
+    editor: Editor | null
+}
+
+
+export default function GeoPointForm({geoPoints, setGeoPoints, setOverlayDisplay, editor}: Props) {
     const latRef = useRef<HTMLInputElement | null>(null)
     const lngRef = useRef<HTMLInputElement | null>(null)
 
     function handleSubmit(e: React.FormEvent<HTMLFormElement>){
+
         e.preventDefault()
 
-        const lat = latRef.current?.value
-        const lng = lngRef.current?.value
-        const {from, to} = editor.view.state.selection
-        const descript = editor.state.doc.textBetween(from, to, '')
-        const key = uuidv4()
+        if (editor){
+            const lat = latRef.current?.value
+            const lng = lngRef.current?.value
+            const {from, to} = editor.view.state.selection
+            const descript = editor.state.doc.textBetween(from, to, '')
+            const key = uuidv4()
 
 
-        if (lat && lng && descript){
-            const newGeoPoint: geoPointType = {
-                lat: Number(lat),
-                lng: Number(lng),
-                descript: descript,
-                uuid: key,
-            }
-            
-            // save input data & add to the public ARRAY
-            if (geoPoints){
-                setGeoPoints([...geoPoints, newGeoPoint])
-            }
-            else {
-                setGeoPoints([newGeoPoint])
-            }
-            
-            editor.chain().focus().setGeoLink(newGeoPoint).run()
+            if (lat && lng && descript){
+                const newGeoPoint: geoPointType = {
+                    lat: Number(lat),
+                    lng: Number(lng),
+                    descript: descript,
+                    uuid: key,
+                }
+                
+                // save input data & add to the public ARRAY
+                if (geoPoints){
+                    setGeoPoints([...geoPoints, newGeoPoint])
+                }
+                else {
+                    setGeoPoints([newGeoPoint])
+                }
+                
+                editor.chain().focus().setGeoLink(newGeoPoint).run()
 
-            // set overlay prompt disappear
-            setOverlayDisplay("none")
+                // set overlay prompt disappear
+                setOverlayDisplay("none")
+            }
         }
     }
 

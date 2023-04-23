@@ -1,23 +1,35 @@
+import { Dispatch, SetStateAction } from 'react'
 import styled from 'styled-components'
 
-export default function DeleteTooltip({ tooltipDisplay, path, setOverlayDisplay, setDeleteId, uuid }: any) {
+interface Props {
+    tooltipDisplay: boolean,
+    path: string, 
+    setOverlayDisplay: Dispatch<SetStateAction<string>> | null, 
+    setDeleteId: Dispatch<SetStateAction<string>> | null, 
+    uuid: string,
+}
+
+export default function DeleteTooltip({ tooltipDisplay, path, setOverlayDisplay, setDeleteId, uuid }: Props) {
 
     function handleClick(){
-        setOverlayDisplay("flex")
-        setDeleteId(uuid)
+        if (setOverlayDisplay && setDeleteId){
+            setOverlayDisplay("flex")
+            setDeleteId(uuid)
+        }   
     }
 
-    return tooltipDisplay && (
-        <>
-            <Tooltip>
-                <DeleteButton onClick={handleClick}>
-                    Delete {path}
-                </DeleteButton>
-            </Tooltip>
-            <Triangle/>
-            <TriangleBorder />
-        </>
-    )
+    return tooltipDisplay ? 
+        (   <>
+                <Tooltip>
+                    <DeleteButton onClick={handleClick}>
+                        Delete {path}
+                    </DeleteButton>
+                </Tooltip>
+                <Triangle/>
+                <TriangleBorder />
+            </>
+        ):
+        (null)
 }
 
 const Tooltip = styled.div`

@@ -12,6 +12,7 @@ import Head from 'next/head'
 import OverlayPrompt from 'components/Common/OverlayPrompt/OverlayPrompt'
 import { SignInForm, SignUpForm } from 'components/Common/Form/AuthForms'
 import LoadingEffect from 'components/Common/Loading/LoadingEffect'
+import L from 'leaflet'
 
 
 interface pageProps {
@@ -108,7 +109,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 export default function Published({ storyData, mountains, isLoaded }: pageProps) {
 
     const router = useRouter()
-    const mapRef = useRef<any | null>(null)
+    const mapRef = useRef<L.DrawMap | null>(null)
     const [ overlayDisplay, setOverlayDisplay ] = useState<string>("none")
     const [ signInForm, setSignInForm ] = useState<boolean>(false)
     const [ Loaded, setLoaded ] = useState<boolean>(isLoaded)

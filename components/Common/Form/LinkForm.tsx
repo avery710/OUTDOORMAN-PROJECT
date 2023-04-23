@@ -1,7 +1,13 @@
-import { useRef } from "react"
+import { Editor } from "@tiptap/react"
+import { Dispatch, SetStateAction, useRef } from "react"
 import styled from "styled-components"
 
-export default function LinkForm({ setOverlayDisplay, editor }: any){
+interface Props {
+    setOverlayDisplay: Dispatch<SetStateAction<string>>, 
+    editor: Editor | null,
+}
+
+export default function LinkForm({ setOverlayDisplay, editor }: Props){
 
     const inputRef = useRef<HTMLInputElement>(null)
 
@@ -16,12 +22,12 @@ export default function LinkForm({ setOverlayDisplay, editor }: any){
     
             // empty
             if (inputRef.current.value === '') {
-                editor.chain().focus().unsetLink().run()
+                editor?.chain().focus().unsetLink().run()
                 return
             }
     
             // update link
-            editor.chain().focus().setLink({ href: inputRef.current.value }).run()
+            editor?.chain().focus().setLink({ href: inputRef.current.value }).run()
         }
         
         setOverlayDisplay("none")

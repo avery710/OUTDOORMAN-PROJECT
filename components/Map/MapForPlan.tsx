@@ -1,10 +1,15 @@
 import { MapContainer } from 'react-leaflet'
 import BaseLayer from './BaseLayer'
 import DrawingToolBar from './DrawToolForPlan'
-import { Key, useEffect, useRef, useState } from 'react'
+import { Key, RefObject, useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
 
-export default function MapForPlan({ geoJsonData, isSavingRef }: any){
+interface Props {
+    geoJsonData: string, 
+    isSavingRef: RefObject<HTMLLIElement>,
+}
+
+export default function MapForPlan({ geoJsonData, isSavingRef }: Props){
 
     const [ key, setKey ] = useState<Key | null>("none")
     const [ layers, setLayers ] = useState<any>(null)

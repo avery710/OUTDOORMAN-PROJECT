@@ -1,10 +1,17 @@
 import L from 'leaflet'
-import { Key, useEffect, useRef, useState } from 'react'
+import { Key, RefObject, useEffect, useRef, useState } from 'react'
 import { MapContainer } from 'react-leaflet'
+import { mountDatas } from 'types'
 import BaseLayer from '../BaseLayerWithoutData'
 import DrawingToolbar from './DrawToolForPlan'
 
-export default function PlaygroundPlan({ geoJsonData, isSavingRef, mountains }: any){
+interface Props {
+    geoJsonData: string, 
+    isSavingRef: RefObject<HTMLLIElement>, 
+    mountains: mountDatas,
+}
+
+export default function PlaygroundPlan({ geoJsonData, isSavingRef, mountains }: Props){
 
     const [ key, setKey ] = useState<Key | null>("none")
     const [ layers, setLayers ] = useState<any>(null)

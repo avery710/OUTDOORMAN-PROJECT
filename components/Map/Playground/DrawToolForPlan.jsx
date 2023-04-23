@@ -2,8 +2,6 @@ import L from "leaflet"
 import { useEffect } from "react"
 import { FeatureGroup, useMap } from "react-leaflet"
 import { EditControl } from "react-leaflet-draw"
-import { db } from '../../../lib/firebase'
-import { doc, updateDoc } from "firebase/firestore"
 import { v4 } from "uuid"
 import { myMarkerOptions } from "lib/leafletMarkerOption"
 
@@ -11,6 +9,7 @@ import { myMarkerOptions } from "lib/leafletMarkerOption"
 export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, FeatureGroupRef }){
 
     const myMap = useMap()
+    
     const MyMarker = L.Icon.extend({
         options: {
             shadowUrl: null,
@@ -147,23 +146,6 @@ export default function DrawingToolBar({ geoJsonData, isSavingRef, setLayers, Fe
         setTimeout(() => {
             isSavingRef.current.textContent = "Saved"
         }, 1000)
-    }
-
-    async function handleDelete(){
-        // updatedb()
-    }
-
-    async function updatedb(){
-
-            try {
-                const docRef = doc(db, "playground", "plan")
-                await updateDoc(docRef, {
-                    "geoJsonData" : JSON.stringify(FeatureGroupRef.current.toGeoJSON())
-                })
-            }
-            catch(error){
-                console.log(error)
-            }
     }
 
     

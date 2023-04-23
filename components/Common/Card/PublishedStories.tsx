@@ -9,7 +9,6 @@ interface Props {
 }
 
 export default function PublishedStories({ storyData }: Props) {
-    const [ writer, setWriter ] = useState()
 
     useEffect(() => {
         // fetch writer info here

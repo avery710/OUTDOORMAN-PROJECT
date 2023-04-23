@@ -2,13 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import Image from 'next/image'
 
-
 interface Props {
     autherUniqname: string,
     autherPhotoUrl: string,
     autherName: string,
 }
-
 
 export default function AutherSection({ autherUniqname, autherPhotoUrl, autherName}: Props) {
     return (

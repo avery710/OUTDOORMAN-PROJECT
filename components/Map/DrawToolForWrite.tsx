@@ -1,14 +1,20 @@
 import * as L from "leaflet"
 import { useRouter } from "next/router"
-import { useEffect, useRef } from "react"
-import { FeatureGroup, useMap } from "react-leaflet"
+import { MutableRefObject, RefObject } from "react"
+import { FeatureGroup } from "react-leaflet"
 import { EditControl } from "react-leaflet-draw"
 import { db } from '../../lib/firebase'
 import { doc, updateDoc } from "firebase/firestore"
 import { useAuth } from "hooks/context"
 
 
-export default function DrawingToolBar({ drawLayerRef, isSavingRef }: any){
+interface Props {
+    drawLayerRef: MutableRefObject<L.FeatureGroup<any>>, 
+    isSavingRef: RefObject<HTMLLIElement>,
+}
+
+
+export default function DrawingToolBar({ drawLayerRef, isSavingRef }: Props){
     
     const router = useRouter()
     const { storyId } = router.query
@@ -17,8 +23,10 @@ export default function DrawingToolBar({ drawLayerRef, isSavingRef }: any){
 
     async function handleDraw(e: L.DrawEvents.Created){
 
-        isSavingRef.current.textContent = "Saving in story draft..."
-
+        if (isSavingRef.current){
+            isSavingRef.current.textContent = "Saving in story draft..."
+        }
+        
         const layer = e.layer
         drawLayerRef.current.addLayer(layer)
         
@@ -35,13 +43,17 @@ export default function DrawingToolBar({ drawLayerRef, isSavingRef }: any){
         }
 
         setTimeout(() => {
-            isSavingRef.current.textContent = "Saved"
+            if (isSavingRef.current){
+                isSavingRef.current.textContent = "Saved"
+            }
         }, 800)
     }
 
 
     async function handleUpdate(){    
-        isSavingRef.current.textContent = "Saving in story draft..."
+        if (isSavingRef.current){
+            isSavingRef.current.textContent = "Saving in story draft..."
+        }
 
         if (authUser && authUser.uid && storyId){
             try {
@@ -56,7 +68,9 @@ export default function DrawingToolBar({ drawLayerRef, isSavingRef }: any){
         }
 
         setTimeout(() => {
-            isSavingRef.current.textContent = "Saved"
+            if (isSavingRef.current){
+                isSavingRef.current.textContent = "Saved"
+            }
         }, 800)
     }
 

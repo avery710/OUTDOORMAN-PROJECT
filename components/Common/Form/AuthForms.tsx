@@ -1,7 +1,12 @@
 import styled from 'styled-components'
 import { useAuth } from 'hooks/context'
+import { Dispatch, SetStateAction } from 'react'
 
-export function SignInForm({ setSignInForm }: any){
+interface Props {
+    setSignInForm: Dispatch<SetStateAction<boolean>>
+}
+
+export function SignInForm({ setSignInForm }: Props){
     function handleToggle(){
         setSignInForm(false)
     }
@@ -26,7 +31,7 @@ export function SignInForm({ setSignInForm }: any){
     )
 }
 
-export function SignUpForm({ setSignInForm }: any){
+export function SignUpForm({ setSignInForm }: Props){
     function handleToggle(){
         setSignInForm(true)
     }

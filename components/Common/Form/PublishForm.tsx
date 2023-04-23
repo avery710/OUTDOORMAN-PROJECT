@@ -1,15 +1,18 @@
-import { addDoc, doc, collection, setDoc, getDoc, deleteDoc } from "firebase/firestore"
+import { doc, setDoc, getDoc } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import { useAuth } from "hooks/context"
 import { db, storage } from "lib/firebase"
 import { useRouter } from "next/router"
-import { useRef, useState } from "react"
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 import styled from "styled-components"
 import Image from "next/image"
 import { v4 } from "uuid"
 
+interface Props {
+    setPublishOverlay: Dispatch<SetStateAction<string>>,
+}
 
-export default function PublishButton({ setPublishOverlay }: any){
+export default function PublishButton({ setPublishOverlay }: Props){
 
     const router = useRouter()
     const { storyId } = router.query

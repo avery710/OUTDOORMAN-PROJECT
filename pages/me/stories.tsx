@@ -18,7 +18,7 @@ export default function MyStories() {
     const [ recommend, setRecommend ] = useState<recommendCardArray>([])
     const { authUser } = useAuth()
     const [ deleteDisplay, setDeleteDisplay ] = useState<string>("none")
-    const [ deleteId, setDeleteId ] = useState<string>()
+    const [ deleteId, setDeleteId ] = useState<string>("")
     
 
     useEffect(() => {

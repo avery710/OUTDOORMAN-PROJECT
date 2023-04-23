@@ -4,16 +4,22 @@ import PublishedCard from "../Common/Card/PublishedCard"
 import { publishCardType, publishCardArray, autherInfo } from "types"
 import { Dispatch, SetStateAction } from "react"
 
+
 interface Props {
     headerTitle: string,
     list: publishCardArray,
-    setDeleteId: Dispatch<SetStateAction<string | undefined>>,
+    setDeleteId: Dispatch<SetStateAction<string>>,
     setOverlayDisplay: Dispatch<SetStateAction<string>>,
     auther: autherInfo,
 }
 
 
-export default function ProfilePage({ headerTitle, list, setDeleteId, setOverlayDisplay, auther }: Props){
+export default function ProfilePage({ 
+    headerTitle, 
+    list, 
+    setDeleteId, 
+    setOverlayDisplay, 
+    auther }: Props){
     
     return (
         <>

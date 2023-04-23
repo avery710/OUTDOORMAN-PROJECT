@@ -5,12 +5,17 @@ import { LatLngExpression } from "leaflet"
 import { db } from "lib/firebase"
 import { myMarkerOptions } from "lib/leafletMarkerOption"
 import { useRouter } from "next/router"
-import { useEffect } from "react"
-import { geoPointType } from "types"
+import { MutableRefObject, useEffect } from "react"
+import { geoPointArray, geoPointType } from "types"
+
+interface Props {
+    geoPoints: geoPointArray | null, 
+    layerGroupRef: MutableRefObject<L.LayerGroup<any>>,
+}
 
 
 // geo points layer (control by text-editor)
-export default function GeoPointsLayer({ geoPoints, layerGroupRef }: any){
+export default function GeoPointsLayer({ geoPoints, layerGroupRef }: Props){
 
     const router = useRouter()
     const { storyId } = router.query

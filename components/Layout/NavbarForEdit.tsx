@@ -1,7 +1,6 @@
 import Link from "next/link"
 import Image from 'next/image'
-import { ChangeEvent, useEffect, useRef, useState } from "react"
-import navStyles from '../../styles/Navbar.module.css'
+import { ChangeEvent, RefObject, useEffect, useRef, useState } from "react"
 import Toolbar from './Toolbar'
 import { db } from '../../lib/firebase'
 import { doc, updateDoc } from "firebase/firestore"
@@ -13,7 +12,14 @@ import { SignInForm, SignUpForm } from "../Common/Form/AuthForms"
 import OverlayPrompt from "components/Common/OverlayPrompt/OverlayPrompt"
 
 
-export default function NavbarForEdit({ title, isSavingRef, children }: any){
+interface Props {
+    title: string, 
+    isSavingRef?: RefObject<HTMLLIElement>, 
+    children?: JSX.Element,
+}
+
+
+export default function NavbarForEdit({ title, isSavingRef, children }: Props){
     
     const router = useRouter()
     const { authUser } = useAuth()
@@ -121,10 +127,7 @@ export default function NavbarForEdit({ title, isSavingRef, children }: any){
             </NavbarWrapper>
 
             { authUser ? 
-                <Toolbar 
-                    visibility={toolbarVisibility} 
-                    setToolbarVisibility={setToolbarVisibility} 
-                />
+                <Toolbar visibility={toolbarVisibility} />
                 :
                 <OverlayPrompt 
                     overlayDisplay={overlayDisplay} 

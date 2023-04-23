@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useAuth } from "hooks/context"
 
-export default function GpxForm(){
+export default function PlaygroundPrompt(){
 
     const { signInWithGoogle } = useAuth()
 
@@ -36,7 +36,7 @@ const ContentWrapper = styled.div`
     font-size: 14px;
     text-align: center;
     line-height: 24px;
-    max-width: 450px;
+    max-width: 440px;
 `
 
 const Button = styled.button`

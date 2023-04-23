@@ -20,8 +20,6 @@ interface Props {
 export default function ChangeProfileForm({ setOverlayDisplay, auther, setProfileUrl, setUsername }: Props) {
 
     const { authUser } = useAuth()
-    const router = useRouter()
-
     const [ file, setFile ] = useState<File>()
     const [ warning, setWarning ] = useState<boolean>(false)
     const [ imagePreview, setImagePreview ] = useState<boolean>(false)

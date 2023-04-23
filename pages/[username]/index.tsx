@@ -125,7 +125,7 @@ export default function UserPage({ userInfo, published }: PageProps){
     const [ profileUrl, setProfileUrl ] = useState<string>(userInfo?.photoUrl)
     const [ username, setUsername ] = useState<string>(userInfo?.username)
     const [ list, setList ] = useState<publishCardArray>(published)
-    const [ deleteId, setDeleteId ] = useState<string>()
+    const [ deleteId, setDeleteId ] = useState<string>("")
     const [ deleteDisplay, setDeleteDisplay ] = useState<string>("none")
     const [ profilePicDisplay, setProfilePicDisplay ] = useState<string>("none")
 

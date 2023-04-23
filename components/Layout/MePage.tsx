@@ -1,18 +1,34 @@
 import Header from "./Header"
 import styled from "styled-components"
 import Card from "../Common/Card/Card"
-import { storyCardType } from "types"
+import { cardDataArray, cardDataType } from "types"
 import LoadingEffect from "components/Common/Loading/LoadingEffect"
+import { Dispatch, SetStateAction } from "react"
 
+interface Props {
+    loaded: boolean, 
+    list: cardDataArray | null, 
+    setDeleteId: Dispatch<SetStateAction<string>>, 
+    setOverlayDisplay: Dispatch<SetStateAction<string>>, 
+    headerTitle: string, 
+    path: string,
+}
 
-export default function MePage({ loaded, list, setDeleteId, setOverlayDisplay, headerTitle, path }: any){
+export default function MePage({ 
+    loaded, 
+    list, 
+    setDeleteId, 
+    setOverlayDisplay, 
+    headerTitle, 
+    path }: Props){
+
     return (
         <>
             <Header title={headerTitle} />
             { loaded ?
                 list && (
                     <Wrapper>
-                        { list.map((content: storyCardType) => {
+                        { list.map((content: cardDataType) => {
                             return <Card 
                                         title={content.title} 
                                         uuid={content.uuid} 

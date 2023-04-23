@@ -1,16 +1,18 @@
-import { doc, updateDoc } from "firebase/firestore"
-import { useAuth } from "hooks/context"
 import L from "leaflet"
 import { LatLngExpression } from "leaflet"
-import { db } from "lib/firebase"
-import { useRouter } from "next/router"
-import { useEffect } from "react"
-import { geoPointType } from "types"
+import { MutableRefObject, useEffect } from "react"
+import { geoPointArray, geoPointType } from "types"
 import { myMarkerOptions } from '../../../lib/leafletMarkerOption'
 
 
+interface Props {
+    geoPoints: geoPointArray | null, 
+    layerGroupRef: MutableRefObject<L.LayerGroup<any>>,
+}
+
+
 // geo points layer (control by text-editor)
-export default function GeoPointsLayer({ geoPoints, layerGroupRef }: any){
+export default function GeoPointsLayer({ geoPoints, layerGroupRef }: Props){
 
     useEffect(() => {
         if (geoPoints){
@@ -43,31 +45,9 @@ export default function GeoPointsLayer({ geoPoints, layerGroupRef }: any){
                 }
                 geoJsonData.push(point)
             })
-
-            // updateDB(geoJsonData)
         }
 
     }, [geoPoints, layerGroupRef])
-
-
-    async function updateDB(geoJsonData: any){
-
-        const geoLayer = {
-            "type": "FeatureCollection",
-            "features": geoJsonData
-        }
-
-        try {
-            const docRef = doc(db, "playground", "write")
-            await updateDoc(docRef, {
-                "geoPointLayer" : JSON.stringify(geoLayer)
-            })
-        }
-        catch(error){
-            console.log(error)
-        }
-
-    }
 
     return (null)
 }

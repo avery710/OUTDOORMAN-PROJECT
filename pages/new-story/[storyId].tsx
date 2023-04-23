@@ -38,7 +38,7 @@ export default function NewStoryEdit(){
     const { storyId } = router.query
     const { authUser } = useAuth()
 
-    const [ title, setTitle ] = useState<string>()
+    const [ title, setTitle ] = useState<string>("")
     const isSavingRef = useRef<HTMLLIElement>(null)
 
     const [ geoPoints, setGeoPoints ] = useState<geoPointArray | null>(null)
@@ -278,7 +278,6 @@ export default function NewStoryEdit(){
                                             <GeoPointsLayer 
                                                 geoPoints={geoPoints}
                                                 layerGroupRef={geoLayerRef}
-                                                map={MAP}
                                             />
                                             <FlyToLocation 
                                                 location={location}
@@ -319,9 +318,7 @@ export default function NewStoryEdit(){
                             </OverlayPrompt>
             
                             <OverlayPrompt overlayDisplay={publishOverlay} setOverlayDisplay={setPublishOverlay}>
-                                <PublishForm
-                                    setPublishOverlay={setPublishOverlay}
-                                />
+                                <PublishForm setPublishOverlay={setPublishOverlay} />
                             </OverlayPrompt>
             
                             <OverlayPrompt overlayDisplay={GeoOverlay} setOverlayDisplay={setGeoOverlay}>

@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { autherInfo, recommendCardArray } from 'types'
 import Profile from './Profile'
 import RecommendList from '../Common/Card/RecommendList'
-import { useRouter } from 'next/router'
 
 
 interface Props {
@@ -16,7 +15,12 @@ interface Props {
 }
 
 
-export default function ProfileRightSection({ auther, recommendList, setOverlayDisplay, profileUrl, username }: Props){
+export default function ProfileRightSection({ 
+    auther, 
+    recommendList, 
+    setOverlayDisplay, 
+    profileUrl, 
+    username }: Props){
 
     const { authUser } = useAuth()
 

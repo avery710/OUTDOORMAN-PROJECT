@@ -1,11 +1,19 @@
 import { Feature, Geometry } from 'geojson';
-import L from 'leaflet';
+import L, { Layer } from 'leaflet'
 import { myMarkerOptions } from 'lib/leafletMarkerOption';
-import { useEffect } from 'react'
+import { MutableRefObject, useEffect } from 'react'
+import { mountDatas, storyDataType } from 'types';
 import styles from '../../styles/newStory.module.css'
 
 
-export default function MapForView({ mapRef, mountains, storyData }: any) {
+interface Props {
+    mapRef: MutableRefObject<L.DrawMap | null>, 
+    mountains: mountDatas, 
+    storyData: storyDataType,
+}
+
+
+export default function MapForView({ mapRef, mountains, storyData }: Props) {
 
     useEffect(() => {
 
@@ -16,7 +24,6 @@ export default function MapForView({ mapRef, mountains, storyData }: any) {
         }
 
         const Map = L.map("map", { attributionControl: false}).setView([23.46999192, 120.9572655], 13)
-        // Map.attributionControl.setPosition('bottomleft')
 
         // tile layers
         const TaiwanTopo = L.tileLayer('https://tile.happyman.idv.tw/mp/wmts/rudy/gm_grid/{z}/{x}/{y}.png', {
@@ -73,30 +80,32 @@ export default function MapForView({ mapRef, mountains, storyData }: any) {
             `)
         }
 
-        const highMounts = L.geoJSON(mountains.highMountains, {
-            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/images/map/peak.png'),
-            onEachFeature: addPopup
-        }).addTo(Map)
 
-        const middleMounts = L.geoJSON(mountains.middleMountains, {
-            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/images/map/mountain.png'),
-            onEachFeature: addPopup
-        })
+        if (mountains && mountains.highMountains && mountains.middleMountains && mountains.lowMountains){
+            const highMounts = L.geoJSON(mountains.highMountains, {
+                pointToLayer: (feature, latlng) => adjustMarker(latlng, '/images/map/peak.png'),
+                onEachFeature: addPopup
+            }).addTo(Map)
+    
+            const middleMounts = L.geoJSON(mountains.middleMountains, {
+                pointToLayer: (feature, latlng) => adjustMarker(latlng, '/images/map/mountain.png'),
+                onEachFeature: addPopup
+            })
+    
+            const lowMounts = L.geoJSON(mountains.lowMountains, {
+                pointToLayer: (feature, latlng) => adjustMarker(latlng, '/images/map/lowMountain.png'),
+                onEachFeature: addPopup
+            })
 
-        const lowMounts = L.geoJSON(mountains.lowMountains, {
-            pointToLayer: (feature, latlng) => adjustMarker(latlng, '/images/map/lowMountain.png'),
-            onEachFeature: addPopup
-        })
-
-        const overlayMaps = {
-            '高山 高於3000m': highMounts,
-            '中級山 1500-3000m': middleMounts,
-            '郊山 低於1500m': lowMounts
-        };
-
-        L.control.layers(baseMaps, overlayMaps, { position: "bottomleft" }).addTo(Map)
-
-
+            const overlayMaps = {
+                '高山 高於3000m': highMounts,
+                '中級山 1500-3000m': middleMounts,
+                '郊山 低於1500m': lowMounts
+            };
+    
+            L.control.layers(baseMaps, overlayMaps, { position: "bottomleft" }).addTo(Map)
+        }
+    
         // add layergroup from db
         const lineStyleOptions = {
             "color": '#ffff00',

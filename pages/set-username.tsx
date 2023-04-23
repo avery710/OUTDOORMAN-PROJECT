@@ -7,9 +7,8 @@ import styled from 'styled-components';
 import Head from 'next/head';
 import LoadingEffect from 'components/Common/Loading/LoadingEffect';
 
-export default function AddUsername() {
-    // const [ formVal, setFormVal ] = useState<string>("")
-    // const [ isValid, setIsValid ] = useState<boolean>(false)
+export default function AddUsername(){
+
     const inputRef = useRef<HTMLInputElement | null>(null)
     const { authUser, loading } = useAuth()
     const router = useRouter()
@@ -38,19 +37,6 @@ export default function AddUsername() {
                 console.log(error)
             }
         }
-    }
-
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>){
-        // regular expression
-        const val = e.target.value
-
-        // if (val.length < 3) {
-        //     setIsValid(false)
-
-        // }
-        // else {
-        //     setIsValid(true)
-        // }
     }
 
     useEffect(() => {
@@ -86,7 +72,7 @@ export default function AddUsername() {
                                     <OverlayContainer>
                                         <FormWrapper onSubmit={e => handleSubmit(e)}>
                                             <h3>set your username</h3>
-                                            <InputField type="text" ref={inputRef} onChange={e => handleChange(e)} minLength={1}/>
+                                            <InputField type="text" ref={inputRef} minLength={1}/>
                                             <SubmitButton type='submit'>submit</SubmitButton>
                                         </FormWrapper>
                                     </OverlayContainer>

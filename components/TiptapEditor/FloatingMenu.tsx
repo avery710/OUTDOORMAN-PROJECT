@@ -1,8 +1,14 @@
-import { FloatingMenu } from '@tiptap/react'
+import { Editor, FloatingMenu } from '@tiptap/react'
+import { Dispatch, SetStateAction } from 'react'
 import styles from './tiptap.module.scss'
 
+interface Props {
+    editor: Editor, 
+    setImageOverlay: Dispatch<SetStateAction<string>>,
+}
 
-export default function Floatingmenu({ editor, setImageOverlay }: any) {
+
+export default function Floatingmenu({ editor, setImageOverlay }: Props) {
 
     return (
         <FloatingMenu className={styles.floatingMenu} tippyOptions={{ duration: 100, offset: [35, 0] }} editor={editor}>

@@ -1,11 +1,17 @@
-import { useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useRef, useState } from 'react'
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import { storage } from 'lib/firebase'
 import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
+import { Editor } from '@tiptap/react'
 
-export default function ImagePrompt({setOverlayDisplay, editor}: any) {
+interface Props {
+    setOverlayDisplay: Dispatch<SetStateAction<string>>, 
+    editor: Editor | null,
+}
+
+export default function ImagePrompt({setOverlayDisplay, editor}: Props) {
 
     const [ file, setFile ] = useState<File>()
     const submitRef = useRef<HTMLButtonElement>(null)
@@ -25,7 +31,7 @@ export default function ImagePrompt({setOverlayDisplay, editor}: any) {
             
             uploadBytes(imageRef, file).then((snapshot) => {
                 getDownloadURL(snapshot.ref).then((url) => {
-                    editor.chain().focus().setImage({ src: url }).run()
+                    editor?.chain().focus().setImage({ src: url }).run()
                 })
             })
         }

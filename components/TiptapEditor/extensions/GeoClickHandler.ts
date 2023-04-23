@@ -4,7 +4,7 @@ import { Plugin, PluginKey } from '@tiptap/pm/state'
 import { LatLngExpression } from 'leaflet'
 import { Dispatch, SetStateAction } from 'react'
 
-type ClickHandlerOptions = {
+interface ClickHandlerOptions {
     type: NodeType | MarkType,
     setLocation?: Dispatch<SetStateAction<L.LatLngExpression | null>>
 }

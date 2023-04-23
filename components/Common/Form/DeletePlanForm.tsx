@@ -1,10 +1,20 @@
-import { cardDataType } from "types"
+import { cardDataArray, cardDataType } from "types"
 import { db } from '../../../lib/firebase'
 import { doc, deleteDoc } from "firebase/firestore"
 import { useAuth } from "hooks/context"
 import styled from "styled-components"
+import { Dispatch, SetStateAction } from "react"
 
-export default function DeletePlanForm({ setOverlayDisplay, deleteId, list, setList, path }: any){
+interface Props {
+    setOverlayDisplay: Dispatch<SetStateAction<string>>,
+    deleteId: string, 
+    list: cardDataArray | null, 
+    setList: Dispatch<SetStateAction<cardDataArray | null>>, 
+    path: string,
+}
+
+export default function DeletePlanForm({ setOverlayDisplay, deleteId, list, setList, path }: Props){
+    
     const { authUser } = useAuth()
 
     function handleCancel(){
@@ -12,7 +22,11 @@ export default function DeletePlanForm({ setOverlayDisplay, deleteId, list, setL
     }
 
     async function handleDelete(){
-        setList(list.filter((draft: cardDataType) => draft.uuid != deleteId))
+        
+        if (list){
+            setList(list.filter((draft: cardDataType) => draft.uuid != deleteId))
+        }
+        
         setOverlayDisplay("none")
 
         if (authUser && authUser.uid){

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import Toolbar from './Toolbar'
 import { useAuth } from 'hooks/context'
 import { db } from '../../lib/firebase'
@@ -9,8 +9,13 @@ import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Logo from './Logo'
 
+interface Props {
+    setOverlayDisplay: Dispatch<SetStateAction<string>>, 
+    setSignInForm: Dispatch<SetStateAction<boolean>>,
+}
 
-export default function Navbar({ setOverlayDisplay, setSignInForm }: any){
+
+export default function Navbar({ setOverlayDisplay, setSignInForm }: Props){
 
     const { authUser } = useAuth()
     const router = useRouter()
@@ -125,10 +130,7 @@ export default function Navbar({ setOverlayDisplay, setSignInForm }: any){
                                         </ProfileWrapper>
                                     </Li>
                                 </Ul>
-                                <Toolbar 
-                                    visibility={toolbarVisibility} 
-                                    setToolbarVisibility={setToolbarVisibility} 
-                                />
+                                <Toolbar visibility={toolbarVisibility} />
                             </>
                         )
                         : (

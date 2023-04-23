@@ -1,10 +1,18 @@
-import { cardDataType, publishCardType } from "types"
+import { publishCardArray, publishCardType } from "types"
 import { db } from '../../../lib/firebase'
 import { doc, deleteDoc } from "firebase/firestore"
 import { useAuth } from "hooks/context"
 import styled from "styled-components"
+import { Dispatch, SetStateAction } from "react"
 
-export default function DeletePublishForm({ setOverlayDisplay, deleteId, list, setList }: any){
+interface Props {
+    setOverlayDisplay: Dispatch<SetStateAction<string>>, 
+    deleteId: string, 
+    list: publishCardArray, 
+    setList: Dispatch<SetStateAction<publishCardArray>>,
+}
+
+export default function DeletePublishForm({ setOverlayDisplay, deleteId, list, setList }: Props){
     
     const { authUser } = useAuth()
 

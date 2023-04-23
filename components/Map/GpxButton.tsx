@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { MouseEventHandler } from 'react'
 import styled from 'styled-components'
 
 
-export default function GpxButton({ handleClickGPX }: any) {
+interface Props {
+    handleClickGPX: MouseEventHandler<HTMLButtonElement> | undefined
+}
+
+
+export default function GpxButton({ handleClickGPX }: Props) {
     return (
         <UploadGpx onClick={handleClickGPX}/>
     )

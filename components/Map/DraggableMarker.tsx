@@ -6,7 +6,6 @@ interface Props {
     dragLayerRef: MutableRefObject<L.LayerGroup<any>>
 }
 
-
 export default function DraggableMarker({ map, dragLayerRef }: Props) {
     useEffect(() => {
         if (map){

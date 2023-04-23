@@ -133,10 +133,7 @@ export default function Navbar() {
                                         </ProfileWrapper>
                                     </Li>
                                 </Ul>
-                                <Toolbar 
-                                    visibility={toolbarVisibility} 
-                                    setToolbarVisibility={setToolbarVisibility} 
-                                />
+                                <Toolbar visibility={toolbarVisibility} />
                             </>
                         )
                         : (

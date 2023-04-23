@@ -1,4 +1,5 @@
 import {
+    Editor,
     EditorContent,
     JSONContent,
     useEditor,
@@ -9,7 +10,7 @@ import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
 import Image from '@tiptap/extension-image'
 import { GeoLink } from './extensions/GeoLink'
-import { useEffect, useState } from 'react'
+import { Dispatch, RefObject, SetStateAction, useEffect, useState } from 'react'
 import { geoPointArray, geoPointType } from 'types'
 import { useRouter } from 'next/router'
 import { useAuth } from 'hooks/context'
@@ -18,6 +19,19 @@ import { db } from 'lib/firebase'
 import Floatingmenu from './FloatingMenu'
 import Bubblemenu from './BubbleMenu'
 import HardBreak from '@tiptap/extension-hard-break'
+import { LatLngExpression } from 'leaflet'
+
+
+interface Props {
+    geoPoints: geoPointArray | null, 
+    setGeoPoints: Dispatch<SetStateAction<geoPointArray | null>>, 
+    setLocation: Dispatch<SetStateAction<LatLngExpression | null>>, 
+    setEDITOR: Dispatch<SetStateAction<Editor | null>>, 
+    isSavingRef: RefObject<HTMLLIElement>,
+    setGeoOverlay: Dispatch<SetStateAction<string>>,
+    setLinkOverlay: Dispatch<SetStateAction<string>>,
+    setImageOverlay: Dispatch<SetStateAction<string>>,
+}
 
 
 const TiptapEditor = ({
@@ -28,7 +42,7 @@ const TiptapEditor = ({
     isSavingRef,
     setGeoOverlay,
     setLinkOverlay,
-    setImageOverlay }: any) => {
+    setImageOverlay }: Props) => {
 
     const [ Marks, setMarks ] = useState<geoPointArray | null>(null)
     const router = useRouter()
@@ -154,11 +168,13 @@ const TiptapEditor = ({
     useEffect(() => {
         
         async function updateDB(content: JSONContent, textContent: string){
-            if (isSavingRef.current != "Saving in story draft..."){
+            if (isSavingRef.current && isSavingRef.current.textContent != "Saving in story draft..."){
                 isSavingRef.current.textContent = "Saving in story draft..."
 
                 setTimeout(() => {
-                    isSavingRef.current.textContent = "Saved"
+                    if (isSavingRef.current){
+                        isSavingRef.current.textContent = "Saved"
+                    }
                 }, 1000)
             }
 

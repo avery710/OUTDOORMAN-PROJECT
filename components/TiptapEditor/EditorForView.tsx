@@ -1,5 +1,5 @@
 import { generateHTML } from '@tiptap/html'
-import { useEffect, useRef, useState } from 'react'
+import { MutableRefObject, useEffect, useRef, useState } from 'react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Underline from '@tiptap/extension-underline'
@@ -10,10 +10,20 @@ import styled from 'styled-components'
 import AutherSection from 'components/Common/Card/AutherSection'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from 'lib/firebase'
+import { JSONContent } from '@tiptap/react'
+import L from 'leaflet'
 
 
+interface Props {
+    editorContent: JSONContent, 
+    title: string, 
+    mapRef: MutableRefObject<L.DrawMap | null>, 
+    userId: string, 
+    date: string,
+}
 
-export default function EditorForView({ editorContent, title, mapRef, userId, date }: any){
+
+export default function EditorForView({ editorContent, title, mapRef, userId, date }: Props){
 
     const divRef = useRef<HTMLDivElement>(null)
     const [ autherPhotoUrl, setAutherPhotoUrl ] = useState<string>("")
@@ -47,7 +57,7 @@ export default function EditorForView({ editorContent, title, mapRef, userId, da
                     const lng = Number(geolink.getAttribute('data-lng'))
 
                     geolink.addEventListener('click', () => {
-                        mapRef.current.flyTo([lat, lng], 13)
+                        mapRef.current?.flyTo([lat, lng], 13)
                     })
                 })
             }, 1000)

@@ -1,6 +1,11 @@
+import { Dispatch, SetStateAction } from "react"
 import styled from "styled-components"
 
-export default function PublishButton({ setPublishOverlay }: any){
+interface Props {
+    setPublishOverlay: Dispatch<SetStateAction<string>>,
+}
+
+export default function PublishButton({ setPublishOverlay }: Props){
 
     function handlePublish(){
         setPublishOverlay("flex")

@@ -8,7 +8,7 @@ import { mountDatas } from "types"
 
 export default function BaseLayer(){
     
-    const [mountData, setMountData] = useState<mountDatas | null>(null)
+    const [ mountData, setMountData ] = useState<mountDatas | null>(null)
 
     useEffect(() => {
         async function fetchMountains() {

@@ -1,9 +1,17 @@
-import { useRef, useState } from "react"
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 import gpxParser from "gpxparser"
 import { wayPointArray } from "types"
 import styled from "styled-components"
+import { LatLngExpression } from "leaflet"
 
-export default function GpxForm({setOverlayDisplay, setGpxTracks, setGpxWaypoints, setGpxTrackGeoJson}: any) {
+interface Props {
+    setOverlayDisplay: Dispatch<SetStateAction<string>>, 
+    setGpxTracks: Dispatch<SetStateAction<LatLngExpression[] | null>>, 
+    setGpxWaypoints: Dispatch<SetStateAction<wayPointArray | null>>, 
+    setGpxTrackGeoJson: Dispatch<SetStateAction<LatLngExpression[] | null>>,
+}
+
+export default function GpxForm({setOverlayDisplay, setGpxTracks, setGpxWaypoints, setGpxTrackGeoJson}: Props) {
     
     const gpxRef = useRef<HTMLInputElement | null>(null)
     const [ gpx, setGpx ] = useState<string>("")
@@ -16,8 +24,8 @@ export default function GpxForm({setOverlayDisplay, setGpxTracks, setGpxWaypoint
         if (gpx){
             const gpxData = new gpxParser()
             gpxData.parse(gpx)
-            const tracks = gpxData.tracks[0].points.map(pos => [pos.lat, pos.lon])
-            const trackGeoJson = gpxData.tracks[0].points.map(pos => [pos.lon, pos.lat])
+            const tracks: LatLngExpression[] = gpxData.tracks[0].points.map(pos => [pos.lat, pos.lon])
+            const trackGeoJson: LatLngExpression[] = gpxData.tracks[0].points.map(pos => [pos.lon, pos.lat])
             const waypoints: wayPointArray = gpxData.waypoints.map(waypoint => (
                 {lat: waypoint.lat, lng: waypoint.lon, elevation: waypoint.ele, descript: waypoint.name}
             ))

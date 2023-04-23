@@ -30,8 +30,7 @@ import PlaygroundForm from 'components/Common/Form/PlaygroundForm'
 
 export default function NewStoryEdit(){
 
-    const [ title, setTitle ] = useState<string>()
-    const isSavingRef = useRef<HTMLLIElement>(null)
+    const [ title, setTitle ] = useState<string>("")
 
     const [ geoPoints, setGeoPoints ] = useState<geoPointArray | null>(null)
     const [ location, setLocation ] = useState<LatLngExpression | null>(null)
@@ -209,10 +208,7 @@ export default function NewStoryEdit(){
                 <LayerGroup ref={gpxLayerRef}/>
                 <LayerGroup ref={geoLayerRef}/>
                 <LayerGroup ref={dragLayerRef}/>
-                <DrawingToolBar
-                    drawLayerRef={drawLayerRef}
-                    isSavingRef={isSavingRef}
-                />
+                <DrawingToolBar drawLayerRef={drawLayerRef} />
             </MapContainer>
         )
     }, [])
@@ -227,7 +223,7 @@ export default function NewStoryEdit(){
                 isfetching ?
                 (
                     <>
-                        <NavbarForEdit title={title} isSavingRef={isSavingRef} />
+                        <NavbarForEdit title={title} />
             
                         <div className={styles.container}>
                             <div className={styles.map}>
@@ -239,13 +235,11 @@ export default function NewStoryEdit(){
                                                 EDITOR={EDITOR}
                                                 layerGroupRef={gpxLayerRef}
                                                 map={MAP}
-                                                isSavingRef={isSavingRef}
                                                 gpxtrackGeoJson={gpxtrackGeoJson}
                                             />
                                             <GeoPointsLayer 
                                                 geoPoints={geoPoints}
                                                 layerGroupRef={geoLayerRef}
-                                                map={MAP}
                                             />
                                             <FlyToLocation 
                                                 location={location}
@@ -268,7 +262,6 @@ export default function NewStoryEdit(){
                                     setGeoPoints={setGeoPoints} 
                                     setLocation={setLocation}
                                     setEDITOR={setEDITOR}
-                                    isSavingRef={isSavingRef}
                                     setGeoOverlay={setGeoOverlay}
                                     setLinkOverlay={setLinkOverlay}
                                     setImageOverlay={setImageOverlay}

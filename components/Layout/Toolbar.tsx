@@ -1,9 +1,12 @@
 import Link from 'next/link'
 import { useAuth } from '../../hooks/context'
-import styled from 'styled-components';
+import styled from 'styled-components'
 
+interface Props {
+    visibility: string,
+}
 
-export default function Toolbar({ visibility }: any) {
+export default function Toolbar({ visibility }: Props) {
     
     const { signOutGoogle, authUser } = useAuth()
 
@@ -16,7 +19,6 @@ export default function Toolbar({ visibility }: any) {
         <ToolbarContainer visibility={visibility}>
             <Ul>
                 <Li>
-                    {/* <Link href={`/${authUser?.uniqname}/`}>Profile</Link> */}
                     <Button onClick={() => window.location.href = `/${authUser?.uniqname}/`}>Profile</Button>
                 </Li>
                 <Li>

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Layout from '../components/Layout/Layout'
 import { db } from 'lib/firebase'
 import { getDocs, collection } from 'firebase/firestore';
-import { publishCardArray, publishCardType, recommendCardArray, recommendCardType, storyCardArray } from 'types';
+import { publishCardArray, publishCardType, recommendCardArray, recommendCardType } from 'types';
 import RightSection from 'components/Layout/RightSection';
 import IndexLeftSection from 'components/Layout/IndexLeftSection';
 import Head from 'next/head';

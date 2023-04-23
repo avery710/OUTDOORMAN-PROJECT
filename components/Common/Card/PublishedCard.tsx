@@ -12,7 +12,7 @@ import AutherSection from './AutherSection'
 
 interface Props {
     content: publishCardType,
-    setDeleteId: Dispatch<SetStateAction<string | undefined>> | null,
+    setDeleteId: Dispatch<SetStateAction<string>> | null,
     setOverlayDisplay: Dispatch<SetStateAction<string>> | null,
     auther: autherInfo | null,
 }

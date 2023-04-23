@@ -1,16 +1,28 @@
-import { EditorContent, useEditor } from '@tiptap/react'
+import { Editor, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
 import Image from '@tiptap/extension-image'
 import { GeoLink } from './extensions/GeoLink'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { geoPointArray, geoPointType } from 'types'
 import { doc, updateDoc } from 'firebase/firestore'
 import { db } from 'lib/firebase'
 import Floatingmenu from './FloatingMenu'
 import Bubblemenu from './BubbleMenu'
+import { LatLngExpression } from 'leaflet'
+
+
+interface Props {
+    geoPoints: geoPointArray | null, 
+    setGeoPoints: Dispatch<SetStateAction<geoPointArray | null>>, 
+    setLocation: Dispatch<SetStateAction<LatLngExpression | null>>, 
+    setEDITOR: Dispatch<SetStateAction<Editor | null>>, 
+    setGeoOverlay: Dispatch<SetStateAction<string>>,
+    setLinkOverlay: Dispatch<SetStateAction<string>>,
+    setImageOverlay: Dispatch<SetStateAction<string>>,
+}
 
 
 const TiptapEditor = ({
@@ -20,7 +32,7 @@ const TiptapEditor = ({
     setEDITOR, 
     setGeoOverlay,
     setLinkOverlay,
-    setImageOverlay }: any) => {
+    setImageOverlay }: Props) => {
 
     const [ Marks, setMarks ] = useState<geoPointArray | null>(null)
 

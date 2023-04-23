@@ -17,9 +17,11 @@ export const getStaticProps: GetStaticProps = async () => {
     const docSnap = await getDoc(playgroundDoc)
 
     if (docSnap.exists()) {
-        storyData = docSnap.data()
+        storyData = {
+            title: docSnap.data().title,
+            geoJsonData: docSnap.data().geoJsonData
+        }
     }
-
 
     // fetch mountain data
     let mountains: mountDatas = {
@@ -62,7 +64,15 @@ export const getStaticProps: GetStaticProps = async () => {
     }
 }
 
-export default function PlaygroundPlanPage({ storyData, mountains }: any){
+interface Props {
+    storyData: {
+        title: string,
+        geoJsonData: string
+    }, 
+    mountains: mountDatas,
+}
+
+export default function PlaygroundPlanPage({ storyData, mountains }: Props){
 
     const isSavingRef = useRef<HTMLLIElement>(null)
 

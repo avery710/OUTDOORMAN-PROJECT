@@ -1,13 +1,29 @@
-import { doc, updateDoc } from "firebase/firestore"
+import { Editor } from "@tiptap/react"
 import L from "leaflet"
 import { LatLngExpression } from "leaflet"
-import { db } from "lib/firebase"
 import { myMarkerOptions } from "lib/leafletMarkerOption"
-import { useEffect } from "react"
-import { wayPointType } from 'types'
+import { MutableRefObject, useEffect } from "react"
+import { wayPointArray, wayPointType } from 'types'
+
+
+interface Props {
+    gpxtracks: LatLngExpression[] | null, 
+    gpxWaypoints: wayPointArray | null, 
+    EDITOR: Editor | null, 
+    layerGroupRef: MutableRefObject<L.LayerGroup<any>>, 
+    map: L.Map, 
+    gpxtrackGeoJson: LatLngExpression[] | null,
+}
+
 
 // read only gpx layer (control by gpx upload)
-export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRef, map, isSavingRef, gpxtrackGeoJson }: any){
+export default function GpxLayer({ 
+    gpxtracks, 
+    gpxWaypoints, 
+    EDITOR, 
+    layerGroupRef, 
+    map, 
+    gpxtrackGeoJson }: Props){
 
     useEffect(() => {
         if (gpxtracks && gpxWaypoints){
@@ -46,11 +62,13 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
                 button.innerHTML = "Add to text-editor"
 
                 button.onclick = function() {
-                    const mark = EDITOR.schema.marks.GeoLink.create({ lat: waypoint.lat, lng: waypoint.lng })
-                    const from = EDITOR.state.selection.from
-                    const transaction = EDITOR.state.tr.insertText(waypoint.descript)
-                    transaction.addMark(from, from + waypoint.descript.length, mark)
-                    EDITOR.view.dispatch(transaction)
+                    if (EDITOR){
+                        const mark = EDITOR.schema.marks.GeoLink.create({ lat: waypoint.lat, lng: waypoint.lng })
+                        const from = EDITOR.state.selection.from
+                        const transaction = EDITOR.state.tr.insertText(waypoint.descript)
+                        transaction.addMark(from, from + waypoint.descript.length, mark)
+                        EDITOR.view.dispatch(transaction)
+                    }
                 }
 
                 div.appendChild(button)
@@ -76,37 +94,9 @@ export default function GpxLayer({ gpxtracks, gpxWaypoints, EDITOR, layerGroupRe
             })
             
             map.fitBounds(polyline.getBounds())
-
-
-            // update to db
-            // updateDB(geoJsonData)
-
         }
+
     }, [gpxtracks, gpxWaypoints])
-
-
-    async function updateDB(geoJsonData: any){
-        isSavingRef.current.textContent = "Saving"
-
-        const geoLayer = {
-            "type": "FeatureCollection",
-            "features": geoJsonData
-        }
-
-        try {
-            const docRef = doc(db, "playground", "write")
-            await updateDoc(docRef, {
-                "gpxLayer" : JSON.stringify(geoLayer)
-            })
-        }
-        catch(error){
-            console.log(error)
-        }
-
-        setTimeout(() => {
-            isSavingRef.current.textContent = "Saved"
-        }, 800)
-    }
 
     return (null)
 }

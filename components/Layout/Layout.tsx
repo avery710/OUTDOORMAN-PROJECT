@@ -2,14 +2,14 @@ import Navbar from './Navbar'
 import styled from 'styled-components'
 
 
-interface LayoutProps {
+interface Props {
     leftComponent: JSX.Element | JSX.Element[],
     rightComponent: JSX.Element | JSX.Element[],
     landingSection?: JSX.Element | JSX.Element[],
 }
 
 
-const Layout = ({ leftComponent, rightComponent, landingSection }: LayoutProps) => {
+const Layout = ({ leftComponent, rightComponent, landingSection }: Props) => {
     return (
         <>
             <Navbar />

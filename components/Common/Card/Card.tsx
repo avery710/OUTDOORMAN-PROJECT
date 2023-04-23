@@ -1,9 +1,17 @@
 import DeleteTooltip from 'components/Common/Form/DeleteTooltip'
-import { useEffect, useRef, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
+interface Props {
+    title: string, 
+    uuid: string, 
+    date: string, 
+    setDeleteId: Dispatch<SetStateAction<string>>, 
+    setOverlayDisplay: Dispatch<SetStateAction<string>>, 
+    path: string,
+}
 
-export default function Card({ title, uuid, date, setDeleteId, setOverlayDisplay, path }: any){
+export default function Card({ title, uuid, date, setDeleteId, setOverlayDisplay, path }: Props){
 
     const [ tooltipDisplay, setTooltipDisplay ] = useState<boolean>(false)
     const buttonRef = useRef<HTMLButtonElement>(null)

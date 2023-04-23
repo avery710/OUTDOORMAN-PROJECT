@@ -1,6 +1,13 @@
+import { LatLngExpression } from "leaflet"
 import { useEffect } from "react"
+import * as L from "leaflet"
 
-export default function FlyToLocation({ location, map }: any){
+interface Props {
+    location: LatLngExpression | null, 
+    map: L.Map,
+}
+
+export default function FlyToLocation({ location, map }: Props){
     
     useEffect(() => {
         if (location && map){

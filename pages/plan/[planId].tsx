@@ -14,8 +14,8 @@ export default function NewPlan(){
     const router = useRouter()
     const { planId } = router.query
     const { authUser } = useAuth()
-    const [ title, setTitle ] = useState<string>()
-    const [ geoJsonData, setGeoJsonData ] = useState<string>()
+    const [ title, setTitle ] = useState<string>("")
+    const [ geoJsonData, setGeoJsonData ] = useState<string>("")
     const isSavingRef = useRef<HTMLLIElement>(null)
 
 

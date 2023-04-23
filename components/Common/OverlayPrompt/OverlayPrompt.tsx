@@ -1,8 +1,15 @@
 import styled from 'styled-components'
 import Image from 'next/image'
+import { Dispatch, SetStateAction } from 'react';
 
+interface Props {
+    overlayDisplay: string, 
+    setOverlayDisplay: Dispatch<SetStateAction<string>>, 
+    children: JSX.Element,
+}
 
-export default function OverlayPrompt({ overlayDisplay, setOverlayDisplay, children }: any){
+export default function OverlayPrompt({ overlayDisplay, setOverlayDisplay, children }: Props){
+
     function handleClose(){
         setOverlayDisplay("none")
     }
@@ -19,8 +26,6 @@ export default function OverlayPrompt({ overlayDisplay, setOverlayDisplay, child
         </OverlayBackground>
     )
 }
-
-/* -------------styles------------- */
 
 interface overlayProps {
     display: string;

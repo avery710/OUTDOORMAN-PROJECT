@@ -1,38 +1,26 @@
 import * as L from "leaflet"
+import { MutableRefObject } from "react"
 import { FeatureGroup } from "react-leaflet"
 import { EditControl } from "react-leaflet-draw"
 
 
-export default function PlaygoundWriteDraw({ drawLayerRef, isSavingRef }: any){
+interface Props {
+    drawLayerRef: MutableRefObject<L.FeatureGroup<any>>, 
+}
+
+
+export default function PlaygoundWriteDraw({ drawLayerRef }: Props){
 
     async function handleDraw(e: L.DrawEvents.Created){
-        isSavingRef.current.textContent = "Saving"
-
         const layer = e.layer
         drawLayerRef.current.addLayer(layer)
-
-        setTimeout(() => {
-            isSavingRef.current.textContent = "Saved"
-        }, 800)
     }
-
-
-    async function handleUpdate(){    
-        isSavingRef.current.textContent = "Saving"
-
-        setTimeout(() => {
-            isSavingRef.current.textContent = "Saved"
-        }, 800)
-    }
-
 
     return (
         <FeatureGroup ref={drawLayerRef}>
             <EditControl 
                 position = 'topleft' 
                 onCreated={e => handleDraw(e)}
-                onEdited={() => handleUpdate()}
-                onDeleted={() => handleUpdate()}
                 draw={{ 
                     rectangle: false, 
                     circle: false, 

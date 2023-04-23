@@ -1,10 +1,16 @@
-import { BubbleMenu, isTextSelection } from '@tiptap/react'
+import { BubbleMenu, Editor, isTextSelection } from '@tiptap/react'
 import styles from './tiptap.module.scss'
 import 'tippy.js/dist/svg-arrow.css'
 import { roundArrow } from 'tippy.js'
+import { Dispatch, SetStateAction } from 'react'
 
+interface Props {
+    editor: Editor, 
+    setGeoOverlay: Dispatch<SetStateAction<string>>, 
+    setLinkOverlay: Dispatch<SetStateAction<string>>,
+}
 
-export default function Bubblemenu({ editor, setGeoOverlay, setLinkOverlay }: any){
+export default function Bubblemenu({ editor, setGeoOverlay, setLinkOverlay }: Props){
 
     return (
         <BubbleMenu 
