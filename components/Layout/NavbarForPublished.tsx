@@ -139,15 +139,7 @@ export default function Navbar({ setOverlayDisplay, setSignInForm }: Props){
                                     <PlaygroundLi>
                                         <Playground>
                                             <Link href={'/new-story/playground'} style={{display: "flex", alignItems:" center"}}>
-                                                <WriteIcon/>Write
-                                            </Link>
-                                        </Playground>
-                                        
-                                    </PlaygroundLi>
-                                    <PlaygroundLi>
-                                        <Playground>
-                                            <Link href={'/plan/playground'} style={{display: "flex", alignItems:" center"}}>
-                                                <PlanIcon/>Plan
+                                                <PlanIcon/>Playground
                                             </Link>
                                         </Playground>
                                     </PlaygroundLi>
