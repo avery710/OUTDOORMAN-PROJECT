@@ -16,7 +16,6 @@ const UserContext = createContext<userContextProps>({
     signOutGoogle: async () => {},
 })
 
-// 可以直接將 JSX component 傳進去
 export function AuthUserProvider({ children }: any){
     const currentAuth = useFirebaseAuth()
 
@@ -27,5 +26,4 @@ export function AuthUserProvider({ children }: any){
     )
 }
 
-// 直接用 useAuth() 取得當前的 auth 資訊
 export const useAuth = () => useContext(UserContext)
